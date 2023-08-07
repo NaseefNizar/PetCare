@@ -1,21 +1,27 @@
 import * as React from 'react';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import MuiDrawer ,{ DrawerProps }from '@mui/material/Drawer';
-import MuiAppBar from '@mui/material/AppBar';
+import MuiDrawer from '@mui/material/Drawer';
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
+import CssBaseline from '@mui/material/CssBaseline';
+import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-import { items } from './items';
-import { useNavigate } from 'react-router';
+
 const drawerWidth = 240;
 
-const openedMixin = (theme: any) => ({
+const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
@@ -24,7 +30,7 @@ const openedMixin = (theme: any) => ({
   overflowX: 'hidden',
 });
 
-const closedMixin = (theme: any) => ({
+const closedMixin = (theme: Theme): CSSObject => ({
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -45,29 +51,13 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   ...theme.mixins.toolbar,
 }));
 
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme, open }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(['width', 'margin'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
+interface AppBarProps extends MuiAppBarProps {
+  open?: boolean;
+}
 
-interface DrawerProps extends DrawerProps {
-    open?: boolean;
-  }
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })<DrawerProps>(
+
+const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
     width: drawerWidth,
     flexShrink: 0,
@@ -84,18 +74,20 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-export default function MiniDrawer({open , children}) {
+export default function MiniDrawer({open,children}:AppBarProps) {
   const theme = useTheme();
-  const navigate = useNavigate()
- 
+
+
   return (
     <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
       <Drawer variant="permanent" open={open}>
-        <DrawerHeader/>
+        <DrawerHeader>
+        </DrawerHeader>
         <Divider />
         <List>
-          {items.map((text, index) => (
-            <ListItem key={text.path} disablePadding sx={{ display: 'block' }} onClick={()=>navigate(text.path)}>
+          {['Home', 'Pet Owners', 'Doctors', 'Groomers'].map((text, index) => (
+            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -110,9 +102,9 @@ export default function MiniDrawer({open , children}) {
                     justifyContent: 'center',
                   }}
                 >
-                  {text.icon}
+                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                 </ListItemIcon>
-                <ListItemText primary={text.title} sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
           ))}
@@ -145,7 +137,7 @@ export default function MiniDrawer({open , children}) {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-{children}
+        {children}
       </Box>
     </Box>
   );

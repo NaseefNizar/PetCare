@@ -17,9 +17,8 @@ const partnerSchema = new mongoose.Schema({
         type: Number,
         unique: true
     },
-    is_admin: {
-        type: Number,
-        default: 0
+    role: {
+        type: String
     }
 });
 const Partner = mongoose.model('Partner', partnerSchema);

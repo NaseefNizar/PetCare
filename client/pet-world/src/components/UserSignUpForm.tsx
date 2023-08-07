@@ -11,9 +11,10 @@ import { useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { googleSign, registerUser } from "../redux/features/userSlice";
 import { registerVet } from "../redux/features/vetSlice";
-import axios from "../utils/axiosInstance";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Navigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type FormValues = {
   name: string;
@@ -38,12 +39,13 @@ export const UserSignUpForm = (props: Props) => {
   //         contactNumber:0
   //     }
   // }
-  const { register, handleSubmit, formState, watch } = form;
-  const { errors } = formState;
+  const { register, handleSubmit, formState, watch, reset } = form;
+  const { errors, isSubmitSuccessful } = formState;
   const passwordCheck = watch("password");
   const dispatch = useAppDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const error = useAppSelector((state) => state.user.error);
+  const signupSuccess = useAppSelector((state) => state.vet.registerStatus);
   // console.log(error);
 
   console.log({ props });
@@ -51,11 +53,23 @@ export const UserSignUpForm = (props: Props) => {
   const onSubmit = (data: FormValues) => {
     if (props.role === "user") {
       dispatch(registerUser(data));
-    } else if (props.role === "vet") {
+    } else if (props.role === "vet" || "groomer") {
       console.log(111);
-      dispatch(registerVet(data));
+      dispatch(registerVet({ ...data, role: props.role }));
     }
   };
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful]);
+
+  useEffect(() => {
+    if (signupSuccess) {
+      toast.success("Sign up successfull",{theme:"colored"});
+    }
+  }, [signupSuccess]);
 
   return (
     <Stack
@@ -68,11 +82,13 @@ export const UserSignUpForm = (props: Props) => {
         // margin:"20px auto"
       }}
     >
+      <ToastContainer />
+
       <Paper sx={{ padding: "32px", margin: "1rem" }} elevation={4}>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <Stack spacing={2}>
             <Typography variant="h5" fontSize={30} fontWeight="bold">
-              {props.role}Sign Up
+              {props.role} Sign Up
             </Typography>
             <Typography>
               Please fill in this form to create an account.
@@ -181,9 +197,10 @@ export const UserSignUpForm = (props: Props) => {
             <GoogleLogin
               onSuccess={(credentialResponse) => {
                 console.log(credentialResponse);
-                
-                dispatch(googleSign(credentialResponse))
-                .then(() => navigate('/'))
+
+                dispatch(googleSign(credentialResponse)).then(() =>
+                  navigate("/")
+                );
               }}
               onError={() => {
                 console.log("Login Failed");

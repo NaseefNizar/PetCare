@@ -80,7 +80,7 @@ const Userhomepage = () => {
                 }}
               />
               <Typography variant="h6" sx={{ paddingTop: "10px" }}>
-                BOOK LAB TEST
+                BOOK VET
               </Typography>
             </Paper>
           </Grid>
@@ -110,7 +110,7 @@ const Userhomepage = () => {
                 }}
               />
               <Typography variant="h6" sx={{ paddingTop: "10px" }}>
-                BOOK SCANS
+                BOOK A GROOMER
               </Typography>
             </Paper>
           </Grid>
@@ -138,7 +138,7 @@ const Userhomepage = () => {
                 }}
               />
               <Typography variant="h6" sx={{ paddingTop: "10px" }}>
-                BOOK LAB TEST
+                ADOPT A PET
               </Typography>
             </Paper>
           </Grid>
@@ -222,8 +222,8 @@ const Userhomepage = () => {
                               fontWeight: "",
                             }}
                           >
-                            Govt.Approved <br />
-                            Diagnostic Centres
+                             <br />
+                            {/* Diagnostic Centres */}
                           </Typography>
                         </Box>
                       </Grid>
@@ -256,9 +256,9 @@ const Userhomepage = () => {
                               fontWeight: "",
                             }}
                           >
-                            Daily Temperature
+                            {/* Daily Temperature */}
                             <br />
-                            Check of all Technicians
+                            {/* Check of all Technicians */}
                           </Typography>
                         </Box>
                       </Grid>
@@ -291,8 +291,9 @@ const Userhomepage = () => {
                               fontWeight: "",
                             }}
                           >
-                            Mandotory use of Mask
-                            <br />& Sanitizers
+                            {/* Mandotory use of Mask */}
+                            <br />
+                            {/* & Sanitizers */}
                           </Typography>
                         </Box>
                       </Grid>
@@ -325,9 +326,9 @@ const Userhomepage = () => {
                               fontWeight: "",
                             }}
                           >
-                            Regular Disinfectation
+                            {/* Regular Disinfectation */}
                             <br />
-                            of Labs
+                            {/* of Labs */}
                           </Typography>
                         </Box>
                       </Grid>
@@ -465,7 +466,7 @@ const Userhomepage = () => {
               >
                 Become a vet
               </Typography>
-              <Typography component={Link} to={'/signup'}
+              <Typography component={Link} to={'/groomer/signup'}
                 variant="body2"
                 sx={{ fontWeight: "bold", fontsize: "14px", color: "#0689FF" }}
               >

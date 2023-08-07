@@ -7,7 +7,7 @@ import {
   MenuItem,
   Box,
   Avatar,
-  Button
+  Button,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useState } from "react";
@@ -23,8 +23,10 @@ export const Navbar = () => {
   };
 
   const handleCloseUserMenu = () => {
-    localStorage.removeItem('user')
     setAnchorElUser(null);
+  };
+  const handleLogout = () => {
+    localStorage.removeItem("user");
   };
 
   return (
@@ -55,46 +57,48 @@ export const Navbar = () => {
         </Stack> */}
 
         <Box sx={{ flexGrow: 0 }}>
-        {localStorage.getItem('user') ? (
-<>
-          <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-            <Avatar alt="Naseef" src="/static/images/avatar/2.jpg" />
-          </IconButton>
-          <Menu
-            sx={{ mt: "45px" }}
-            id="menu-appbar"
-            anchorEl={anchorElUser}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            open={Boolean(anchorElUser)}
-            onClose={handleCloseUserMenu}
-          >
-            {/* {settings.map((setting) => ( */}
-              <MenuItem  onClick={handleCloseUserMenu}>
-                <Typography textAlign="center">Profile</Typography>
-              </MenuItem>
-              <MenuItem  onClick={handleCloseUserMenu}>
-                <Typography textAlign="center">Logout</Typography>
-              </MenuItem>
-            {/* // ))} */}
-          </Menu>
-          </>
-        ) : (
-          <Button
-            component={Link}
-            to="/login"
-            variant="contained"
-            color="secondary"
-          >
-            Login
-          </Button>
+          {localStorage.getItem("user") ? (
+            <>
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar alt="Naseef" src="/static/images/avatar/2.jpg" />
+              </IconButton>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {/* {settings.map((setting) => ( */}
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">Profile</Typography>
+                </MenuItem>
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center" onClick={handleLogout}>
+                    Logout
+                  </Typography>
+                </MenuItem>
+                {/* // ))} */}
+              </Menu>
+            </>
+          ) : (
+            <Button
+              component={Link}
+              to="/login"
+              variant="contained"
+              color="secondary"
+            >
+              Login
+            </Button>
           )}
         </Box>
       </Toolbar>

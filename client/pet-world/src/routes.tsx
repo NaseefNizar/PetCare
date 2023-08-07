@@ -8,6 +8,8 @@ import { AdminAuth } from "./components/AdminLayout/AdminAuth";
 import { UserLoginPage } from "./pages/User/UserLoginPage";
 import { UserAuth } from "./components/User/UserAuth";
 import { SignUpPage } from "./pages/Vet/SignUpPage";
+import { PartnerHomePage } from "./pages/PartnerPage/HomePage";
+// import { AdminDashboard } from "./pages/Admin/AdminDashboard";
 
 export const Router = () => {
   return (
@@ -18,6 +20,9 @@ export const Router = () => {
         <Route path="/login" element={<UserLoginPage />} />
         <Route path="/partner/signup" element={<PartnerSignUpPage />} />
         <Route path="/vet/signup" element={<SignUpPage role='vet' />} />
+        <Route path="/groomer/signup" element={<SignUpPage role='groomer' />} />
+        {/* <Route path="/vet/home" element={<PartnerHomePage />} /> */}
+
         <Route path="/admin/login" element={<AdminLoginPage />} />
         <Route element={<AdminAuth />}>
           <Route path="/admin/home" element={<AdminHomePage />} />

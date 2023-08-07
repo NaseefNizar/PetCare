@@ -1,9 +1,10 @@
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../redux/features/userSlice";
 import { useAppDispatch } from "../../redux/hooks";
+import { useAppSelector } from "../../redux/hooks";
 import {
   Stack,
   TextField,
@@ -15,14 +16,23 @@ import {
   Typography,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
+import { loginVet } from "../../redux/features/vetSlice";
+
+type Props ={
+  role: 'user' |'vet' | 'groomer'
+}
 
 type Credentials = {
   email: string;
   password: string;
 };
 
-export default function UserLoginForm() {
+export default function UserLoginForm(props:Props) {
   const dispatch = useAppDispatch();
+  const [ isUser, setIsUser ] = useState(true)
+  const user = useAppSelector(state => state.user.userData)
+  console.log('kaskdjk',user);
+  
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const form = useForm<Credentials>();
@@ -36,9 +46,13 @@ export default function UserLoginForm() {
   //     dispatch(loginAuth(loginData)).then(() => navigate("/admin/home"));
   //   };
   const onSubmit = (data: Credentials) => {
-    dispatch(loginUser(data))
-    // localStorage.setItem
-    .then(() => navigate('/'))
+    if(isUser){
+      dispatch(loginUser(data))
+     .then(() => navigate('/'))   
+    }else{
+      dispatch(loginVet(data))
+      .then(() => navigate('/vet/home'))
+    }
   };
 
   return (
@@ -53,7 +67,9 @@ export default function UserLoginForm() {
           // margin:"20px auto"
         }}
       >
+        
         <Paper elevation={2} sx={{ width: 500, height: 500 }}>
+      
           <Box
             sx={{
               display: "flex",
@@ -65,6 +81,17 @@ export default function UserLoginForm() {
           >
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
               <Stack spacing={2}>
+                <Stack direction={"row"} spacing={2} 
+                sx={{display:"flex",justifyContent:"space-between"}}> 
+                <Typography>{
+                                isUser ? 'User Login' : 'Partner Login'
+                            }</Typography>
+                <Typography sx={{cursor:"pointer"}}onClick = { () => setIsUser(!isUser)}>{
+                                
+                                isUser ? 'Not a user ?' : 'Are you a partner ?'
+                                
+                            }</Typography> 
+                </Stack>
                 <TextField
                   label="Username"
                   //   value={email}
@@ -141,3 +168,7 @@ export default function UserLoginForm() {
     </>
   );
 }
+
+
+     
+  

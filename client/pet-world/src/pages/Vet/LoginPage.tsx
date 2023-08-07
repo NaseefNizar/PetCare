@@ -1,9 +1,9 @@
 import UserLoginForm from '../../components/User/UserLoginForm'
 
-export const UserLoginPage = () => {
+export const LoginPage = () => {
   return (
     <>
-    <UserLoginForm role='user'/>
+    <UserLoginForm role='vet'/>
     </>
   )
 }

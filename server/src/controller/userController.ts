@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import { NextFunction, Request, Response } from "express";
 import { OAuth2Client,TokenPayload } from "google-auth-library";
 import User from "../model/UserModel.js";
+import Partner from "../model/PartnerModel.js";
 import jwt, { JwtPayload }  from "jsonwebtoken";
 
 // type gdata = 
@@ -103,7 +104,8 @@ export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   console.log(req.body);
   try {
-    const user = await User.findOne({ email,is_admin:0 });
+    const user = await User.findOne({ email,is_admin:0 }) 
+
     if (!user) {
       return res.status(401).json({ message: "Invalid email or password" });
     }

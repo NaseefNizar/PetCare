@@ -26,9 +26,10 @@ const initialState: InitialState = {
 
 export const loginAuth = createAsyncThunk('loginSlice/loginAuth',async(userData:LoginData,{rejectWithValue}) => {
     try {
-        // console.log(userData);
+        console.log(userData);
+        
         const response = await axios.post('/api/admin/login',userData)
-        // console.log(response.data);
+        console.log(response.data);
         return response.data
     }
     catch(error:any){

@@ -16,11 +16,10 @@ const partnerSchema = new mongoose.Schema({
     },
     contactNumber: {
       type: Number,
-      unique: true
+      unique:true
     },
-    is_admin:{
-      type:Number,
-      default:0
+    role:{
+      type:String
     }
   });
 

@@ -1,11 +1,12 @@
-import { Box } from "@mui/material";
+
 import AdminLayout from "../../components/AdminLayout/AdminLayout";
+import { AdminDashboard } from "../../components/AdminLayout/AdminDashboard";
 
 export const AdminHomePage = () => {
   return (
     <div>
       <AdminLayout>
-        <Box></Box>
+        <AdminDashboard />
       </AdminLayout>
     </div>
   );
