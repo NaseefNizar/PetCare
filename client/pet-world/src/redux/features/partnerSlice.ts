@@ -10,9 +10,17 @@ type FormValues = {
     contactNumber:""
 }
 
-const initialState = {
+type InitialState = {
+    loading:boolean,
+    registerStatus: boolean,
+    loginSuccess: null | boolean,
+    userData:{},
+    error: ''
+}
+const initialState: InitialState = {
     loading:false,
     registerStatus: false,
+    loginSuccess: null,
     userData:{},
     error: ''
 }
@@ -31,14 +39,15 @@ export const registerVet = createAsyncThunk('vet/registerVet', async(userData,ro
     }
 })
 
-export const loginVet = createAsyncThunk('vet/loginVet', async(credential) => {
+export const loginVet = createAsyncThunk('vet/loginVet', async(credential,{rejectWithValue}) => {
     try {
         const response = await axios.post('/api/vet/login', credential)
         console.log(response);
         return response.data
     }
     catch(error: any) {
-        console.log(error);
+        console.log(error.response.data.message);
+        return rejectWithValue(error.response.data)
         
     }
 })
@@ -69,9 +78,17 @@ const vetSlice = createSlice({
         .addCase(loginVet.pending, (state, action) => {
             state.loading = true
         })
+        .addCase(loginVet.rejected, (state, action) => {
+            state.loading = false
+            console.log('act',action);
+            state.loginSuccess = false;
+            state.error = action.payload.message
+            
+        })
         .addCase(loginVet.fulfilled, ( state, action) => {
             state.loading = false,  
             state.userData = action.payload.user
+            state.loginSuccess = true
             localStorage.setItem('vet', JSON.stringify(action.payload.user))
             console.log(action.payload.user); 
         })

@@ -8,9 +8,7 @@ type RL = {
 };
 
 const AdminLayout = (props: RL) => {
-  const val = useAppSelector((state) => state);
   const [open, setOpen] = useState(false);
-  console.log(val);
 
   return (
     <>

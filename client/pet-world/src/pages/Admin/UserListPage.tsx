@@ -1,11 +1,11 @@
 import AdminLayout from "../../components/AdminLayout/AdminLayout";
-import { AdminDashboard } from "../../components/AdminLayout/AdminDashboard";
+import UserList from "../../components/AdminLayout/UserList";
 
-export const AdminHomePage = () => {
+export const UserListPage = () => {
   return (
     <div>
       <AdminLayout>
-        <AdminDashboard />
+        <UserList />
       </AdminLayout>
     </div>
   );

@@ -1,37 +1,106 @@
 import bcrypt from "bcrypt";
 import User from "../model/UserModel.js";
 import jwt from "jsonwebtoken";
+import Partner from "../model/PartnerModel.js";
 const jwtSecretKey = process.env.JWT_SECRET_KEY;
 export const login = async (req, res) => {
     try {
-        console.log(req.body);
         const email = req.body.email;
         const password = req.body.password;
         const user = await User.findOne({ email, is_admin: 1 });
-        console.log(user);
         if (user) {
             const passwordMatch = await bcrypt.compare(password, user.password ?? "");
             if (!passwordMatch) {
                 return res.status(401).json({ message: "Invalid email or password" });
             }
             const token = jwt.sign({ userId: user._id }, jwtSecretKey, {
-                expiresIn: "35s",
+                expiresIn: "1d",
             });
-            if (req.cookies[`${user._id}`]) {
-                req.cookies[`${user._id}`] = "";
-            }
+            // if (req.cookies[`${user._id}`]) {
+            //   req.cookies[`${user._id}`] = "";
+            // }
             res.cookie(String(user._id), token, {
                 path: "/",
-                expires: new Date(Date.now() + 1000 * 30),
+                expires: new Date(Date.now() + 1000 * 60 * 60),
                 httpOnly: true,
                 sameSite: "lax",
             });
-            res.status(200).json({ message: "Successfully logged in", user });
+            res.status(200).json({ message: "Successfully logged in", user, token });
         }
     }
     catch (error) {
         console.error("Error during login", error);
         res.status(500).json({ message: "Error during login" });
+    }
+};
+export const verifyToken = (req, res, next) => {
+    const cookies = req.headers.cookie;
+    console.log(cookies);
+    if (!cookies) {
+        return res.status(404).json({ message: "No token found" });
+    }
+    const token = cookies.split("=")[1];
+    // console.log(token);
+    jwt.verify(String(token), jwtSecretKey, (err, user) => {
+        if (err) {
+            return res.status(400).json({ message: "Invalid token" });
+        }
+        // req.id = user.userId;
+    });
+    next();
+};
+export const getUserData = async (req, res) => {
+    try {
+        const userData = await User.find({ is_admin: 0 });
+        res.status(200).json({ userData });
+    }
+    catch (error) {
+        console.error('Error getting user data:', error);
+        res.status(500).json({ message: 'Error getting user data' });
+    }
+};
+export const userAccess = async (req, res) => {
+    try {
+        const { id } = req.body;
+        console.log(id);
+        const user = await User.findOneAndUpdate({ _id: id }, {
+            $set: {
+                is_blocked: true
+            }
+        });
+        const userData = await User.find({ is_admin: 0 });
+        res.status(200).json({ userData });
+    }
+    catch (error) {
+        console.error('Error blocking user:', error);
+        res.status(500).json({ message: 'Error blocking user' });
+    }
+};
+export const getPartnerData = async (req, res) => {
+    try {
+        const partnerData = await Partner.find({});
+        res.status(200).json({ partnerData });
+    }
+    catch (error) {
+        console.error('Error getting user data:', error);
+        res.status(500).json({ message: 'Error getting user data' });
+    }
+};
+export const partnerAccess = async (req, res) => {
+    try {
+        const { id } = req.body;
+        console.log(id);
+        const user = await Partner.findOneAndUpdate({ _id: id }, {
+            $set: {
+                is_blocked: true
+            }
+        });
+        const partnerData = await Partner.find({});
+        res.status(200).json({ partnerData });
+    }
+    catch (error) {
+        console.error('Error blocking partner:', error);
+        res.status(500).json({ message: 'Error blocking partner' });
     }
 };
 //# sourceMappingURL=adminController.js.map

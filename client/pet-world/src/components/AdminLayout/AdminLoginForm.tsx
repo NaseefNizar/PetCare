@@ -2,7 +2,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginAuth } from "../../redux/features/loginSlice";
+import { loginAuth } from "../../redux/features/adminSlice";
 import { useAppDispatch } from "../../redux/hooks";
 import {
   Stack,

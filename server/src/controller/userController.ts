@@ -5,24 +5,7 @@ import User from "../model/UserModel.js";
 import Partner from "../model/PartnerModel.js";
 import jwt, { JwtPayload }  from "jsonwebtoken";
 
-// type gdata = 
-//   {
-//     iss: string,
-//     azp: string,
-//     aud: string,
-//     sub: string,
-//     email: string,
-//     email_verified: boolean,
-//     nbf: number,
-//     name: string,
-//     picture: string,
-//     given_name: string,
-//     family_name: string,
-//     locale: string,
-//     iat: number,
-//     exp: number,
-//     jti: string
-// }
+
 const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
 interface DecodedToken extends JwtPayload {

@@ -18,6 +18,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -77,6 +79,18 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 export default function MiniDrawer({open,children}:AppBarProps) {
   const theme = useTheme();
 
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const navigate = useNavigate()
+
+  const handleClick = (e:React.MouseEvent<HTMLDivElement,MouseEvent>,index:number):void => {
+    setSelectedIndex(index)
+    if(index === 1) {
+      navigate('/admin/users')
+    } else if (index === 2) {
+      navigate('/admin/partner')
+    }
+  }
+
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -94,6 +108,8 @@ export default function MiniDrawer({open,children}:AppBarProps) {
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
                 }}
+                selected={selectedIndex === index}
+                onClick={(e) => handleClick(e,index)}
               >
                 <ListItemIcon
                   sx={{
@@ -110,7 +126,7 @@ export default function MiniDrawer({open,children}:AppBarProps) {
           ))}
         </List>
         <Divider />
-        <List>
+        {/* <List>
           {['All mail', 'Trash', 'Spam'].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
@@ -133,7 +149,7 @@ export default function MiniDrawer({open,children}:AppBarProps) {
               </ListItemButton>
             </ListItem>
           ))}
-        </List>
+        </List> */}
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />

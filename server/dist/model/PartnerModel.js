@@ -19,6 +19,10 @@ const partnerSchema = new mongoose.Schema({
     },
     role: {
         type: String
+    },
+    is_blocked: {
+        type: Boolean,
+        default: false
     }
 });
 const Partner = mongoose.model('Partner', partnerSchema);

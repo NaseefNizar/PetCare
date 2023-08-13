@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "../../utils/axiosInstance";
+import { AxiosError } from "axios";
 
 type FormValues = {
   name: "";
@@ -20,6 +21,7 @@ type UserData = {
 type InitialState = {
   loading: boolean;
   registerStatus: boolean;
+  loginSuccess:boolean | null;
   userData: UserData | null;
   error: String | ''
 }
@@ -27,6 +29,7 @@ type InitialState = {
 const initialState: InitialState = {
   loading: false,
   registerStatus: false,
+  loginSuccess: null,
   userData: null,
   error: "",
 };
@@ -47,7 +50,7 @@ export const registerUser = createAsyncThunk(
 
 export const loginUser = createAsyncThunk(
   "/user/loginUser",
-  async (credential) => {
+  async (credential,{rejectWithValue}) => {
     try {
       // console.log("role",role);
 
@@ -55,7 +58,8 @@ export const loginUser = createAsyncThunk(
       console.log(response);
       return response.data;
     } catch (error: any) {
-      console.log(error);
+      console.log('kskdjk',error);
+      return  rejectWithValue(error.response.data)
     }
   }
 );
@@ -98,8 +102,14 @@ const userSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         (state.loading = false), (state.userData = action.payload.user);
+        state.loginSuccess = true;
         localStorage.setItem("user", JSON.stringify(action.payload.user));
         console.log(action.payload.user);
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        (state.loading = false), 
+        state.loginSuccess = false;        
+        (state.error = action.payload.message || '');
       })
       .addCase(googleSign.fulfilled, (state, action) => {
         console.log("payload", action);

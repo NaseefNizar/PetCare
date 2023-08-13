@@ -1,14 +1,16 @@
 import Footer from "../../components/Footer"
 import { Navbar } from "../../components/Navbar"
-import { UserSignUpForm } from "../../components/UserSignUpForm"
+import { UserProfile } from "../../components/User/UserProfile"
 
-
-export const UserSignUpPage = () => {
+export const UserProfilePage = () => {
   return (
     <>
     <Navbar />
-    <UserSignUpForm role='User' />
+    
+    <UserProfile />
+
     <Footer />
+
     </>
   )
 }

@@ -1,10 +1,11 @@
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../redux/features/userSlice";
 import { useAppDispatch } from "../../redux/hooks";
 import { useAppSelector } from "../../redux/hooks";
+import { ToastContainer, toast } from "react-toastify";
 import {
   Stack,
   TextField,
@@ -16,10 +17,10 @@ import {
   Typography,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { loginVet } from "../../redux/features/vetSlice";
+import { loginVet } from "../../redux/features/partnerSlice";
 
 type Props ={
-  role: 'user' |'vet' | 'groomer'
+  role: 'User' |'Vet' | 'Groomer'
 }
 
 type Credentials = {
@@ -29,9 +30,10 @@ type Credentials = {
 
 export default function UserLoginForm(props:Props) {
   const dispatch = useAppDispatch();
+  const userData = useAppSelector(state => state.user)
+  const partnerData = useAppSelector(state => state.vet)
   const [ isUser, setIsUser ] = useState(true)
   const user = useAppSelector(state => state.user.userData)
-  console.log('kaskdjk',user);
   
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -41,19 +43,28 @@ export default function UserLoginForm(props:Props) {
   const pswd = watch("password");
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  //   const HandleLogin = (e: React.FormEvent<HTMLFormElement>) => {
-  //     e.preventDefault();
-  //     dispatch(loginAuth(loginData)).then(() => navigate("/admin/home"));
-  //   };
+
   const onSubmit = (data: Credentials) => {
     if(isUser){
       dispatch(loginUser(data))
-     .then(() => navigate('/'))   
+    //  .then(() => navigate('/'))   
     }else{
       dispatch(loginVet(data))
-      .then(() => navigate('/vet/home'))
+      // .then(() => navigate('/vet/home'))
     }
   };
+
+  useEffect(() => {
+  userData.loginSuccess === false &&  toast.error(userData.error,{theme:"colored"}) 
+  userData.loginSuccess && navigate('/')
+  }, [userData.loginSuccess])
+
+
+  useEffect(() => {
+    partnerData.loginSuccess === false &&  toast.error(partnerData.error,{theme:"colored"}) 
+  partnerData.loginSuccess && navigate('/vet/home')
+  }, [partnerData.loginSuccess])
+  
 
   return (
     <>
@@ -67,7 +78,7 @@ export default function UserLoginForm(props:Props) {
           // margin:"20px auto"
         }}
       >
-        
+        <ToastContainer />
         <Paper elevation={2} sx={{ width: 500, height: 500 }}>
       
           <Box
@@ -147,7 +158,7 @@ export default function UserLoginForm(props:Props) {
                 >
                   Don't Have an Account ?
                 </Typography>
-                <Typography
+                <Typography onClick={() => navigate('/signup')}
                   sx={{
                     display: "flex",
                     flexDirection: "column",

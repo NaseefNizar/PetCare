@@ -9,7 +9,7 @@ import {
   Avatar,
   Button,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import PetsIcon from "@mui/icons-material/Pets";
 
@@ -17,6 +17,8 @@ export const Navbar = () => {
   const settings = ["Profile", "Logout"];
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+
+  const navigate = useNavigate()
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -27,6 +29,7 @@ export const Navbar = () => {
   };
   const handleLogout = () => {
     localStorage.removeItem("user");
+    navigate('/')
   };
 
   return (
@@ -60,7 +63,7 @@ export const Navbar = () => {
           {localStorage.getItem("user") ? (
             <>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Naseef" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Naseef" src="/" />
               </IconButton>
               <Menu
                 sx={{ mt: "45px" }}
@@ -80,12 +83,13 @@ export const Navbar = () => {
               >
                 {/* {settings.map((setting) => ( */}
                 <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">Profile</Typography>
+                  {/* <Typography component={Link} textAlign="center" to='/user/profile'>Profile</Typography> */}
+                  <Button component={Link} to='/user/profile'>Profile</Button>
                 </MenuItem>
                 <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" onClick={handleLogout}>
+                  <Button  onClick={handleLogout}>
                     Logout
-                  </Typography>
+                  </Button>
                 </MenuItem>
                 {/* // ))} */}
               </Menu>

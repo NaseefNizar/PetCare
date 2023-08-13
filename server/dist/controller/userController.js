@@ -2,24 +2,6 @@ import bcrypt from "bcrypt";
 import { OAuth2Client } from "google-auth-library";
 import User from "../model/UserModel.js";
 import jwt from "jsonwebtoken";
-// type gdata = 
-//   {
-//     iss: string,
-//     azp: string,
-//     aud: string,
-//     sub: string,
-//     email: string,
-//     email_verified: boolean,
-//     nbf: number,
-//     name: string,
-//     picture: string,
-//     given_name: string,
-//     family_name: string,
-//     locale: string,
-//     iat: number,
-//     exp: number,
-//     jti: string
-// }
 const jwtSecretKey = process.env.JWT_SECRET_KEY;
 export const signup = async (req, res) => {
     console.log(req.body);
