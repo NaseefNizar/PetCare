@@ -16,6 +16,7 @@ import Tabs from "@mui/material/Tabs";
 import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
+import { useNavigate } from "react-router-dom";
 
 const lightColor = "rgba(255, 255, 255, 0.7)";
 
@@ -26,6 +27,7 @@ interface HeaderProps {
 export default function Header(props: HeaderProps) {
   const { onDrawerToggle } = props;
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const navigate = useNavigate()
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -36,6 +38,7 @@ export default function Header(props: HeaderProps) {
   };
   const handleLogout = () => {
     localStorage.removeItem("user");
+    navigate('/')
   };
 
   return (

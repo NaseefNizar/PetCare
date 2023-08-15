@@ -30,10 +30,13 @@ import {
   
     const [open, setOpen] = useState(false);
     const [userId, setUserId] = useState('');
+    const [blockStat, setBlockStat] = useState<boolean | null>(null);
+
   
-    const handleClickOpen = (id:string) => {
+    const handleClickOpen = (id:string,block:boolean) => {
       setOpen(true);
       setUserId(id)
+    setBlockStat(block)
     };
   
     const handleClose = () => {
@@ -42,10 +45,10 @@ import {
     };
     const dispatch = useAppDispatch();
   
-    const handleBlock = (partnerId:string) => {
+    const handleBlock = (partnerId:string,is_blocked:boolean | null) => {
       console.log(partnerId);
       setOpen(false);
-      dispatch(blockPartner(partnerId))
+      dispatch(blockPartner({partnerId,is_blocked}))
     }
   
     const columns: GridColDef[] = [
@@ -78,7 +81,7 @@ import {
               variant="contained"
               color="success"
               size="small"
-              onClick={() => handleBlock(rowData._id)}
+              onClick={() => handleClickOpen(rowData._id,false)}
             >
               Unblock
             </Button>
@@ -89,7 +92,7 @@ import {
               size="small"
               // onClick={() => handleBlock(rowData._id)}
               // onClick={handleClickOpen}
-              onClick={() => handleClickOpen(rowData._id)}
+              onClick={() => handleClickOpen(rowData._id,true)}
             >
               Block
             </Button>
@@ -123,7 +126,7 @@ import {
       dispatch(getPartnerData());
     }, []);
     return (
-      <div style={{ height: "80vh", width: "70%" }}>
+      <div style={{ height: "80vh", width: "100%" }}>
         {/* <Button variant="outlined" onClick={handleClickOpen}>
           Open alert dialog
         </Button> */}
@@ -142,7 +145,7 @@ import {
             </DialogContentText> */}
           </DialogContent>
           <DialogActions>
-            <Button variant="contained" color="success" onClick={() => handleBlock(userId)}autoFocus>
+            <Button variant="contained" color="success" onClick={() => handleBlock(userId,blockStat)}autoFocus>
               Yes
             </Button>
             <Button variant="contained" color="error" onClick={handleClose}>Cancel</Button>

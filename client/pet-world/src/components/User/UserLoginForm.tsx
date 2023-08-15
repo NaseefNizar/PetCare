@@ -19,22 +19,22 @@ import {
 import { useForm } from "react-hook-form";
 import { loginVet } from "../../redux/features/partnerSlice";
 
-type Props ={
-  role: 'User' |'Vet' | 'Groomer'
-}
+type Props = {
+  role: "User" | "Vet" | "Groomer";
+};
 
 type Credentials = {
   email: string;
   password: string;
 };
 
-export default function UserLoginForm(props:Props) {
+export default function UserLoginForm(props: Props) {
   const dispatch = useAppDispatch();
-  const userData = useAppSelector(state => state.user)
-  const partnerData = useAppSelector(state => state.vet)
-  const [ isUser, setIsUser ] = useState(true)
-  const user = useAppSelector(state => state.user.userData)
-  
+  const userData = useAppSelector((state) => state.user);
+  const partnerData = useAppSelector((state) => state.vet);
+  const [isUser, setIsUser] = useState(true);
+  const userState = useAppSelector((state) => state.user);
+
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const form = useForm<Credentials>();
@@ -45,26 +45,29 @@ export default function UserLoginForm(props:Props) {
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const onSubmit = (data: Credentials) => {
-    if(isUser){
-      dispatch(loginUser(data))
-    //  .then(() => navigate('/'))   
-    }else{
-      dispatch(loginVet(data))
+    if (isUser) {
+      dispatch(loginUser(data));
+      //  .then(() => navigate('/'))
+    } else {
+      dispatch(loginVet(data));
       // .then(() => navigate('/vet/home'))
     }
   };
 
   useEffect(() => {
-  userData.loginSuccess === false &&  toast.error(userData.error,{theme:"colored"}) 
-  userData.loginSuccess && navigate('/')
-  }, [userData.loginSuccess])
-
+    userData.error && toast.error(userData.error, { theme: "colored" });
+    userData.loginSuccess && navigate("/");
+  }, [userData.loginSuccess, userData.error]);
 
   useEffect(() => {
-    partnerData.loginSuccess === false &&  toast.error(partnerData.error,{theme:"colored"}) 
-  partnerData.loginSuccess && navigate('/vet/home')
-  }, [partnerData.loginSuccess])
-  
+    partnerData.error && toast.error(partnerData.error, { theme: "colored" });
+    partnerData.loginSuccess && navigate("/vet/home");
+  }, [partnerData.loginSuccess, partnerData.error]);
+
+  useEffect(() => {
+    userState.successMessage &&
+      toast.success(userState.successMessage, { theme: "colored" });
+  }, [userState.successMessage]);
 
   return (
     <>
@@ -80,7 +83,6 @@ export default function UserLoginForm(props:Props) {
       >
         <ToastContainer />
         <Paper elevation={2} sx={{ width: 500, height: 500 }}>
-      
           <Box
             sx={{
               display: "flex",
@@ -92,16 +94,20 @@ export default function UserLoginForm(props:Props) {
           >
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
               <Stack spacing={2}>
-                <Stack direction={"row"} spacing={2} 
-                sx={{display:"flex",justifyContent:"space-between"}}> 
-                <Typography>{
-                                isUser ? 'User Login' : 'Partner Login'
-                            }</Typography>
-                <Typography sx={{cursor:"pointer"}}onClick = { () => setIsUser(!isUser)}>{
-                                
-                                isUser ? 'Not a user ?' : 'Are you a partner ?'
-                                
-                            }</Typography> 
+                <Stack
+                  direction={"row"}
+                  spacing={2}
+                  sx={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <Typography>
+                    {isUser ? "User Login" : "Partner Login"}
+                  </Typography>
+                  <Typography
+                    sx={{ cursor: "pointer" }}
+                    onClick={() => setIsUser(!isUser)}
+                  >
+                    {isUser ? "Not a user ?" : "Are you a partner ?"}
+                  </Typography>
                 </Stack>
                 <TextField
                   label="Username"
@@ -149,27 +155,22 @@ export default function UserLoginForm(props:Props) {
                 <Button color="secondary" variant="contained" type="submit">
                   Login
                 </Button>
-                <Typography
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  Don't Have an Account ?
-                </Typography>
-                <Typography onClick={() => navigate('/signup')}
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    fontSize: "14px",
-                    fontWeight: "700",
-                    color: "secondary",
-                    cursor: "pointer",
-                  }}
-                >
-                  SignUp
+                <Stack direction={"row"}>
+                  <Typography
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                    }}
+                  >
+                    Don't Have an Account ?
+                  </Typography>
+                  <Typography component={Link} to="/signup">
+                    SignUp
+                  </Typography>
+                </Stack>
+                <Typography component={Link} to="">
+                  Forgot Password?
                 </Typography>
               </Stack>
             </form>
@@ -179,7 +180,3 @@ export default function UserLoginForm(props:Props) {
     </>
   );
 }
-
-
-     
-  

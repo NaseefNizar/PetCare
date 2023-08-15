@@ -12,6 +12,7 @@ import { PartnerHomePage } from "./pages/PartnerPage/HomePage";
 import { UserProfilePage } from "./pages/User/UserProfilePage";
 import { UserListPage } from "./pages/Admin/UserListPage";
 import { PartnerListPage } from "./pages/Admin/PartnerListPage";
+import { OtpPage } from "./pages/OtpPage";
 // import { AdminDashboard } from "./pages/Admin/AdminDashboard";
 
 export const Router = () => {
@@ -22,12 +23,11 @@ export const Router = () => {
         <Route path="/signup" element={<UserSignUpPage />} />
         <Route path="/login" element={<UserLoginPage />} />
         <Route path="/partner/signup" element={<PartnerSignUpPage />} />
-        <Route path="/vet/signup" element={<SignUpPage role='Vet' />} />
-        <Route path="/groomer/signup" element={<SignUpPage role='Groomer' />} />
+        <Route path="/vet/signup" element={<SignUpPage role="Vet" />} />
+        <Route path="/groomer/signup" element={<SignUpPage role="Groomer" />} />
         <Route path="/vet/home" element={<PartnerHomePage />} />
 
-
-        <Route path="/user/profile" element={<UserProfilePage />}/>
+        <Route path="/otp" element={<OtpPage />} />
 
         <Route path="/admin/login" element={<AdminLoginPage />} />
         <Route element={<AdminAuth />}>
@@ -35,8 +35,9 @@ export const Router = () => {
           <Route path="/admin/users" element={<UserListPage />} />
           <Route path="/admin/partner" element={<PartnerListPage />} />
         </Route>
-        <Route element={<UserAuth />}>
 
+        <Route element={<UserAuth />}>
+          <Route path="/user/profile" element={<UserProfilePage />} />
         </Route>
       </Routes>
     </div>

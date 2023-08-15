@@ -1,19 +1,146 @@
+import { useCallback, useEffect } from "react";
 import {
-  Paper,
   Box,
-  Grid,
-  Stack,
   Button,
-  Avatar,
-  Typography,
-  Divider,
-  CardActions,
   Card,
-  Container,
+  CardActions,
   CardContent,
+  CardHeader,
+  Divider,
   TextField,
+  Stack,
+  Container,
+  Typography,
+  Avatar,
+  Input,
+  Unstable_Grid2 as Grid,
 } from "@mui/material";
-import { AccountProfileDetails } from "./AccountProfileDetails";
+import { useDispatch } from "react-redux";
+import { getData } from "../../redux/features/userSlice";
+
+const states = [
+  {
+    value: "select state",
+    label: "Select",
+  },
+  {
+    value: "andhra-pradesh",
+    label: "Andhra Pradesh",
+  },
+  {
+    value: "arunachal-pradesh",
+    label: "Arunachal Pradesh",
+  },
+  {
+    value: "assam",
+    label: "Assam",
+  },
+  {
+    value: "bihar",
+    label: "Bihar",
+  },
+  {
+    value: "chhattisgarh",
+    label: "Chhattisgarh",
+  },
+  {
+    value: "goa",
+    label: "Goa",
+  },
+  {
+    value: "gujarat",
+    label: "Gujarat",
+  },
+  {
+    value: "haryana",
+    label: "Haryana",
+  },
+  {
+    value: "himachal-pradesh",
+    label: "Himachal Pradesh",
+  },
+  {
+    value: "jharkhand",
+    label: "Jharkhand",
+  },
+  {
+    value: "karnataka",
+    label: "Karnataka",
+  },
+  {
+    value: "kerala",
+    label: "Kerala",
+  },
+  {
+    value: "madhya-pradesh",
+    label: "Madhya Pradesh",
+  },
+  {
+    value: "maharashtra",
+    label: "Maharashtra",
+  },
+  {
+    value: "manipur",
+    label: "Manipur",
+  },
+  {
+    value: "meghalaya",
+    label: "Meghalaya",
+  },
+  {
+    value: "mizoram",
+    label: "Mizoram",
+  },
+  {
+    value: "nagaland",
+    label: "Nagaland",
+  },
+  {
+    value: "odisha",
+    label: "Odisha",
+  },
+  {
+    value: "punjab",
+    label: "Punjab",
+  },
+  {
+    value: "rajasthan",
+    label: "Rajasthan",
+  },
+  {
+    value: "sikkim",
+    label: "Sikkim",
+  },
+  {
+    value: "tamil-nadu",
+    label: "Tamil Nadu",
+  },
+  {
+    value: "telangana",
+    label: "Telangana",
+  },
+  {
+    value: "tripura",
+    label: "Tripura",
+  },
+  {
+    value: "uttar-pradesh",
+    label: "Uttar Pradesh",
+  },
+  {
+    value: "uttarakhand",
+    label: "Uttarakhand",
+  },
+  {
+    value: "west-bengal",
+    label: "West Bengal",
+  },
+];
+
+// Usage example:
+// states.forEach(state => {
+//   console.log(`Value: ${state.value}, Label: ${state.label}`);
+// });
 
 export const UserProfile = () => {
   let user;
@@ -21,39 +148,31 @@ export const UserProfile = () => {
   if (userString !== null) {
     user = JSON.parse(userString);
   }
-  console.log(user);
+
+  const dispatch = useDispatch()
+
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setValues((prevState) => ({
+        ...prevState,
+        [event.target.name]: event.target.value,
+      }));
+    },
+    []
+  );
+
+  const handleSubmit = useCallback(
+    (event: React.ChangeEvent<FormDataEvent>) => {
+      event.preventDefault();
+    },
+    []
+  );
+
+  useEffect(() => {
+    dispatch(getData())
+  },[])
 
   return (
-    // <Box>
-    //   <Card>
-    //     <CardContent>
-    //       <Box
-    //         sx={{
-    //           display: "flex",
-    //           flexDirection: "column",
-    //           justifyContent: "center",
-    //           alignItems: "center",
-    //         }}
-    //       >
-    //         <Stack spacing={2}>
-    //           <Avatar sx={{ width: 130, height: 130 }} />
-    //           <Stack direction={"row"} spacing={2}>
-    //             <Typography variant="h6" fontWeight="bold">
-    //               UserName
-    //             </Typography>
-    //             <Typography variant="h6">{user?.name}</Typography>
-    //           </Stack>
-    //           <Stack direction={"row"} spacing={2}>
-    //             <Typography variant="h6" fontWeight="bold">
-    //               Email
-    //             </Typography>
-    //             <Typography variant="h6">{user?.email}</Typography>
-    //           </Stack>
-    //         </Stack>
-    //       </Box>
-    //     </CardContent>
-    //   </Card>
-    // </Box>
     <Box
       component="main"
       sx={{
@@ -90,10 +209,7 @@ export const UserProfile = () => {
                         {user.name}
                       </Typography>
                       <Typography color="text.secondary" variant="body2">
-                        {user.city} {user.country}
-                      </Typography>
-                      <Typography color="text.secondary" variant="body2">
-                        {user.timezone}
+                        {user.email} {user.country}
                       </Typography>
                     </Box>
                   </CardContent>
@@ -106,8 +222,103 @@ export const UserProfile = () => {
                 </Card>
               </Grid>
               <Grid xs={12} md={6} lg={8}>
-                <AccountProfileDetails />
-                
+                <form
+                  autoComplete="off"
+                  noValidate
+                  //   onSubmit={handleSubmit}
+                >
+                  <Card>
+                    <CardHeader
+                      subheader="The information can be edited"
+                      title="Profile"
+                    />
+                    <CardContent sx={{ pt: 0 }}>
+                      <Box sx={{ m: -1.5 }}>
+                        <Grid container spacing={3}>
+                          <Grid xs={12} md={6}>
+                            <TextField
+                              fullWidth
+                              helperText="Please specify the first name"
+                              label="First name"
+                              name="firstName"
+                              onChange={handleChange}
+                              required
+                              value={user.name}
+                            />
+                            {/* <Input
+        placeholder="Enter text"
+        disableUnderline // This removes the default underline/border
+        fullWidth */}
+                            {/* /> */}
+                          </Grid>
+                          <Grid xs={12} md={6}>
+                            <TextField
+                              fullWidth
+                              label="Last name"
+                              name="lastName"
+                              onChange={handleChange}
+                              required
+                              // value={values.lastName}
+                            />
+                          </Grid>
+                          <Grid xs={12} md={6}>
+                            <TextField
+                              fullWidth
+                              label="Email Address"
+                              name="email"
+                              onChange={handleChange}
+                              required
+                              value={user.email}
+                            />
+                          </Grid>
+                          <Grid xs={12} md={6}>
+                            <TextField
+                              fullWidth
+                              label="Phone Number"
+                              name="phone"
+                              onChange={handleChange}
+                              type="number"
+                              value={user.contactNumber}
+                            />
+                          </Grid>
+                          <Grid xs={12} md={6}>
+                            <TextField
+                              fullWidth
+                              label="Country"
+                              name="country"
+                              onChange={handleChange}
+                              required
+                              // value={values.country}
+                            />
+                          </Grid>
+                          <Grid xs={12} md={6}>
+                            <TextField
+                              fullWidth
+                              label="Select State"
+                              name="state"
+                              onChange={handleChange}
+                              required
+                              select
+                              // defaultValue={'select state'}
+                              SelectProps={{ native: true }}
+                              // value={values.state}
+                            >
+                              {states.map((option) => (
+                                <option key={option.value} value={option.value}>
+                                  {option.label}
+                                </option>
+                              ))}
+                            </TextField>
+                          </Grid>
+                        </Grid>
+                      </Box>
+                    </CardContent>
+                    <Divider />
+                    <CardActions sx={{ justifyContent: "flex-end" }}>
+                      <Button variant="contained">Save details</Button>
+                    </CardActions>
+                  </Card>
+                </form>
               </Grid>
             </Grid>
           </div>

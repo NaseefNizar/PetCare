@@ -10,7 +10,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { GoogleLogin } from "@react-oauth/google";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { googleSign, registerUser } from "../redux/features/userSlice";
+import { googleSign, registerUser, sendOtp, setSignupData } from "../redux/features/userSlice";
 import { registerVet } from "../redux/features/partnerSlice";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -38,27 +38,32 @@ export const UserSignUpForm = (props: Props) => {
   const { register, handleSubmit, formState, watch, reset } = form;
   const { errors, isSubmitSuccessful } = formState;
   const passwordCheck = watch("password", "");
-  console.log("P", passwordCheck);
+  // console.log("P", passwordCheck);
+
+  // const [ signupData, setSignupData ] = useState<FormValues | null>(null)
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const error = useAppSelector((state) => state.user.error);
+  const userState = useAppSelector((state) => state.user);
+  const error = userState.error
+  const otpSendStat = userState.otpSendStat
   const data = useAppSelector((state) => state);
   const signupSuccess = data.user.registerStatus || data.vet.registerStatus;
 
   const { score } = zxcvbn(passwordCheck);
-  console.log("score", score);
+  // console.log("score", score);
   // const strengthColors = ['success', '#ff9900', '#ffff00', '#33cc33', '#00ff00'];
   const strengthColors:string[] = ["error", "error",'secondary',"info", "success"];
   const strengthColor = strengthColors[score];
 
 
-  const onSubmit:SubmitHandler<FormValues> = (data) => {
+  const onSubmit:SubmitHandler<FormValues> = (formData) => {
     if (props.role === "User") {
-      dispatch(registerUser(data));
+      dispatch(setSignupData(formData))
+      dispatch(sendOtp(formData));
     } else if (props.role === "Vet" || "Groomer") {
-      console.log(111);
-      dispatch(registerVet({ ...data, role: props.role }));
+      // console.log(111);
+      dispatch(registerVet({ ...formData, role: props.role }));
     }
   };
 
@@ -67,6 +72,13 @@ export const UserSignUpForm = (props: Props) => {
       reset();
     }
   }, [isSubmitSuccessful]);
+
+  useEffect(() => {
+    if(otpSendStat) {
+      navigate('/otp')
+    }
+    error && toast.error(error, { theme: "colored"})
+  },[otpSendStat,error])
 
   useEffect(() => {
     if (signupSuccess) {
@@ -96,7 +108,7 @@ export const UserSignUpForm = (props: Props) => {
             <Typography >
               Please fill in this form to create an account.
             </Typography>
-            <Typography color={"error"}>{error ? error : ""}</Typography>
+            {/* <Typography color={"error"}>{error ? error : ""}</Typography> */}
           </Stack>
 
           <Grid
@@ -104,7 +116,7 @@ export const UserSignUpForm = (props: Props) => {
             my={4}
             rowSpacing={3}
             columnSpacing={1}
-            direction={"column"}
+            // direction={"column"}
           >
             <Grid item xs={6}>
               <TextField
@@ -143,13 +155,13 @@ export const UserSignUpForm = (props: Props) => {
               <TextField
                 size="small"
                 label="Contact Number"
-                type="email"
+                // type="email"
                 {...register("contactNumber", {
                   required: "Contact number is required",
                   pattern: {
                     value: /^\d{10}$/,
                     message: "Enter valid 10 digit number",
-                  },
+                  }
                 })}
                 error={!!errors.contactNumber}
                 helperText={errors.contactNumber?.message}
@@ -182,6 +194,7 @@ export const UserSignUpForm = (props: Props) => {
                 fullWidth
               ></TextField>
 
+
               {/* <LinearProgress color="success" variant="determinate" value={75} /> */}
               {score > 0 && (
                 <LinearProgress
@@ -190,7 +203,7 @@ export const UserSignUpForm = (props: Props) => {
                   value={(score + 1) * 20}
                   color={strengthColor}
                 />
-              )}
+              ) }
             </Grid>
             <Grid item xs={6}>
               <TextField

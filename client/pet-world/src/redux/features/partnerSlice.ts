@@ -77,6 +77,7 @@ const vetSlice = createSlice({
         })
         .addCase(loginVet.pending, (state, action) => {
             state.loading = true
+            state.error = ''
         })
         .addCase(loginVet.rejected, (state, action) => {
             state.loading = false

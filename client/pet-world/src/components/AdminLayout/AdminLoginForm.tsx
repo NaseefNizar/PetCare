@@ -29,6 +29,8 @@ export default function AdminLoginForm() {
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const HandleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+    console.log(1);
+    
     e.preventDefault();
     dispatch(loginAuth(loginData)).then(() => navigate("/admin/home"));
   };

@@ -8,11 +8,11 @@ import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { blockUser, getUserData } from "../../redux/features/adminSlice";
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 // import { User } from "../../redux/api/types";
 
 interface UserData {
@@ -23,29 +23,28 @@ interface UserData {
   is_blocked: boolean;
 }
 
-
-
 export default function UserList() {
-
   const [open, setOpen] = useState(false);
-  const [userId, setUserId] = useState('');
+  const [userId, setUserId] = useState("");
+  const [blockStat, setBlockStat] = useState<boolean | null>(null);
 
-  const handleClickOpen = (id:string) => {
+  const handleClickOpen = (id: string, block: boolean) => {
     setOpen(true);
-    setUserId(id)
+    setUserId(id);
+    setBlockStat(block);
   };
 
   const handleClose = () => {
     setOpen(false);
-    setUserId('')
+    setUserId("");
   };
   const dispatch = useAppDispatch();
 
-  const handleBlock = (userId:string) => {
-    console.log(userId);
+  const handleBlock = (userId: string, is_blocked: boolean | null) => {
+    // console.log(userId);
     setOpen(false);
-    dispatch(blockUser(userId))
-  }
+    dispatch(blockUser({ userId, is_blocked }));
+  };
 
   const columns: GridColDef[] = [
     { field: "slno", headerName: "Sl.No", width: 50 },
@@ -69,14 +68,15 @@ export default function UserList() {
       disableColumnMenu: true,
       renderCell: (params: GridRenderCellParams) => {
         const rowData: UserData = params.row as UserData;
-        console.log(rowData.is_blocked);
-        
+        // console.log(rowData.is_blocked);
+
         return rowData.is_blocked ? (
           <Button
             variant="contained"
             color="success"
             size="small"
-            onClick={() => handleBlock(rowData._id)}
+            // onClick={() => handleBlock(rowData._id,false)}
+            onClick={() => handleClickOpen(rowData._id, false)}
           >
             Unblock
           </Button>
@@ -87,7 +87,7 @@ export default function UserList() {
             size="small"
             // onClick={() => handleBlock(rowData._id)}
             // onClick={handleClickOpen}
-            onClick={() => handleClickOpen(rowData._id)}
+            onClick={() => handleClickOpen(rowData._id, true)}
           >
             Block
           </Button>
@@ -110,10 +110,11 @@ export default function UserList() {
           View Details
         </Button>
       ),
-      
     },
   ];
   const userData: UserData[] = useAppSelector((state) => state.admin.userList);
+  console.log(userData);
+
   const userDataWithSlno = userData.map((row, index) => {
     return { ...row, slno: index + 1 };
   });
@@ -122,28 +123,30 @@ export default function UserList() {
   }, []);
   return (
     <div style={{ height: "80vh", width: "70%" }}>
-      {/* <Button variant="outlined" onClick={handleClickOpen}>
-        Open alert dialog
-      </Button> */}
       <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {"Are you sure??"}
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Are you sure??"}</DialogTitle>
         <DialogContent>
           {/* <DialogContentText id="alert-dialog-description">
             Are you sure??
           </DialogContentText> */}
         </DialogContent>
         <DialogActions>
-          <Button variant="contained" color="success" onClick={() => handleBlock(userId)}autoFocus>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => handleBlock(userId, blockStat)}
+            autoFocus
+          >
             Yes
           </Button>
-          <Button variant="contained" color="error" onClick={handleClose}>Cancel</Button>
+          <Button variant="contained" color="error" onClick={handleClose}>
+            Cancel
+          </Button>
         </DialogActions>
       </Dialog>
       <DataGrid

@@ -33,6 +33,24 @@ export const login = async (req, res) => {
         res.status(500).json({ message: "Error during login" });
     }
 };
+export const logout = (req, res) => {
+    try {
+        // Clear the user's token by sending an expired token
+        console.log('logout');
+        // res.cookie(String(req.id), "", {
+        //   path: "/",
+        //   expires: new Date(0),
+        //   httpOnly: true,
+        //   sameSite: "lax",
+        // });
+        res.clearCookie(String(req.id));
+        res.status(200).json({ message: "Successfully logged out" });
+    }
+    catch (error) {
+        console.error("Error during logout", error);
+        res.status(500).json({ message: "Error during logout" });
+    }
+};
 export const verifyToken = (req, res, next) => {
     const cookies = req.headers.cookie;
     console.log(cookies);
@@ -40,12 +58,13 @@ export const verifyToken = (req, res, next) => {
         return res.status(404).json({ message: "No token found" });
     }
     const token = cookies.split("=")[1];
-    // console.log(token);
+    console.log(cookies.split("=")[0]);
     jwt.verify(String(token), jwtSecretKey, (err, user) => {
         if (err) {
             return res.status(400).json({ message: "Invalid token" });
         }
-        // req.id = user.userId;
+        console.log(user);
+        req.id = user.userId;
     });
     next();
 };
@@ -61,11 +80,11 @@ export const getUserData = async (req, res) => {
 };
 export const userAccess = async (req, res) => {
     try {
-        const { id } = req.body;
-        console.log(id);
-        const user = await User.findOneAndUpdate({ _id: id }, {
+        const { userId, is_blocked } = req.body;
+        console.log(req.body);
+        const user = await User.findOneAndUpdate({ _id: userId }, {
             $set: {
-                is_blocked: true
+                is_blocked
             }
         });
         const userData = await User.find({ is_admin: 0 });
@@ -88,11 +107,11 @@ export const getPartnerData = async (req, res) => {
 };
 export const partnerAccess = async (req, res) => {
     try {
-        const { id } = req.body;
-        console.log(id);
-        const user = await Partner.findOneAndUpdate({ _id: id }, {
+        const { partnerId, is_blocked } = req.body;
+        console.log(req.body);
+        const user = await Partner.findOneAndUpdate({ _id: partnerId }, {
             $set: {
-                is_blocked: true
+                is_blocked
             }
         });
         const partnerData = await Partner.find({});

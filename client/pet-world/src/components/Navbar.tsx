@@ -12,11 +12,14 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import PetsIcon from "@mui/icons-material/Pets";
+import { useAppDispatch } from "../redux/hooks";
+import { logOut } from "../redux/features/userSlice";
 
 export const Navbar = () => {
   const settings = ["Profile", "Logout"];
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const dispatch = useAppDispatch()
 
   const navigate = useNavigate()
 
@@ -28,8 +31,7 @@ export const Navbar = () => {
     setAnchorElUser(null);
   };
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    navigate('/')
+    dispatch(logOut())
   };
 
   return (
