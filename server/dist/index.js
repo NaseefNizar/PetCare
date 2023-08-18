@@ -6,6 +6,11 @@ import cors from 'cors';
 import userRoute from './route/userRoute.js';
 import adminRoute from './route/adminRoute.js';
 import vetRoute from './route/VetRoute.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const PORT = 8000;
 const MongoDB_Connection_String = process.env.DB_URL;
 async function connectToMongoDB(connectionString) {
@@ -26,6 +31,7 @@ app.use(cookieParser());
 app.use('/api', userRoute);
 app.use('/api/admin', adminRoute);
 app.use('/api/vet', vetRoute);
+app.use(express.static(path.join(__dirname, ('../dist/public'))));
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

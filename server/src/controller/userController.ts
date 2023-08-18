@@ -32,7 +32,7 @@ export const existingUser = async (req: Request, res: Response, next: NextFuncti
 
 export const signup = async (req: Request, res: Response) => {
   console.log('next');
-  const { name, email, password, contactNumber } = req.body;
+  const { firstName, email, password, contactNumber } = req.body;
   try {
     // const existingUser = await User.findOne({ email, contactNumber });
     // if (existingUser) {
@@ -40,7 +40,7 @@ export const signup = async (req: Request, res: Response) => {
     // }
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({
-      name,
+      firstName,
       email,
       password: hashedPassword,
       contactNumber,
@@ -86,6 +86,7 @@ export const googleVerify = async (req: Request, res: Response) => {
       picture: payload?.picture,
     });
     await newUser.save();
+    
     return res
       .status(201)
       .json({ message: "Signup successful", user: newUser });
@@ -139,54 +140,35 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
-// export const verifyToken = (
-//   req: MyCustomRequest,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   const cookies = req.headers.cookie || "";
-//   const token = cookies.split("=")[1];
-//   console.log(cookies);
-//   if (!cookies) {
-//     return res.status(404).json({ message: "No token found" });
-//   }
-//   jwt.verify(
-//     String(token),
-//     jwtSecretKey,
-//     (err: jwt.VerifyErrors | null, user: any) => {
-//       if (err) {
-//         return res.status(400).json({ message: "Invalid token" });
-//       }
-//       req.id = user?.userId;
-//     }
-//   );
-//   next();
-// };
+
 
 export const verifyToken = (req: MyCustomRequest, res: Response, next:NextFunction) => {
   const cookies: string | undefined = req.headers.cookie;
-  console.log(1);
-  console.log(cookies);
+  // console.log(req.body);
+  
+  // console.log(1);
+  // console.log(cookies);
   if (!cookies) {
     return res.status(404).json({ message: "No token found" });
   }
   const token: string = cookies.split("=")[1];
-  console.log(cookies.split("=")[0]);
+  // console.log(cookies.split("=")[0]);
   
   jwt.verify(String(token), jwtSecretKey, (err:any, user:any) => {
     if (err) {
       return res.status(400).json({ message: "Invalid token" });
     }
-    console.log(user);
+    // console.log('jwt',user);
     
     req.id = user.userId;
   });
   next();
 };
 
+
+
 export const logout = (req: MyCustomRequest, res: Response) => {
   try {
-
     res.clearCookie(String(req.id))
     res.status(200).json({ message: "Successfully logged out" });
   } catch (error) {
@@ -196,13 +178,57 @@ export const logout = (req: MyCustomRequest, res: Response) => {
 };
 
 
+
 export const getData = async( req:MyCustomRequest, res:Response ) => {
   try {
-    const userData = await User.find({_id : req.id });
+    const userData = await User.findById({_id : req.id });
+    // console.log(userData);
     res.status(200).json({userData})
-
   } catch (error) {
     console.error('Error getting user data:', error);
     res.status(500).json({ message: 'Error getting user data' });
   }
 } 
+
+export const updateUser = async( req: MyCustomRequest, res:Response ) => {
+  try{
+    console.log('update',req.body);
+    console.log('id',req.id);
+    
+    const { firstName, lastName, contactNumber, email } = req.body
+    const userData = await User.findByIdAndUpdate(req.id,{$set:{
+      firstName,
+      lastName,
+      email,
+      contactNumber
+    }})
+    res.status(200).json({message:"Updated successfully"})
+  }
+  catch ( error ) {
+    res.status(500).json({ message: 'Error updating user data' });
+  }
+}
+
+
+
+export const updateProfilePic = async( req: MyCustomRequest, res:Response ) => {
+  try {
+    console.log('files',req.file);
+    
+    if(req.file){
+    const imagePath = req.file.filename;
+    const userData = await User.findByIdAndUpdate(req.id,{$set:{
+      picture: `http://localhost:8000/users/${imagePath}`
+    }})
+
+  res.status(200).json({message:"Updated successfully"})
+    }
+}catch ( error ) {
+  res.status(500).json({ message: 'Error updating user data' });
+}
+}
+
+
+
+
+

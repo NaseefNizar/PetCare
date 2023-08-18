@@ -2,6 +2,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import otplogo from "../assets/Secure Privacy.png";
 import { useRef, useEffect, useState } from "react";
 import { OtpInput } from "./OtpInput";
+import { Dispatch } from "@reduxjs/toolkit";
 import {
   Stack,
   Paper,
@@ -14,6 +15,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { registerUser, sendOtp } from "../redux/features/userSlice";
 import { useNavigate } from "react-router-dom";
+import { registerPartner, sendOtpPartner } from "../redux/features/partnerSlice";
 
 type Otp = {
   otp: string;
@@ -25,29 +27,49 @@ export const Otp = () => {
   const dispatch = useAppDispatch();
   const userState = useAppSelector((state) => state.user);
   const error = userState.error;
-  const signupData = userState.signupData;
+  const signupDataUser = userState.signupData;
   const registerStatus = userState.registerStatus;
+
+  const partnerState = useAppSelector((state) => state.vet);
+  const errorPartner = partnerState.error;
+  const signupDataPartner = partnerState.signupData;
+  const registerStatusPartner = partnerState.registerStatus;
+
+  // console.log('signupdatapartner',signupDataPartner);
+  
+
   const { register, handleSubmit, formState } = form;
   const { errors } = formState;
   const [showButton, setShowButton] = useState(false);
   const [timer, setTimer] = useState(0);
 
   const onSubmit: SubmitHandler<Otp> = (otp) => {
-    console.log({ ...signupData, ...otp });
-
-    dispatch(registerUser({ ...signupData, ...otp }));
+if(signupDataUser) {
+    dispatch(registerUser({ ...signupDataUser, ...otp }));
+} else if (signupDataPartner) {
+    dispatch(registerPartner({ ...signupDataPartner, ...otp }))
+}
   };
 
   const handleClick = () => {
     setTimer(0);
     setShowButton(false);
-    dispatch(sendOtp(signupData));
+    if(signupDataUser) {
+      dispatch(sendOtpPartner(signupDataUser))
+    } else if(signupDataPartner){
+
+      dispatch(sendOtp(signupDataPartner));
+    }
   };
 
   useEffect(() => {
     registerStatus && navigate("/login");
     error && toast.error(error, { theme: "colored" });
   }, [registerStatus, error]);
+  useEffect(() => {
+    registerStatusPartner && navigate("/login");
+    errorPartner && toast.error(error, { theme: "colored" });
+  }, [registerStatusPartner, errorPartner]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {

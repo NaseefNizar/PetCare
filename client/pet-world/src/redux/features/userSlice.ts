@@ -4,20 +4,36 @@ import { AxiosError } from "axios";
 import { getUserData } from "./adminSlice";
 
 type FormValues = {
-  name: "";
-  email: "";
-  password: "";
-  confirmPassword: "";
-  contactNumber: "";
+  firstName: string;
+  lastName?: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  contactNumber: string;
 };
 
 type UserData = {
-  name: string;
+  firstName: string;
+  lastName?: string;
   email: string;
   password: string;
+  contactNumber:string;
+  picture?: string;
+  address?: string;
   role: string;
   _id: string;
   __v: number;
+};
+const InitialUserData:UserData = {
+  firstName:"",
+  lastName:"",
+  email:"",
+  password:"",
+  contactNumber: "",
+  picture: "",
+  role: "",
+  _id: "",
+  __v: 0
 };
 type InitialState = {
   loading: boolean;
@@ -43,7 +59,7 @@ const initialState: InitialState = {
 
 export const sendOtp = createAsyncThunk("user/sendOtp", async (userData) => {
   try {
-    console.log(userData);
+    console.log('otp',userData);
 
     const response = await axios.post("/api/sendotp", userData);
     console.log(response);
@@ -89,6 +105,30 @@ export const logOut = createAsyncThunk("/user/logout", async () => {
   }
 });
 
+
+export const updateUser = createAsyncThunk("/user/updateuser", async(updatedData,{rejectWithValue}) => {
+  try{
+    const response = await axios.patch('/api/updateuser',updatedData)
+    return response.data
+  } catch (error:any) {
+    console.log(error.response.data); 
+    return rejectWithValue(error.response.data);
+  }
+})
+export const updateProfilePic = createAsyncThunk("/user/updateprofilepic", async(image: FormData,{rejectWithValue}) => {
+  try{
+    console.log("image",image);
+    
+    const response = await axios.patch('/api/updateprofilepic',image, {headers: {
+      "Content-Type": "multipart/form-data",
+    }})
+    return response.data
+  } catch (error:any) {
+    console.log(error.response.data); 
+    return rejectWithValue(error.response.data);
+  }
+})
+
 export const googleSign = createAsyncThunk(
   "/user/googlesign",
   async (credentialResponse) => {
@@ -112,7 +152,7 @@ export const getData = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get("/api/getuserdata");
-      console.log(response.data);
+      console.log('axios',response.data);
       return response.data;
     } catch (error: any) {
       console.log(error.response.data);
@@ -198,7 +238,35 @@ const userSlice = createSlice({
       .addCase(getData.fulfilled, (state, action )=> {
         state.loading = false
         state.userData = action.payload.userData
-        console.log('gotdata',action.payload.userData);
+        console.log('gotdata',action.payload);
+        
+      })
+      .addCase(updateUser.pending, (state, action )=> {
+        state.loading = true
+        state.successMessage = ""
+      })
+      .addCase(updateUser.rejected, (state, action )=> {
+        state.loading = false
+        state.error = action.error.message || ''
+      })
+      .addCase(updateUser.fulfilled, (state, action )=> {
+        state.loading = false
+        state.successMessage = action.payload.message
+        console.log('gotdata',action.payload);
+        
+      })
+      .addCase(updateProfilePic.pending, (state, action )=> {
+        state.loading = true
+        state.successMessage = ""
+      })
+      .addCase(updateProfilePic.rejected, (state, action )=> {
+        state.loading = false
+        state.error = action.error.message || ''
+      })
+      .addCase(updateProfilePic.fulfilled, (state, action )=> {
+        state.loading = false
+        state.successMessage = action.payload.message
+        console.log('gotdata',action.payload);
         
       })
   },

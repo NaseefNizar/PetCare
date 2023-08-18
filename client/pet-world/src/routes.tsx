@@ -13,19 +13,19 @@ import { UserProfilePage } from "./pages/User/UserProfilePage";
 import { UserListPage } from "./pages/Admin/UserListPage";
 import { PartnerListPage } from "./pages/Admin/PartnerListPage";
 import { OtpPage } from "./pages/OtpPage";
+import { PartnerAuth } from "./components/PartnerLayout/PartnerAuth";
 // import { AdminDashboard } from "./pages/Admin/AdminDashboard";
 
 export const Router = () => {
   return (
     <div>
       <Routes>
+        
         <Route path="/" element={<HomePage />} />
         <Route path="/signup" element={<UserSignUpPage />} />
         <Route path="/login" element={<UserLoginPage />} />
-        <Route path="/partner/signup" element={<PartnerSignUpPage />} />
         <Route path="/vet/signup" element={<SignUpPage role="Vet" />} />
         <Route path="/groomer/signup" element={<SignUpPage role="Groomer" />} />
-        <Route path="/vet/home" element={<PartnerHomePage />} />
 
         <Route path="/otp" element={<OtpPage />} />
 
@@ -39,6 +39,13 @@ export const Router = () => {
         <Route element={<UserAuth />}>
           <Route path="/user/profile" element={<UserProfilePage />} />
         </Route>
+
+        <Route path="/partner/signup" element={<PartnerSignUpPage />} />
+
+        <Route element={<PartnerAuth />}>
+          <Route path="/vet/home" element={<PartnerHomePage />} />
+        </Route>
+
       </Routes>
     </div>
   );

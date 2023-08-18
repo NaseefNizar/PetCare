@@ -1,9 +1,12 @@
 import mongoose from "mongoose";
 
 const partnerSchema = new mongoose.Schema({
-    name: {
+    firstName: {
       type: String,
       required: true,
+    },
+    lastName: {
+      type: String,
     },
     email: {
       type: String,

@@ -34,6 +34,14 @@ export const Navbar = () => {
     dispatch(logOut())
   };
 
+  const data = localStorage.getItem('user')
+  let user
+  if(data) {
+    user = JSON.parse(data)
+    console.log("navbar", user);
+    
+  }
+
   return (
     <AppBar position="static" color="transparent">
       <Toolbar>
@@ -65,7 +73,7 @@ export const Navbar = () => {
           {localStorage.getItem("user") ? (
             <>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Naseef" src="/" />
+                <Avatar alt={user.name} src={user.picture} />
               </IconButton>
               <Menu
                 sx={{ mt: "45px" }}

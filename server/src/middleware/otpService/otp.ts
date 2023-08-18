@@ -58,6 +58,6 @@ export const verifyOTP = async (
       res.status(409).json({ message: "Invalid OTP" });
     }
   } catch (error) {
-    res.status(400).json({ message: "Invaid OTP" });
+    res.status(400).json({ message: "Invalid OTP" });
   }
 };

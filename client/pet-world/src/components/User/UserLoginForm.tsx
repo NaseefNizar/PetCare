@@ -17,7 +17,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { loginVet } from "../../redux/features/partnerSlice";
+import { loginPartner } from "../../redux/features/partnerSlice";
 
 type Props = {
   role: "User" | "Vet" | "Groomer";
@@ -31,9 +31,10 @@ type Credentials = {
 export default function UserLoginForm(props: Props) {
   const dispatch = useAppDispatch();
   const userData = useAppSelector((state) => state.user);
-  const partnerData = useAppSelector((state) => state.vet);
+  // const partnerData = useAppSelector((state) => state.vet);
   const [isUser, setIsUser] = useState(true);
   const userState = useAppSelector((state) => state.user);
+  const partnerState = useAppSelector((state) => state.vet);
 
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -49,7 +50,7 @@ export default function UserLoginForm(props: Props) {
       dispatch(loginUser(data));
       //  .then(() => navigate('/'))
     } else {
-      dispatch(loginVet(data));
+      dispatch(loginPartner(data));
       // .then(() => navigate('/vet/home'))
     }
   };
@@ -60,14 +61,18 @@ export default function UserLoginForm(props: Props) {
   }, [userData.loginSuccess, userData.error]);
 
   useEffect(() => {
-    partnerData.error && toast.error(partnerData.error, { theme: "colored" });
-    partnerData.loginSuccess && navigate("/vet/home");
-  }, [partnerData.loginSuccess, partnerData.error]);
+    partnerState.error && toast.error(partnerState.error, { theme: "colored" });
+    partnerState.loginSuccess && navigate("/vet/home");
+  }, [partnerState.loginSuccess, partnerState.error]);
 
   useEffect(() => {
     userState.successMessage &&
       toast.success(userState.successMessage, { theme: "colored" });
   }, [userState.successMessage]);
+  useEffect(() => {
+    partnerState.registerStatus &&
+      toast.success('Sign up successfull', { theme: "colored" });
+  }, [partnerState.registerStatus]);
 
   return (
     <>
@@ -106,7 +111,7 @@ export default function UserLoginForm(props: Props) {
                     sx={{ cursor: "pointer" }}
                     onClick={() => setIsUser(!isUser)}
                   >
-                    {isUser ? "Not a user ?" : "Are you a partner ?"}
+                    {isUser ? "Not a user ?" : "Not a partner ?"}
                   </Typography>
                 </Stack>
                 <TextField

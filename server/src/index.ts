@@ -1,4 +1,4 @@
-import express, { NextFunction, Request, Response } from 'express'
+import express from 'express'
 import 'dotenv/config';
 import cookieParser from "cookie-parser";
 import mongoose from 'mongoose';
@@ -6,7 +6,12 @@ import cors from 'cors'
 import userRoute from './route/userRoute.js';
 import adminRoute from './route/adminRoute.js';
 import vetRoute from './route/VetRoute.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const PORT = 8000;
 const MongoDB_Connection_String: string = process.env.DB_URL
 
@@ -30,6 +35,10 @@ app.use(cookieParser());
 app.use('/api', userRoute)
 app.use('/api/admin',adminRoute)
 app.use('/api/vet',vetRoute)
+
+
+app.use(express.static(path.join(__dirname,('../dist/public'))));
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

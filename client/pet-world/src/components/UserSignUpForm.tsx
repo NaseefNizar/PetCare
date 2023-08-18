@@ -11,7 +11,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { googleSign, registerUser, sendOtp, setSignupData } from "../redux/features/userSlice";
-import { registerVet } from "../redux/features/partnerSlice";
+import { registerPartner,sendOtpPartner,setSignupDataPartner } from "../redux/features/partnerSlice";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -19,7 +19,7 @@ import zxcvbn from "zxcvbn";
 import "react-toastify/dist/ReactToastify.css";
 
 type FormValues = {
-  name: string;
+  firstName: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -44,9 +44,16 @@ export const UserSignUpForm = (props: Props) => {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
   const userState = useAppSelector((state) => state.user);
   const error = userState.error
   const otpSendStat = userState.otpSendStat
+
+  const partnerState = useAppSelector((state) => state.vet);
+  const errorPartner = partnerState.error
+  const otpSendStatPartner = partnerState.otpSendStat
+
+
   const data = useAppSelector((state) => state);
   const signupSuccess = data.user.registerStatus || data.vet.registerStatus;
 
@@ -62,8 +69,9 @@ export const UserSignUpForm = (props: Props) => {
       dispatch(setSignupData(formData))
       dispatch(sendOtp(formData));
     } else if (props.role === "Vet" || "Groomer") {
-      // console.log(111);
-      dispatch(registerVet({ ...formData, role: props.role }));
+      console.log(111);
+      dispatch(setSignupDataPartner({...formData,role:props.role}))
+      dispatch(sendOtpPartner({ ...formData, role: props.role }));
     }
   };
 
@@ -79,6 +87,13 @@ export const UserSignUpForm = (props: Props) => {
     }
     error && toast.error(error, { theme: "colored"})
   },[otpSendStat,error])
+
+  useEffect(() => {
+    if(otpSendStatPartner) {
+      navigate('/otp')
+    }
+    error && toast.error(error, { theme: "colored"})
+  },[otpSendStatPartner,errorPartner])
 
   useEffect(() => {
     if (signupSuccess) {
@@ -121,14 +136,14 @@ export const UserSignUpForm = (props: Props) => {
             <Grid item xs={6}>
               <TextField
                 size="small"
-                label="Name"
+                label="FirstName"
                 type="name"
-                placeholder="Please enter your full name"
-                {...register("name", {
+                placeholder="Please enter your name"
+                {...register("firstName", {
                   required: "Username is required",
                 })}
-                error={!!errors.name}
-                helperText={errors.name?.message}
+                error={!!errors.firstName}
+                helperText={errors.firstName?.message}
                 fullWidth
               ></TextField>
             </Grid>

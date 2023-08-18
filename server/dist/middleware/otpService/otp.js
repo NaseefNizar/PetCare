@@ -41,7 +41,7 @@ export const verifyOTP = async (req, res, next) => {
         }
     }
     catch (error) {
-        res.status(400).json({ message: "Invaid OTP" });
+        res.status(400).json({ message: "Invalid OTP" });
     }
 };
 //# sourceMappingURL=otp.js.map
