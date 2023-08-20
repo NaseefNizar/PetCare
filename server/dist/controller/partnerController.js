@@ -16,10 +16,6 @@ export const signup = async (req, res) => {
     console.log(req.body);
     const { firstName, email, password, contactNumber, role } = req.body;
     try {
-        // const existingUser = await Partner.findOne({ email });
-        // if (existingUser) {
-        //   return res.status(409).json({ message: "User already exists!! Login" });
-        // }
         const hashedPassword = await bcrypt.hash(password, 10);
         const newPartner = new Partner({
             firstName,
@@ -68,7 +64,7 @@ export const login = async (req, res) => {
         res.status(500).json({ message: "Error during login" });
     }
 };
-export const logout = (req, res) => {
+export const logout = async (req, res) => {
     try {
         res.clearCookie(String(req.id));
         res.status(200).json({ message: "Successfully logged out" });
@@ -80,14 +76,11 @@ export const logout = (req, res) => {
 };
 export const verifyToken = (req, res, next) => {
     const cookies = req.headers.cookie;
-    // console.log(req.body);
-    // console.log(1);
-    // console.log(cookies);
+    console.log('hdjjh', req.cookies);
     if (!cookies) {
         return res.status(404).json({ message: "No token found" });
     }
     const token = cookies.split("=")[1];
-    // console.log(cookies.split("=")[0]);
     jwt.verify(String(token), jwtSecretKey, (err, user) => {
         if (err) {
             return res.status(400).json({ message: "Invalid token" });
@@ -96,5 +89,50 @@ export const verifyToken = (req, res, next) => {
         req.id = user.userId;
     });
     next();
+};
+export const getPartnerData = async (req, res) => {
+    try {
+        const partnerData = await Partner.findById({ _id: req.id });
+        res.status(200).json({ partnerData });
+    }
+    catch (error) {
+        res.status(500).json({ message: "Error getting data" });
+    }
+};
+export const updatePartner = async (req, res) => {
+    try {
+        console.log("update", req.body);
+        console.log("id", req.id);
+        const { firstName, lastName, contactNumber, email } = req.body;
+        const userData = await Partner.findByIdAndUpdate(req.id, {
+            $set: {
+                firstName,
+                lastName,
+                email,
+                contactNumber,
+            },
+        });
+        res.status(200).json({ message: "Updated successfully" });
+    }
+    catch (error) {
+        res.status(500).json({ message: "Error updating user data" });
+    }
+};
+export const updatePartnerProfilePic = async (req, res) => {
+    try {
+        console.log("files", req.file);
+        if (req.file) {
+            const imagePath = req.file.filename;
+            const userData = await Partner.findByIdAndUpdate(req.id, {
+                $set: {
+                    picture: `http://localhost:8000/users/${imagePath}`,
+                },
+            });
+            res.status(200).json({ message: "Updated successfully" });
+        }
+    }
+    catch (error) {
+        res.status(500).json({ message: "Error updating user data" });
+    }
 };
 //# sourceMappingURL=partnerController.js.map

@@ -12,7 +12,7 @@ import {
 
 type UserDetails = {
   firstName: string;
-  lastName: string;
+  lastName?: string;
   email: string;
   password: string;
   contactNumber: string;

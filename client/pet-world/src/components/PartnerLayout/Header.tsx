@@ -37,7 +37,7 @@ export default function Header(props: HeaderProps) {
     setAnchorElUser(null);
   };
   const handleLogout = () => {
-    localStorage.removeItem("user");
+    localStorage.removeItem("partner");
     navigate('/')
   };
 

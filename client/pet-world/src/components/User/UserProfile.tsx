@@ -169,10 +169,10 @@ export const UserProfile = () => {
   console.log('hdgfhsgdh',userData?.picture);
   
   console.log("profile", userData);
-  const serverBaseURI = 'http://localhost:8000/images' 
+  // const serverBaseURI = 'http://localhost:8000/images' 
 
 
-  const [userDetails, setUserDetails] = useState<UserData | null>(userData);
+  // const [userDetails, setUserDetails] = useState<UserData | null>(userData);
 
   const handleUpdate = (updatedDetails: UserData) => {
     // setUserDetails(updatedDetails);
@@ -180,13 +180,13 @@ export const UserProfile = () => {
     dispatch(updateUser(updatedDetails));
   };
 
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  // const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const handleFileChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       console.log(e.target.files);
       
-    setSelectedFile(e.target.files[0]);
+    // setSelectedFile(e.target.files[0]);
     const formData = new FormData();
     formData.append('image', e.target.files[0]) 
     console.log("ff",formData.get('image'));

@@ -14,7 +14,7 @@ export const existingUser = async (req, res, next) => {
     next();
 };
 export const signup = async (req, res) => {
-    console.log('next');
+    console.log("next");
     const { firstName, email, password, contactNumber } = req.body;
     try {
         // const existingUser = await User.findOne({ email, contactNumber });
@@ -53,20 +53,19 @@ export const googleVerify = async (req, res) => {
         console.log(payload);
         // res.json({payload})
         const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            console.log(12121);
-            console.log(existingUser);
-            return res.status(200).json({ message: "success", user: existingUser });
+        if (!existingUser) {
+            // console.log(12121);
+            // console.log(existingUser);
+            // return res.status(200).json({ message: "success", user: existingUser });
+            const newUser = new User({
+                firstName: payload?.name,
+                email: payload?.email,
+                picture: payload?.picture,
+            });
+            await newUser.save();
+            return res.status(201).json({ message: "Signup successful", user: newUser });
         }
-        const newUser = new User({
-            name: payload?.name,
-            email: payload?.email,
-            picture: payload?.picture,
-        });
-        await newUser.save();
-        return res
-            .status(201)
-            .json({ message: "Signup successful", user: newUser });
+        return res.status(201).json({ message: "Signup successful", user: existingUser });
     }
     catch (error) {
         console.error("Error during signup", error);
@@ -145,40 +144,44 @@ export const getData = async (req, res) => {
         res.status(200).json({ userData });
     }
     catch (error) {
-        console.error('Error getting user data:', error);
-        res.status(500).json({ message: 'Error getting user data' });
+        console.error("Error getting user data:", error);
+        res.status(500).json({ message: "Error getting user data" });
     }
 };
 export const updateUser = async (req, res) => {
     try {
-        console.log('update', req.body);
-        console.log('id', req.id);
+        console.log("update", req.body);
+        console.log("id", req.id);
         const { firstName, lastName, contactNumber, email } = req.body;
-        const userData = await User.findByIdAndUpdate(req.id, { $set: {
+        const userData = await User.findByIdAndUpdate(req.id, {
+            $set: {
                 firstName,
                 lastName,
                 email,
-                contactNumber
-            } });
+                contactNumber,
+            },
+        });
         res.status(200).json({ message: "Updated successfully" });
     }
     catch (error) {
-        res.status(500).json({ message: 'Error updating user data' });
+        res.status(500).json({ message: "Error updating user data" });
     }
 };
 export const updateProfilePic = async (req, res) => {
     try {
-        console.log('files', req.file);
+        console.log("files", req.file);
         if (req.file) {
             const imagePath = req.file.filename;
-            const userData = await User.findByIdAndUpdate(req.id, { $set: {
-                    picture: `http://localhost:8000/users/${imagePath}`
-                } });
+            const userData = await User.findByIdAndUpdate(req.id, {
+                $set: {
+                    picture: `http://localhost:8000/users/${imagePath}`,
+                },
+            });
             res.status(200).json({ message: "Updated successfully" });
         }
     }
     catch (error) {
-        res.status(500).json({ message: 'Error updating user data' });
+        res.status(500).json({ message: "Error updating user data" });
     }
 };
 //# sourceMappingURL=userController.js.map

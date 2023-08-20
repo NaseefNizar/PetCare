@@ -24,7 +24,14 @@ const partnerSchema = new mongoose.Schema({
     role:{
       type:String
     },
+    picture: {
+      type: String
+    },
     is_blocked:{
+      type:Boolean,
+      default:false
+    },
+    is_verified:{
       type:Boolean,
       default:false
     }

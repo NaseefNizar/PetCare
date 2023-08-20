@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import cors from 'cors'
 import userRoute from './route/userRoute.js';
 import adminRoute from './route/adminRoute.js';
-import vetRoute from './route/VetRoute.js';
+import partnerRoute from './route/partnerRoute.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -34,7 +34,7 @@ app.use(cookieParser());
 
 app.use('/api', userRoute)
 app.use('/api/admin',adminRoute)
-app.use('/api/vet',vetRoute)
+app.use('/api/partner',partnerRoute)
 
 
 app.use(express.static(path.join(__dirname,('../dist/public'))));

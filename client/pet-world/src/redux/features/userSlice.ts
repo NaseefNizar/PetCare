@@ -49,7 +49,7 @@ type InitialState = {
 const initialState: InitialState = {
   loading: false,
   registerStatus: false,
-  loginSuccess: null,
+  loginSuccess: false,
   userData: null,
   signupData: null,
   otpSendStat: false,
@@ -87,7 +87,7 @@ export const loginUser = createAsyncThunk(
   async (credential, { rejectWithValue }) => {
     try {
       const response = await axios.post("/api/login", credential);
-      console.log(response);
+      console.log("login",response);
       return response.data;
     } catch (error: any) {
       console.log("kskdjk", error);
@@ -267,7 +267,6 @@ const userSlice = createSlice({
         state.loading = false
         state.successMessage = action.payload.message
         console.log('gotdata',action.payload);
-        
       })
   },
 });

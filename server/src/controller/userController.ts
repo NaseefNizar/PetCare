@@ -16,9 +16,12 @@ interface MyCustomRequest extends Request {
   id?: string;
 }
 
-export const existingUser = async (req: Request, res: Response, next: NextFunction) => {
-  
-  const { email , contactNumber } = req.body
+export const existingUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { email, contactNumber } = req.body;
   const existingUser = await User.findOne({
     $or: [{ email }, { contactNumber }],
   });
@@ -26,12 +29,11 @@ export const existingUser = async (req: Request, res: Response, next: NextFuncti
   if (existingUser) {
     return res.status(409).json({ message: "User already exists" });
   }
-  next()
+  next();
 };
 
-
 export const signup = async (req: Request, res: Response) => {
-  console.log('next');
+  console.log("next");
   const { firstName, email, password, contactNumber } = req.body;
   try {
     // const existingUser = await User.findOne({ email, contactNumber });
@@ -74,22 +76,20 @@ export const googleVerify = async (req: Request, res: Response) => {
 
     const existingUser = await User.findOne({ email });
 
-    if (existingUser) {
-      console.log(12121);
-      console.log(existingUser);
-      return res.status(200).json({ message: "success", user: existingUser });
+    if (!existingUser) {
+      // console.log(12121);
+      // console.log(existingUser);
+      // return res.status(200).json({ message: "success", user: existingUser });
+      const newUser = new User({
+        firstName: payload?.name,
+        email: payload?.email,
+        picture: payload?.picture,
+      });
+      await newUser.save();
+      return res.status(201).json({ message: "Signup successful", user: newUser });
     }
+    return res.status(201).json({ message: "Signup successful", user: existingUser });
 
-    const newUser = new User({
-      name: payload?.name,
-      email: payload?.email,
-      picture: payload?.picture,
-    });
-    await newUser.save();
-    
-    return res
-      .status(201)
-      .json({ message: "Signup successful", user: newUser });
   } catch (error) {
     console.error("Error during signup", error);
     res.status(500).json({ message: "Error during signup" });
@@ -128,7 +128,7 @@ export const login = async (req: Request, res: Response) => {
 
     res.cookie(String(user._id), token, {
       path: "/",
-      expires: new Date(Date.now() + 1000 * 60 *60),
+      expires: new Date(Date.now() + 1000 * 60 * 60),
       httpOnly: true,
       sameSite: "lax",
     });
@@ -140,12 +140,14 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
-
-
-export const verifyToken = (req: MyCustomRequest, res: Response, next:NextFunction) => {
+export const verifyToken = (
+  req: MyCustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   const cookies: string | undefined = req.headers.cookie;
   // console.log(req.body);
-  
+
   // console.log(1);
   // console.log(cookies);
   if (!cookies) {
@@ -153,23 +155,21 @@ export const verifyToken = (req: MyCustomRequest, res: Response, next:NextFuncti
   }
   const token: string = cookies.split("=")[1];
   // console.log(cookies.split("=")[0]);
-  
-  jwt.verify(String(token), jwtSecretKey, (err:any, user:any) => {
+
+  jwt.verify(String(token), jwtSecretKey, (err: any, user: any) => {
     if (err) {
       return res.status(400).json({ message: "Invalid token" });
     }
     // console.log('jwt',user);
-    
+
     req.id = user.userId;
   });
   next();
 };
 
-
-
 export const logout = (req: MyCustomRequest, res: Response) => {
   try {
-    res.clearCookie(String(req.id))
+    res.clearCookie(String(req.id));
     res.status(200).json({ message: "Successfully logged out" });
   } catch (error) {
     console.error("Error during logout", error);
@@ -177,58 +177,52 @@ export const logout = (req: MyCustomRequest, res: Response) => {
   }
 };
 
-
-
-export const getData = async( req:MyCustomRequest, res:Response ) => {
+export const getData = async (req: MyCustomRequest, res: Response) => {
   try {
-    const userData = await User.findById({_id : req.id });
+    const userData = await User.findById({ _id: req.id });
     // console.log(userData);
-    res.status(200).json({userData})
+    res.status(200).json({ userData });
   } catch (error) {
-    console.error('Error getting user data:', error);
-    res.status(500).json({ message: 'Error getting user data' });
+    console.error("Error getting user data:", error);
+    res.status(500).json({ message: "Error getting user data" });
   }
-} 
+};
 
-export const updateUser = async( req: MyCustomRequest, res:Response ) => {
-  try{
-    console.log('update',req.body);
-    console.log('id',req.id);
-    
-    const { firstName, lastName, contactNumber, email } = req.body
-    const userData = await User.findByIdAndUpdate(req.id,{$set:{
-      firstName,
-      lastName,
-      email,
-      contactNumber
-    }})
-    res.status(200).json({message:"Updated successfully"})
-  }
-  catch ( error ) {
-    res.status(500).json({ message: 'Error updating user data' });
-  }
-}
-
-
-
-export const updateProfilePic = async( req: MyCustomRequest, res:Response ) => {
+export const updateUser = async (req: MyCustomRequest, res: Response) => {
   try {
-    console.log('files',req.file);
-    
-    if(req.file){
-    const imagePath = req.file.filename;
-    const userData = await User.findByIdAndUpdate(req.id,{$set:{
-      picture: `http://localhost:8000/users/${imagePath}`
-    }})
+    console.log("update", req.body);
+    console.log("id", req.id);
 
-  res.status(200).json({message:"Updated successfully"})
+    const { firstName, lastName, contactNumber, email } = req.body;
+    const userData = await User.findByIdAndUpdate(req.id, {
+      $set: {
+        firstName,
+        lastName,
+        email,
+        contactNumber,
+      },
+    });
+    res.status(200).json({ message: "Updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating user data" });
+  }
+};
+
+export const updateProfilePic = async (req: MyCustomRequest, res: Response) => {
+  try {
+    console.log("files", req.file);
+
+    if (req.file) {
+      const imagePath = req.file.filename;
+      const userData = await User.findByIdAndUpdate(req.id, {
+        $set: {
+          picture: `http://localhost:8000/users/${imagePath}`,
+        },
+      });
+
+      res.status(200).json({ message: "Updated successfully" });
     }
-}catch ( error ) {
-  res.status(500).json({ message: 'Error updating user data' });
-}
-}
-
-
-
-
-
+  } catch (error) {
+    res.status(500).json({ message: "Error updating user data" });
+  }
+};

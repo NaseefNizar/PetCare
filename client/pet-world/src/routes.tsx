@@ -14,6 +14,7 @@ import { UserListPage } from "./pages/Admin/UserListPage";
 import { PartnerListPage } from "./pages/Admin/PartnerListPage";
 import { OtpPage } from "./pages/OtpPage";
 import { PartnerAuth } from "./components/PartnerLayout/PartnerAuth";
+import { PartnerProfilePage } from "./pages/PartnerPage/PartnerProfilePage";
 // import { AdminDashboard } from "./pages/Admin/AdminDashboard";
 
 export const Router = () => {
@@ -44,6 +45,7 @@ export const Router = () => {
 
         <Route element={<PartnerAuth />}>
           <Route path="/vet/home" element={<PartnerHomePage />} />
+          <Route path="/partner/profile" element={<PartnerProfilePage />} />
         </Route>
 
       </Routes>

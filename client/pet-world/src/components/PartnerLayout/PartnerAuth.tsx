@@ -5,12 +5,12 @@ import { useEffect } from "react";
 export const PartnerAuth = () => {
   const navigate = useNavigate();
   const isLoggedIn = useAppSelector((state) => state.vet.loginSuccess);
-  const user = localStorage.getItem("partner");
+  const partner = localStorage.getItem("partner");
 
 
   useEffect(() => {
-
-  },[user])
+    if(!partner) { navigate('/login')}
+  },[partner])
   return (
     localStorage.getItem('partner') ? <Outlet/> : < Navigate to='/' />
   )
