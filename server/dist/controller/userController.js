@@ -1,7 +1,15 @@
 import bcrypt from "bcrypt";
 import { OAuth2Client } from "google-auth-library";
 import User from "../model/UserModel.js";
+import Partner from "../model/PartnerModel.js";
 import jwt from "jsonwebtoken";
+import pkg from "twilio";
+const { Twilio } = pkg;
+const { TWILIO_SERVICE_SID, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } = process.env;
+if (!TWILIO_SERVICE_SID || !TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN) {
+    throw new Error("Twilio environment variables are not defined.");
+}
+const client = new Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 const jwtSecretKey = process.env.JWT_SECRET_KEY;
 export const existingUser = async (req, res, next) => {
     const { email, contactNumber } = req.body;
@@ -37,12 +45,8 @@ export const signup = async (req, res) => {
     }
 };
 export const googleVerify = async (req, res) => {
-    console.log(1);
-    console.log(req.body);
     try {
         const { clientId, credential } = req.body;
-        console.log(clientId);
-        console.log(credential);
         const client = new OAuth2Client(clientId);
         const ticket = await client.verifyIdToken({
             idToken: credential,
@@ -51,21 +55,37 @@ export const googleVerify = async (req, res) => {
         const payload = ticket.getPayload();
         const email = payload?.email;
         console.log(payload);
-        // res.json({payload})
-        const existingUser = await User.findOne({ email });
-        if (!existingUser) {
-            // console.log(12121);
-            // console.log(existingUser);
-            // return res.status(200).json({ message: "success", user: existingUser });
-            const newUser = new User({
+        const user = await User.findOne({ email });
+        if (!user) {
+            const user = new User({
                 firstName: payload?.name,
                 email: payload?.email,
                 picture: payload?.picture,
             });
-            await newUser.save();
-            return res.status(201).json({ message: "Signup successful", user: newUser });
+            await user.save();
+            const token = jwt.sign({ userId: user._id }, jwtSecretKey, {
+                expiresIn: "1d",
+            });
+            res.status(201).json({ message: "Signup successful", user }).cookie('token', token, {
+                path: "/",
+                expires: new Date(Date.now() + 1000 * 60 * 60),
+                httpOnly: true,
+                sameSite: "lax",
+            });
         }
-        return res.status(201).json({ message: "Signup successful", user: existingUser });
+        else {
+            const token = jwt.sign({ userId: user._id }, jwtSecretKey, {
+                expiresIn: "1d",
+            });
+            // res.cookie(String(user._id), token, {
+            res.cookie('token', token, {
+                path: "/",
+                expires: new Date(Date.now() + 1000 * 60 * 60),
+                httpOnly: true,
+                sameSite: "lax",
+            });
+            res.status(201).json({ message: "Signup successful", user });
+        }
     }
     catch (error) {
         console.error("Error during signup", error);
@@ -88,6 +108,9 @@ export const login = async (req, res) => {
         if (!passwordMatch) {
             return res.status(401).json({ message: "Invalid email or password" });
         }
+        // const token = jwt.sign({ userId: user._id }, jwtSecretKey, {
+        //   expiresIn: "1d",
+        // });
         const token = jwt.sign({ userId: user._id }, jwtSecretKey, {
             expiresIn: "1d",
         });
@@ -95,7 +118,8 @@ export const login = async (req, res) => {
         // if (req.cookies[`${user._id}`]) {
         //   req.cookies[`${user._id}`] = "";
         // }
-        res.cookie(String(user._id), token, {
+        // res.cookie(String(user._id), token, {
+        res.cookie('token', token, {
             path: "/",
             expires: new Date(Date.now() + 1000 * 60 * 60),
             httpOnly: true,
@@ -109,14 +133,32 @@ export const login = async (req, res) => {
     }
 };
 export const verifyToken = (req, res, next) => {
-    const cookies = req.headers.cookie;
-    // console.log(req.body);
+    console.log("query", req.query.userId);
+    const userId = req.query.userId;
+    // const cookies: string | undefined = req.headers.cookie;
+    const cookies = req.cookies.token;
+    // console.log(req.cookies[userId]);
+    if (req.cookies && req.cookies[userId]) {
+        console.log(req.cookies[userId]);
+    }
+    // const desiredCookieName = req.body;
+    // if (req.headers.cookie) {
+    //   const cookies = req.headers.cookie.split('; ');
+    //   let desiredCookieValue = null;
+    //   cookies.forEach(cookie => {
+    //     const [name, value] = cookie.split('=');
+    //     if (name === desiredCookieName) {
+    //       desiredCookieValue = value;
+    //     }
+    //   })
+    //
     // console.log(1);
-    // console.log(cookies);
+    console.log(cookies);
     if (!cookies) {
         return res.status(404).json({ message: "No token found" });
     }
-    const token = cookies.split("=")[1];
+    // const token: string = cookies.split("=")[1];
+    const token = req.cookies.token;
     // console.log(cookies.split("=")[0]);
     jwt.verify(String(token), jwtSecretKey, (err, user) => {
         if (err) {
@@ -129,7 +171,8 @@ export const verifyToken = (req, res, next) => {
 };
 export const logout = (req, res) => {
     try {
-        res.clearCookie(String(req.id));
+        // res.clearCookie(String(req.id));
+        res.clearCookie('token');
         res.status(200).json({ message: "Successfully logged out" });
     }
     catch (error) {
@@ -182,6 +225,50 @@ export const updateProfilePic = async (req, res) => {
     }
     catch (error) {
         res.status(500).json({ message: "Error updating user data" });
+    }
+};
+export const forgotPassword = async (req, res, next) => {
+    const { contactNumber } = req.body;
+    const existingUser = await User.findOne({ contactNumber }) || await Partner.findOne({ contactNumber });
+    if (!existingUser) {
+        return res.status(409).json({ message: "User doesnt exist" });
+    }
+    next();
+};
+export const setNewPassword = async (req, res) => {
+    try {
+        console.log(req.body);
+        const { password, contactNumber } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = await User.findOneAndUpdate({ contactNumber }, { password: hashedPassword }) || await Partner.findOneAndUpdate({ contactNumber }, { password: hashedPassword });
+        console.log(user);
+        res.status(200).json({ message: "Password updated successfully" });
+    }
+    catch (error) {
+        res.status(500).json({ message: "Error updating password" });
+    }
+};
+export const verifyPasswordOTP = async (req, res) => {
+    const { contactNumber, otp } = req.body;
+    console.log(contactNumber, otp);
+    try {
+        const verifiedResponse = await client.verify.v2
+            .services(TWILIO_SERVICE_SID)
+            .verificationChecks.create({
+            to: `+91${contactNumber}`,
+            code: otp,
+        });
+        // res.status(200).json({message:"otp verified successfully"})
+        if (verifiedResponse.status === "approved") {
+            console.log("verified");
+            res.status(200).json({ message: "OTP verified succcessfully" });
+        }
+        else {
+            res.status(409).json({ message: "Invalid OTP" });
+        }
+    }
+    catch (error) {
+        res.status(400).json({ message: "Invalid OTP" });
     }
 };
 //# sourceMappingURL=userController.js.map

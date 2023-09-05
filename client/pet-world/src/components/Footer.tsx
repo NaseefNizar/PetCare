@@ -51,7 +51,7 @@ function Footer() {
         <Box sx={{ py: 10, backgroundColor: "#19263C" }}>
           <CustomContainer>
             {footercontent.map((item, index) => (
-              <Box>
+              <Box key={index}>
                 <Typography
                   sx={{
                     fontSize: "20px",
@@ -62,8 +62,8 @@ function Footer() {
                 >
                   {item.heading}
                 </Typography>
-                {item.subheading.map((item) => (
-                  <FooterLink pb={2}>{item}</FooterLink>
+                {item.subheading.map((item,index) => (
+                  <FooterLink pb={2} key={index}>{item}</FooterLink>
                 ))}
               </Box>
             ))}

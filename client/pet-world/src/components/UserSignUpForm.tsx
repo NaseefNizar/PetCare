@@ -20,6 +20,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 type FormValues = {
   firstName: string;
+  lastName?:string;
   email: string;
   password: string;
   confirmPassword: string;

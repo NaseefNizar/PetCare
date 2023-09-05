@@ -55,6 +55,8 @@ export default function UserLoginForm(props: Props) {
     }
   };
 
+  const role = isUser ? 'user' : 'partner';
+
   useEffect(() => {
     userData.error && toast.error(userData.error, { theme: "colored" });
     userData.loginSuccess && navigate("/");
@@ -62,7 +64,7 @@ export default function UserLoginForm(props: Props) {
 
   useEffect(() => {
     partnerState.error && toast.error(partnerState.error, { theme: "colored" });
-    partnerState.loginSuccess && navigate("/vet/home");
+    partnerState.loginSuccess && navigate("/partner/home");
   }, [partnerState.loginSuccess, partnerState.error]);
 
   useEffect(() => {
@@ -174,7 +176,7 @@ export default function UserLoginForm(props: Props) {
                     SignUp
                   </Typography>
                 </Stack>
-                <Typography component={Link} to="">
+                <Typography component={Link} to='/forgotpassword'>
                   Forgot Password?
                 </Typography>
               </Stack>

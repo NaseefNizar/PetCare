@@ -29,12 +29,12 @@ interface UpdateDialogProps {
   onUpdate: (updatedDetails: UserDetails) => void;
 }
 
-export const ProfileEdit: React.FC<UpdateDialogProps> = ({
+export const ProfileEdit = ({
   open,
   onClose,
   userDetails,
-  onUpdate,
-}) => {
+  onUpdate 
+} : UpdateDialogProps) => {
   const form = useForm();
   const { register, handleSubmit, formState, watch } = form;
   const { errors } = formState

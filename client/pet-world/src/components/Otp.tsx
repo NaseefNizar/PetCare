@@ -43,8 +43,10 @@ export const Otp = () => {
   const [showButton, setShowButton] = useState(false);
   const [timer, setTimer] = useState(0);
 
-  const onSubmit: SubmitHandler<Otp> = (otp) => {
+  const onSubmit: SubmitHandler<Otp> = (otp): void => {
 if(signupDataUser) {
+  console.log(signupDataUser);
+  
     dispatch(registerUser({ ...signupDataUser, ...otp }));
 } else if (signupDataPartner) {
     dispatch(registerPartner({ ...signupDataPartner, ...otp }))
@@ -55,10 +57,11 @@ if(signupDataUser) {
     setTimer(0);
     setShowButton(false);
     if(signupDataUser) {
-      dispatch(sendOtpPartner(signupDataUser))
+      console.log(signupDataUser);
+      
+      dispatch(sendOtp(signupDataUser))
     } else if(signupDataPartner){
-
-      dispatch(sendOtp(signupDataPartner));
+      dispatch(sendOtpPartner(signupDataPartner));
     }
   };
 

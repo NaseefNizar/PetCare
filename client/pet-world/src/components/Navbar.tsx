@@ -10,9 +10,9 @@ import {
   Button,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PetsIcon from "@mui/icons-material/Pets";
-import { useAppDispatch } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { logOut } from "../redux/features/userSlice";
 
 export const Navbar = () => {
@@ -20,6 +20,7 @@ export const Navbar = () => {
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const dispatch = useAppDispatch()
+  const userData = useAppSelector(state => state.user.userData)
 
   const navigate = useNavigate()
 
@@ -39,7 +40,6 @@ export const Navbar = () => {
   if(data) {
     user = JSON.parse(data)
     console.log("navbar", user);
-    
   }
 
   return (
@@ -73,7 +73,7 @@ export const Navbar = () => {
           {localStorage.getItem("user") ? (
             <>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={user.name} src={user.picture} />
+                <Avatar alt={user.name} src={userData?.picture} />
               </IconButton>
               <Menu
                 sx={{ mt: "45px" }}

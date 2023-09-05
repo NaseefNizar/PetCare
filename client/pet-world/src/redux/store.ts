@@ -1,13 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 import adminReducer from './features/adminSlice'
 import userReducer from "./features/userSlice";
-import vetReducer from "./features/partnerSlice";
+import partnerReducer from "./features/partnerSlice";
+import kycReducer from './features/kycSlice'
 
 const store = configureStore({
     reducer: {
         admin:adminReducer,
         user: userReducer,
-        vet : vetReducer
+        vet : partnerReducer,
+        kyc : kycReducer
     }
 })
 

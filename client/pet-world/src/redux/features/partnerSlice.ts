@@ -3,12 +3,18 @@ import axios from "../../utils/axiosInstance";
 import { act } from "react-dom/test-utils";
 
 type FormValues = {
-  name: string;
+  firstName: string;
+  lastName?: string;
   email: string;
   password: string;
   confirmPassword: string;
-  contactNumber: string;
+  contactNumber: number;
+  role?:string
 };
+
+type CredentialRespone = {
+  
+}
 
 type UserData = {
   firstName: string;
@@ -24,6 +30,10 @@ type UserData = {
   __v: number;
 };
 
+type ContactNumber = {
+  contactNumber: number
+}
+
 type InitialState = {
   loading: boolean;
   registerStatus: boolean;
@@ -33,7 +43,8 @@ type InitialState = {
   error: string;
   otpSendStat: boolean;
   successMessage: string;
-  tokenStat : boolean | null
+  tokenStat : boolean | null;
+  blockStat : boolean
 };
 const initialState: InitialState = {
   loading: false,
@@ -44,12 +55,13 @@ const initialState: InitialState = {
   error: "",
   successMessage: "",
   otpSendStat: false,
-  tokenStat : null
+  tokenStat : null,
+  blockStat : false
 };
 
 export const sendOtpPartner = createAsyncThunk(
   "vet/sendOtp",
-  async (userData) => {
+  async (userData:FormValues) => {
     try {
       //   console.log("role", role);
 
@@ -64,8 +76,8 @@ export const sendOtpPartner = createAsyncThunk(
 );
 
 export const registerPartner = createAsyncThunk(
-  "user/registerPartner",
-  async (userData, { rejectWithValue }) => {
+  "partner/registerPartner",
+  async (userData:UserData, { rejectWithValue }) => {
     try {
       const response = await axios.post("/api/partner/signup", userData);
       return response.data;
@@ -76,7 +88,7 @@ export const registerPartner = createAsyncThunk(
 );
 
 export const loginPartner = createAsyncThunk(
-  "vet/loginVet",
+  "partner/loginPartner",
   async (credential, { rejectWithValue }) => {
     try {
       const response = await axios.post("/api/partner/login", credential);
@@ -137,9 +149,44 @@ export const logOut = createAsyncThunk("vet/logout", async () => {
   }
 });
 
+export const forgotPassword = createAsyncThunk('partner/forgotpasswordpartner', async(number:ContactNumber,{rejectWithValue}) => {
+  console.log("number",number);
+  
+  try {
+    const response = await axios.post("/api/partner/forgotpassword",number);
+      console.log('axios',response.data);
+      return response.data
+  } catch (error: any) {
+    console.log(error.response.data);
+      return rejectWithValue(error.response.data);
+  }
+})
+
+export const verifyOtpPassword = createAsyncThunk('partner/verifyotppassword', async (data,{ rejectWithValue}) => {
+  try {
+    console.log("data",data);
+    
+    const response = await axios.post('/api/partner/verifyotppassword', data)
+    return response.data
+  } catch (error: any) {
+    rejectWithValue(error.response.data)
+  }
+})
+
+export const setNewPassword = createAsyncThunk('partner/setnewpassword', async (data,{ rejectWithValue}) => {
+  try {
+    console.log("pass",data);
+    
+    const response = await axios.post('/api/partner/setnewpassword', data)
+    return response.data
+  } catch (error: any) {
+    rejectWithValue(error.response.data)
+  }
+})
+
 const vetSlice = createSlice({
   initialState,
-  name: "vet",
+  name: "partner",
   reducers: {
     setSignupDataPartner: (state, action) => {
       console.log(action.payload);
@@ -174,6 +221,7 @@ const vetSlice = createSlice({
       })
       .addCase(loginPartner.pending, (state, action) => {
         state.loading = true;
+        state.blockStat = false;
         state.error = "";
       })
       .addCase(loginPartner.fulfilled, (state, action) => {
@@ -197,7 +245,8 @@ const vetSlice = createSlice({
       })
       .addCase(getPartnerData.rejected, (state, action )=> {
         state.loading = false
-        state.error = "Session expired"
+        state.error = action.payload.message || ''
+        state.blockStat = true
         state.tokenStat = false;
       })
       .addCase(getPartnerData.fulfilled, (state, action )=> {

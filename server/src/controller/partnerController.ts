@@ -6,10 +6,24 @@ import jwt, { JwtPayload }  from "jsonwebtoken";
 
 const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
+import pkg from "twilio";
+const { Twilio } = pkg;
 
+const { TWILIO_SERVICE_SID, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } =
+  process.env;
+
+if (!TWILIO_SERVICE_SID || !TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN) {
+  throw new Error("Twilio environment variables are not defined.");
+}
+
+const client = new Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 
 interface MyCustomRequest extends Request {
   id?: string;
+  files: {
+    poi?: Express.Multer.File[]; // Use Express Multer's File type or your custom File type
+    poq?: Express.Multer.File[]; // Use Express Multer's File type or your custom File type
+  };
 }
 
 
@@ -57,6 +71,11 @@ export const signup = async (req: Request, res: Response) => {
       if (!user) {
         return res.status(401).json({ message: "Invalid email or password" });
       }
+
+      if (user.is_blocked) {
+        return res.status(401).json({ message: "Blocked by admin" });
+      }
+      
   
       const passwordMatch = await bcrypt.compare(password, user.password || "");
       if (!passwordMatch) {
@@ -73,7 +92,8 @@ export const signup = async (req: Request, res: Response) => {
       //     req.cookies[`${user._id}`] = ""
       // }
   
-      res.cookie(String(user._id),token, {
+      // res.cookie(String(user._id),token, {
+      res.cookie('token',token, {
           path: '/',
           expires: new Date(Date.now() + 1000*60*60),
           httpOnly : true,
@@ -100,13 +120,15 @@ export const signup = async (req: Request, res: Response) => {
   };
 
   export const verifyToken = (req: MyCustomRequest, res: Response, next:NextFunction) => {
-    const cookies: string | undefined = req.headers.cookie;
+    // const cookies: string | undefined = req.headers.cookie;
+    const cookies: string | undefined = req.cookies.token;
     console.log('hdjjh',req.cookies);
     
     if (!cookies) {
       return res.status(404).json({ message: "No token found" });
     }
-    const token: string = cookies.split("=")[1];
+    // const token: string = cookies.split("=")[1];
+    const token: string = req.cookies.token;
     
     jwt.verify(String(token), jwtSecretKey, (err:any, user:any) => {
       if (err) {
@@ -123,7 +145,7 @@ export const signup = async (req: Request, res: Response) => {
   export const getPartnerData = async (req: MyCustomRequest, res: Response) => {
     try {
       const partnerData = await Partner.findById({ _id: req.id });
-      res.status(200).json({partnerData})
+      return res.status(200).json({partnerData})
     } catch (error) {
       res.status(500).json({ message: "Error getting data"})
     }
@@ -160,6 +182,100 @@ export const signup = async (req: Request, res: Response) => {
         const userData = await Partner.findByIdAndUpdate(req.id, {
           $set: {
             picture: `http://localhost:8000/users/${imagePath}`,
+          },
+        });
+  
+        res.status(200).json({ message: "Updated successfully" });
+      }
+    } catch (error) {
+      res.status(500).json({ message: "Error updating user data" });
+    }
+  }; 
+
+  export const forgotPassword = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { contactNumber } = req.body;
+    const existingUser = await Partner.findOne({contactNumber});
+  
+    if (!existingUser) {
+      return res.status(409).json({ message: "User already exists" });
+    }
+    next();
+  };
+
+  export const setNewPassword = async( req: Request, res: Response) => {
+    try {
+      console.log(req.body);
+      
+      const { password,contactNumber } = req.body;
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const user = await Partner.findOneAndUpdate({contactNumber},{password:hashedPassword})
+      res.status(200).json({ message: "Password updated successfully" });
+    } catch (error) {
+      res.status(500).json({ message: "Error updating password" });
+    }
+  
+  }
+
+  export const verifyPasswordOTP = async (
+    req: Request,
+    res: Response,
+  ) => {
+    const { contactNumber, otp } = req.body;
+    console.log(contactNumber, otp);
+  
+    try {
+      const verifiedResponse = await client.verify.v2
+        .services(TWILIO_SERVICE_SID)
+        .verificationChecks.create({
+          to: `+91${contactNumber}`,
+          code: otp,
+        });
+      // res.status(200).json({message:"otp verified successfully"})
+      if (verifiedResponse.status === "approved") {
+        console.log("verified");
+        res.status(200).json({message:"OTP verified succcessfully"})
+      } else {
+        res.status(409).json({ message: "Invalid OTP" });
+      }
+    } catch (error) {
+      res.status(400).json({ message: "Invalid OTP" });
+    }
+  };
+
+
+  export const kycUpdate = async(req: MyCustomRequest, res: Response) => {
+    try {
+      const {...data} = req.body
+      console.log(req.body);
+      console.log(req.id);
+      
+      const userData = await Partner.findByIdAndUpdate(req.id,{
+        $set:{
+          ...data,is_kycSubmitted:true
+        }
+      })
+      res.status(200).json({ message: "Updated successfully" });
+
+    } catch (error) {
+      res.status(500).json({ message: "Error updating kyc data" });
+    }
+  }
+
+  export const kycDocumentUpload = async (req: MyCustomRequest, res: Response) => {
+    try {
+      console.log("files", req.files);
+  
+      if (req.files) {
+        const poi = req.files.poi?.[0]?.filename
+        const poq = req.files.poq?.[0]?.filename
+        const userData = await Partner.findByIdAndUpdate(req.id, {
+          $set: {
+            poi: `http://localhost:8000/users/${poi}`,
+            poq: `http://localhost:8000/users/${poq}`,
           },
         });
   

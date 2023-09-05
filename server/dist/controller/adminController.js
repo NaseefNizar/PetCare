@@ -19,7 +19,8 @@ export const login = async (req, res) => {
             // if (req.cookies[`${user._id}`]) {
             //   req.cookies[`${user._id}`] = "";
             // }
-            res.cookie(String(user._id), token, {
+            // res.cookie(String(user._id), token, {
+            res.cookie('token', token, {
                 path: "/",
                 expires: new Date(Date.now() + 1000 * 60 * 60),
                 httpOnly: true,
@@ -52,13 +53,14 @@ export const logout = (req, res) => {
     }
 };
 export const verifyToken = (req, res, next) => {
-    const cookies = req.headers.cookie;
+    // const cookies: string | undefined = req.headers.cookie;
+    const cookies = req.cookies.token;
     console.log(cookies);
     if (!cookies) {
         return res.status(404).json({ message: "No token found" });
     }
-    const token = cookies.split("=")[1];
-    console.log(cookies.split("=")[0]);
+    // const token: string = cookies.split("=")[1];
+    const token = req.cookies.token;
     jwt.verify(String(token), jwtSecretKey, (err, user) => {
         if (err) {
             return res.status(400).json({ message: "Invalid token" });

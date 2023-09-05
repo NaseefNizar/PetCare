@@ -15,13 +15,17 @@ import { PartnerListPage } from "./pages/Admin/PartnerListPage";
 import { OtpPage } from "./pages/OtpPage";
 import { PartnerAuth } from "./components/PartnerLayout/PartnerAuth";
 import { PartnerProfilePage } from "./pages/PartnerPage/PartnerProfilePage";
+import { ForgotPasswordPage } from "./pages/User/ForgotPasswordPage";
+import { NewPassword } from "./components/NewPassword";
+import { PasswordOtp } from "./components/PasswordOtp";
+import PartnerLayout from "./components/PartnerLayout/PartnerLayout";
+import { PartnerKycPage } from "./pages/PartnerPage/PartnerKycPage";
 // import { AdminDashboard } from "./pages/Admin/AdminDashboard";
 
 export const Router = () => {
   return (
     <div>
       <Routes>
-        
         <Route path="/" element={<HomePage />} />
         <Route path="/signup" element={<UserSignUpPage />} />
         <Route path="/login" element={<UserLoginPage />} />
@@ -29,6 +33,10 @@ export const Router = () => {
         <Route path="/groomer/signup" element={<SignUpPage role="Groomer" />} />
 
         <Route path="/otp" element={<OtpPage />} />
+
+        <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
+        <Route path="/otpverifypassword" element={<PasswordOtp />} />
+        <Route path="/setnewpassword" element={<NewPassword />} />
 
         <Route path="/admin/login" element={<AdminLoginPage />} />
         <Route element={<AdminAuth />}>
@@ -44,10 +52,11 @@ export const Router = () => {
         <Route path="/partner/signup" element={<PartnerSignUpPage />} />
 
         <Route element={<PartnerAuth />}>
-          <Route path="/vet/home" element={<PartnerHomePage />} />
+          <Route path="/partner/home" element={<PartnerHomePage />} />
           <Route path="/partner/profile" element={<PartnerProfilePage />} />
+          <Route path="/partner/kyc" element={<PartnerKycPage />} />
         </Route>
-
+        
       </Routes>
     </div>
   );

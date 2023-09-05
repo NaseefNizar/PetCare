@@ -19,6 +19,7 @@ import { useDispatch } from "react-redux";
 import { getData, updateProfilePic, updateUser } from "../../redux/features/userSlice";
 import { useAppSelector } from "../../redux/hooks";
 import { ProfileEdit } from "./ProfileEdit";
+import { useNavigate } from "react-router-dom";
 
 const states = [
   {
@@ -163,9 +164,11 @@ export const UserProfile = () => {
   }
 
   const [openDialog, setOpenDialog] = useState(false);
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const userState = useAppSelector((state) => state.user);
   const userData = userState?.userData;
+  const blockStat = userState.blockStat
   console.log('hdgfhsgdh',userData?.picture);
   
   console.log("profile", userData);
@@ -203,8 +206,11 @@ export const UserProfile = () => {
   };
 
   useEffect(() => {
-    dispatch(getData());
+    dispatch(getData(user._id));
   }, [userState.successMessage]);
+  useEffect(() => {
+    blockStat && navigate('/login')
+  }, [blockStat]);
 
   return (
     <Box

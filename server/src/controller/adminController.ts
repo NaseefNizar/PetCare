@@ -32,13 +32,15 @@ export const login = async (req: Request, res: Response) => {
           //   req.cookies[`${user._id}`] = "";
           // }
           
-          res.cookie(String(user._id), token, {
+          // res.cookie(String(user._id), token, {
+          res.cookie('token', token, {
             path: "/",
             expires: new Date(Date.now() + 1000 * 60 * 60),
             httpOnly: true,
             sameSite: "lax",
           });
           
+
           res.status(200).json({ message: "Successfully logged in", user,token });
         }
     } catch (error) {
@@ -69,13 +71,14 @@ export const login = async (req: Request, res: Response) => {
 
   
 export const verifyToken = (req: MyRequest, res: Response, next:NextFunction) => {
-    const cookies: string | undefined = req.headers.cookie;
+    // const cookies: string | undefined = req.headers.cookie;
+    const cookies: string | undefined = req.cookies.token;
     console.log(cookies);
     if (!cookies) {
       return res.status(404).json({ message: "No token found" });
     }
-    const token: string = cookies.split("=")[1];
-    console.log(cookies.split("=")[0]);
+    // const token: string = cookies.split("=")[1];
+    const token: string = req.cookies.token;
     
     jwt.verify(String(token), jwtSecretKey, (err:any, user:any) => {
       if (err) {

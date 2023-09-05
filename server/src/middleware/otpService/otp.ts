@@ -54,6 +54,7 @@ export const verifyOTP = async (
     if (verifiedResponse.status === "approved") {
       console.log("verified");
       next();
+      
     } else {
       res.status(409).json({ message: "Invalid OTP" });
     }

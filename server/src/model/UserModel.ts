@@ -19,7 +19,6 @@ const userSchema = new mongoose.Schema({
     },
     contactNumber: {
       type: Number,
-      unique: true
     },
     is_admin:{
       type:Number,
@@ -37,6 +36,7 @@ const userSchema = new mongoose.Schema({
       default:false
     }
   });
+  
 
 const User = mongoose.model('User', userSchema)
 

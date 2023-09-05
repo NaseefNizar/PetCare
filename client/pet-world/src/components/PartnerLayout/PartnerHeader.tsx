@@ -244,9 +244,9 @@ export default function PrimarySearchAppBar(props: OpenSetter) {
               color="inherit"
             >
               {/* <AccountCircle /> */}
-              <IconButton  sx={{ p: 0 }}>
+              {/* <IconButton  sx={{ p: 0 }}> */}
                 <Avatar  src={pic} />
-              </IconButton>
+              {/* </IconButton> */}
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>

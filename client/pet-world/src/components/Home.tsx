@@ -1,13 +1,8 @@
 import { Box, Grid, Paper, Stack, Typography } from "@mui/material";
-// import LabPicture from "../../Assets/medical-lab.png";
-// import ScanIcon from "../../Assets/mri-scanner.png";
 import { styled } from "@mui/material";
 import { Link } from "react-router-dom";
-// import Govandlab from "../../Assets/lab.png";
-// import thermometer from "../../Assets/thermometer.png";
-// import sanitizer from "../../Assets/sanitizer.png";
-// import disinfection from "../../Assets/disinfection.png";
-// import buyIcon from "../../Assets/buy_icon.png";
+import banner from "../assets/pet-banner-tpn-12052020-v1.jpg";
+import "../pages/homePage.css";
 
 const Userhomepage = () => {
   const CustomBox = styled(Box)(({ theme }) => ({
@@ -42,116 +37,37 @@ const Userhomepage = () => {
     },
   }));
 
+  const FeatureBox = styled(Box)`
+    width: 300px;
+    height: 85px;
+    border: 2px solid #d3d3d3; /* Set the border color here */
+    border-radius: 5px;
+    padding: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &:hover {
+      border-color: #ff0000;
+    }`;
+
+    const features =[
+      {
+        heading:'Pet Grooming',
+        description:'Book In-Home Grooming Session For Your Pet'
+      },
+      {
+        heading:'Vet on Call',
+        description:'Expert Veterinary Care Service At Your Home'
+      },
+      {
+        heading:'Adopt a Pet',
+        description:'Book In-Home Grooming Session For Your Pet'
+      },
+    ]
+
   return (
     <Box>
-      <Box>
-        <Grid
-          container
-          sx={{
-            display: "flex",
-            justifyContent: "space-evenly",
-            alignItems: "center",
-            marginTop: "13px",
-          }}
-          rowSpacing={5}
-          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-        >
-          <Grid item lg={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-            <Paper
-              elevation={10}
-              variant="outlined"
-              square
-              sx={{
-                width: 185,
-                height: 185,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                border: "", // Add custom border style here
-                borderRadius: "10px",
-              }}
-            >
-              <img
-                style={{
-                  width: "90px",
-                  height: "90px",
-                  margin: "42px",
-                  padding: "",
-                }}
-              />
-              <Typography variant="h6" sx={{ paddingTop: "10px" }}>
-                BOOK VET
-              </Typography>
-            </Paper>
-          </Grid>
-          <Grid item lg={2}>
-            <Paper
-            //   elevation={5}
-            //   variant="outlined"
-            //   square
-            //   sx={{
-            //     width: 185,
-            //     height: 185,
-            //     display: "flex",
-            //     flexDirection: "column",
-            //     alignItems: "center",
-            //     border: "", // Add custom border style here
-            //     borderRadius: "10px",
-            //   }}
-            //   rowSpacing={5}
-            //   columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-            >
-              <img
-                style={{
-                  width: "90px",
-                  height: "90px",
-                  margin: "42px",
-                  padding: "",
-                }}
-              />
-              <Typography variant="h6" sx={{ paddingTop: "10px" }}>
-                BOOK A GROOMER
-              </Typography>
-            </Paper>
-          </Grid>
-          <Grid item rowSpacing={5} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-            <Paper
-              elevation={5}
-              variant="outlined"
-              square
-              sx={{
-                width: 185,
-                height: 185,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                border: "", // Add custom border style here
-                borderRadius: "30px",
-              }}
-            >
-              <img
-                style={{
-                  width: "90px",
-                  height: "90px",
-                  margin: "42px",
-                  padding: "",
-                }}
-              />
-              <Typography variant="h6" sx={{ paddingTop: "10px" }}>
-                ADOPT A PET
-              </Typography>
-            </Paper>
-          </Grid>
-        </Grid>
-      </Box>
-      <div
-        style={{
-          width: "100%",
-          height: "2px",
-          backgroundColor: "#c0c0c0",
-          margin: "90px auto",
-        }}
-      ></div>
+      <img src={banner} width={"100%"} minHeight={{xs:'200px'}} alt="" />
       <Box>
         <Stack
           sx={{
@@ -159,187 +75,105 @@ const Userhomepage = () => {
             justifyContent: "center",
             alignItems: "center",
             padding: "30px",
-            margin: "-50px auto",
+            position: "relative",
+            // top: "-200px"
+            top:{lg:'-200px',xs:'-75px'}
+            // margin: "-50px auto",
           }}
         >
           <Paper
             elevation={6}
             sx={{
               minWidth: "75%",
-              minHeight: "470px",
-              //   display: "flex",
-              //   justifyContent: "center",
-              alignItems: "center",
+              minHeight: "400px",
               borderRadius: "10px",
-              backgroundColor: "#ebf2fe;",
+              xs:12
             }}
+            // xs={12}
           >
-            <Stack sx={{ margin: "40px" }} spacing={1}>
-              <Typography
-                fontSize={{ xs: 20, md: 30, lg: 30 }}
-                sx={{
-                  fontWeight: "bold",
-                  color: "rgb(5, 10, 78)",
-                }}
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <Stack
+                sx={{ margin: "40px", alignItems: "center" }}
+                spacing={0.5}
               >
-                Trusted BY 12,0000+
-              </Typography>
-              <Typography
-                fontSize={{ xs: 20, md: 30, lg: 28 }}
-                sx={{
-                  fontWeight: "bold",
-                  color: "rgb(5, 10, 78)",
-                }}
-              >
-                Users Every month
-              </Typography>
-            </Stack>
+                <Typography
+                  variant="h1"
+                  fontSize={{ xs: 20, md: 30, lg: 40 }}
+                  sx={{
+                    fontWeight: "bold",
+                  }}
+                >
+                  ThePetNest: The Pet People
+                </Typography>
+                <Typography variant="h6">
+                  Book Pet Care Service Appointments At Home
+                </Typography>
+              </Stack>
+            </Box>
             <Stack>
-              <Grid container>
-                <Grid item lg={6}>
-                  <Paper
-                    elevation={5}
-                    sx={{
-                      width: "90%",
-                      my: 1,
-                      mx: "auto",
-                      p: 1,
-                      borderRadius: "10px",
-                    }}
+              <Grid
+                container
+                spacing={5}
+                display={"flex"}
+                justifyContent={"center"}
+
+              >
+                {/* <Grid item>
+                  <Box
+                    width={300}
+                    height={85}
+                    border={2}
+                    padding={1}
+                    borderRadius={1}
+                    display={"flex"}
+                    justifyContent={"space-between"}
+                    alignItems={"center"}
+                    style={{ borderColor: "lightgrey" }}
                   >
-                    <Grid container wrap="nowrap" spacing={2}>
-                      <Grid item></Grid>
-                      <Grid item>
-                        <Box sx={{ display: "flex", alignItems: "center" }}>
-                          <img
-                            width="50px"
-                            //   minHeight="50px"
-                          />
-                          <Typography
-                            sx={{
-                              marginLeft: "20px",
-                              fontSize: "20px",
-                              fontWeight: "",
-                            }}
-                          >
-                             <br />
-                            {/* Diagnostic Centres */}
-                          </Typography>
-                        </Box>
-                      </Grid>
-                    </Grid>
-                  </Paper>
-                </Grid>
-                <Grid item lg={6}>
-                  <Paper
-                    elevation={5}
-                    sx={{
-                      width: "90%",
-                      my: 1,
-                      mx: "auto",
-                      p: 1,
-                      borderRadius: "10px",
-                    }}
-                  >
-                    <Grid container wrap="nowrap" spacing={2}>
-                      <Grid item></Grid>
-                      <Grid item>
-                        <Box sx={{ display: "flex", alignItems: "center" }}>
-                          <img
-                            width="50px"
-                            // minHeight="50px"
-                          />
-                          <Typography
-                            sx={{
-                              marginLeft: "20px",
-                              fontSize: "20px",
-                              fontWeight: "",
-                            }}
-                          >
-                            {/* Daily Temperature */}
-                            <br />
-                            {/* Check of all Technicians */}
-                          </Typography>
-                        </Box>
-                      </Grid>
-                    </Grid>
-                  </Paper>
-                </Grid>
-                <Grid item lg={6}>
-                  <Paper
-                    elevation={5}
-                    sx={{
-                      width: "90%",
-                      my: 1,
-                      mx: "auto",
-                      p: 1,
-                      borderRadius: "10px",
-                    }}
-                  >
-                    <Grid container wrap="nowrap" spacing={2}>
-                      <Grid item></Grid>
-                      <Grid item>
-                        <Box sx={{ display: "flex", alignItems: "center" }}>
-                          <img
-                            width="50px"
-                            //   minHeight="50px"
-                          />
-                          <Typography
-                            sx={{
-                              marginLeft: "20px",
-                              fontSize: "20px",
-                              fontWeight: "",
-                            }}
-                          >
-                            {/* Mandotory use of Mask */}
-                            <br />
-                            {/* & Sanitizers */}
-                          </Typography>
-                        </Box>
-                      </Grid>
-                    </Grid>
-                  </Paper>
-                </Grid>
-                <Grid item lg={6}>
-                  <Paper
-                    elevation={5}
-                    sx={{
-                      width: "90%",
-                      my: 1,
-                      mx: "auto",
-                      p: 1,
-                      borderRadius: "10px",
-                    }}
-                  >
-                    <Grid container wrap="nowrap" spacing={2}>
-                      <Grid item></Grid>
-                      <Grid item>
-                        <Box sx={{ display: "flex", alignItems: "center" }}>
-                          <img
-                            width="50px"
-                            // minHeight="50px"
-                          />
-                          <Typography
-                            sx={{
-                              marginLeft: "20px",
-                              fontSize: "20px",
-                              fontWeight: "",
-                            }}
-                          >
-                            {/* Regular Disinfectation */}
-                            <br />
-                            {/* of Labs */}
-                          </Typography>
-                        </Box>
-                      </Grid>
-                    </Grid>
-                  </Paper>
-                </Grid>
+                    <img src={banner} width={"75"} height={"75%"} />
+                    <Stack spacing={0.25} paddingLeft={2}>
+                      <Typography
+                        variant="h5"
+                        sx={{ fontSize: "20px", fontWeight: "bold" }}
+                      >
+                        Adopt a Pet
+                      </Typography>
+                      <Typography variant="h6" sx={{ fontSize: "15px" }}>
+                        Expert Veterinary Care Service At Your Home
+                      </Typography>
+                    </Stack>
+                  </Box>
+                </Grid>  */}
+                {features.map(feature => 
+                <Grid item 
+                // xs={12} sm={12} md={6} lg={3.5}
+                >
+                  <FeatureBox>
+                     <img src={banner} width={"75"} height={"75%"} />
+                    <Stack 
+                    // spacing={0.25} 
+                    paddingLeft={2}
+                    >
+                      <Typography
+                        variant="h5"
+                        sx={{ fontSize: "20px", fontWeight: "bold" }}
+                      >
+                        {feature.heading}
+                      </Typography>
+                      <Typography variant="h6" sx={{ fontSize: "15px" }}>
+                        {feature.description}
+                      </Typography>
+                    </Stack>
+                  </FeatureBox>
+                  </Grid>
+                )}
               </Grid>
             </Stack>
           </Paper>
         </Stack>
       </Box>
+
+      {/* footer */}
       <Box
         sx={{
           display: "flex",
@@ -359,7 +193,7 @@ const Userhomepage = () => {
         ></div>
         <Typography
           variant="h3"
-          sx={{ fontSize: "35px", fontWeight: "blod", color: "#000339", my: 3 }}
+          sx={{ fontSize: "35px", fontWeight: "bold", color: "#000339", my: 3 }}
         >
           How to Book?
         </Typography>
@@ -455,18 +289,22 @@ const Userhomepage = () => {
               sx={{
                 cursor: "pointer",
                 display: "flex",
-                flexDirection:'column',
+                flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
               }}
             >
-              <Typography component={Link} to={'/vet/signup'}
+              <Typography
+                component={Link}
+                to={"/vet/signup"}
                 variant="body2"
                 sx={{ fontWeight: "bold", fontsize: "14px", color: "#0689FF" }}
               >
                 Become a vet
               </Typography>
-              <Typography component={Link} to={'/groomer/signup'}
+              <Typography
+                component={Link}
+                to={"/groomer/signup"}
                 variant="body2"
                 sx={{ fontWeight: "bold", fontsize: "14px", color: "#0689FF" }}
               >
