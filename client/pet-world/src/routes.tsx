@@ -12,6 +12,7 @@ import { PartnerHomePage } from "./pages/PartnerPage/HomePage";
 import { UserProfilePage } from "./pages/User/UserProfilePage";
 import { UserListPage } from "./pages/Admin/UserListPage";
 import { PartnerListPage } from "./pages/Admin/PartnerListPage";
+import { UnverifiedListPage } from "./pages/Admin/UnverifiedListPage"
 import { OtpPage } from "./pages/OtpPage";
 import { PartnerAuth } from "./components/PartnerLayout/PartnerAuth";
 import { PartnerProfilePage } from "./pages/PartnerPage/PartnerProfilePage";
@@ -20,7 +21,8 @@ import { NewPassword } from "./components/NewPassword";
 import { PasswordOtp } from "./components/PasswordOtp";
 import PartnerLayout from "./components/PartnerLayout/PartnerLayout";
 import { PartnerKycPage } from "./pages/PartnerPage/PartnerKycPage";
-// import { AdminDashboard } from "./pages/Admin/AdminDashboard";
+import { PartnerDetailsPage } from "./pages/Admin/PartnerDetailsPage";
+
 
 export const Router = () => {
   return (
@@ -43,6 +45,8 @@ export const Router = () => {
           <Route path="/admin/home" element={<AdminHomePage />} />
           <Route path="/admin/users" element={<UserListPage />} />
           <Route path="/admin/partner" element={<PartnerListPage />} />
+          <Route path="/admin/verify-partners" element={<UnverifiedListPage />} />
+          <Route path="/admin/viewdetails/:user_id" element={<PartnerDetailsPage />} />
         </Route>
 
         <Route element={<UserAuth />}>

@@ -124,7 +124,7 @@ export const userAccess = async( req: Request, res: Response) => {
 
 export const getPartnerData = async( req:Request, res:Response ) => {
   try {
-    const partnerData = await Partner.find({ });
+    const partnerData = await Partner.find({is_verified:true });
     res.status(200).json({partnerData})
 
   } catch (error) {
@@ -132,6 +132,31 @@ export const getPartnerData = async( req:Request, res:Response ) => {
     res.status(500).json({ message: 'Error getting user data' });
   }
 } 
+
+
+export const getUnverifiedPartner = async( req:Request, res:Response ) => {
+  try {
+    const unverifiedPartners = await Partner.find({is_verified: false });
+    res.status(200).json({unverifiedPartners})
+
+  } catch (error) {
+    console.error('Error getting user data:', error);
+    res.status(500).json({ message: 'Error getting user data' });
+  }
+} 
+
+
+export const individualPartnerData = async (req:Request, res:Response) => {
+  try {
+    console.log(req.body);
+    
+    const partnerData = await Partner.findOne({_id:req.body.id})
+    res.status(200).json({partnerData})
+  } catch (error) {
+    res.status(500).json({ message: 'Error getting partner data' });
+  }
+}
+
 
 export const partnerAccess = async( req: Request, res: Response) => {
   try{

@@ -7,17 +7,20 @@ import {
   import { Button } from "@mui/material";
   import { useEffect, useState } from "react";
   import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-  import { blockPartner, getPartnerData } from "../../redux/features/adminSlice";
+  import { blockPartner, getPartnerData, unverifiedPartners } from "../../redux/features/adminSlice";
   import Dialog from '@mui/material/Dialog';
   import DialogActions from '@mui/material/DialogActions';
   import DialogContent from '@mui/material/DialogContent';
   import DialogContentText from '@mui/material/DialogContentText';
   import DialogTitle from '@mui/material/DialogTitle';
+  import PartnerViewDetails from "./PartnerViewDetails";
+import { Link } from "react-router-dom";
   // import { User } from "../../redux/api/types";
   
   interface UserData {
     _id: string;
     firstName: string;
+    lastName: string;
     email: string;
     contactNumber: number;
     role: string;
@@ -26,7 +29,7 @@ import {
   
   
   
-  export default function PartnerList() {
+  export default function UnverifiedList() {
   
     const [open, setOpen] = useState(false);
     const [userId, setUserId] = useState('');
@@ -49,6 +52,10 @@ import {
       console.log(partnerId);
       setOpen(false);
       dispatch(blockPartner({partnerId,is_blocked}))
+    }
+
+    const handleButtonClick = (id:string) => {
+        console.log(id);    
     }
   
     const columns: GridColDef[] = [
@@ -106,24 +113,26 @@ import {
         sortable: false,
         disableColumnMenu: true,
         renderCell: (params: GridRenderCellParams) => (
-          <Button
+          <Button 
+          component= {Link} to={`/admin/viewdetails/${params.row._id}`}
             variant="contained"
             color="primary"
             size="small"
-            // onClick={() => handleButtonClick(params.row.id)}
+            onClick={() => handleButtonClick(params.row._id)}
           >
             View Details
           </Button>
+
         ),
         
       },
     ];
-    const userData:UserData[] = useAppSelector((state) => state.admin.partnerList);
+    const userData:UserData[] = useAppSelector((state) => state.admin.unverifiedList);
     const userDataWithSlno = userData.map((row, index) => {
-      return { ...row, slno: index + 1 };
+      return { ...row, slno: index + 1, name: `${row.firstName} ${row?.lastName}` };
     });
     useEffect(() => {
-      dispatch(getPartnerData());
+      dispatch(unverifiedPartners());
     }, []);
     return (
       <div style={{ height: "80vh", width: "100%" }}>
@@ -164,7 +173,6 @@ import {
           disableRowSelectionOnClick
           // checkboxSelection
         />
-        
       </div>
     );
   }

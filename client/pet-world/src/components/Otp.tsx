@@ -42,6 +42,7 @@ export const Otp = () => {
   const { errors } = formState;
   const [showButton, setShowButton] = useState(false);
   const [timer, setTimer] = useState(0);
+  const [reset, setReset] = useState(false);
 
   const onSubmit: SubmitHandler<Otp> = (otp): void => {
 if(signupDataUser) {
@@ -55,6 +56,7 @@ if(signupDataUser) {
 
   const handleClick = () => {
     setTimer(0);
+    setReset(prev => !prev)
     setShowButton(false);
     if(signupDataUser) {
       console.log(signupDataUser);
@@ -75,6 +77,8 @@ if(signupDataUser) {
   }, [registerStatusPartner, errorPartner]);
 
   useEffect(() => {
+    console.log(111111);
+    
     const intervalId = setInterval(() => {
       setTimer((prevCount) => prevCount + 1);
     }, 1000);

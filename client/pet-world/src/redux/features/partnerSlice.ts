@@ -9,12 +9,10 @@ type FormValues = {
   password: string;
   confirmPassword: string;
   contactNumber: number;
-  role?:string
+  role?: string;
 };
 
-type CredentialRespone = {
-  
-}
+type CredentialRespone = {};
 
 type UserData = {
   firstName: string;
@@ -25,14 +23,15 @@ type UserData = {
   picture?: string;
   address?: string;
   role: string;
-  is_verified: boolean
+  is_verified: boolean;
+  is_kycSubmitted: boolean;
   _id: string;
   __v: number;
 };
 
 type ContactNumber = {
-  contactNumber: number
-}
+  contactNumber: number;
+};
 
 type InitialState = {
   loading: boolean;
@@ -43,8 +42,8 @@ type InitialState = {
   error: string;
   otpSendStat: boolean;
   successMessage: string;
-  tokenStat : boolean | null;
-  blockStat : boolean
+  tokenStat: boolean | null;
+  blockStat: boolean;
 };
 const initialState: InitialState = {
   loading: false,
@@ -55,13 +54,13 @@ const initialState: InitialState = {
   error: "",
   successMessage: "",
   otpSendStat: false,
-  tokenStat : null,
-  blockStat : false
+  tokenStat: null,
+  blockStat: false,
 };
 
 export const sendOtpPartner = createAsyncThunk(
   "vet/sendOtp",
-  async (userData:FormValues) => {
+  async (userData: FormValues) => {
     try {
       //   console.log("role", role);
 
@@ -77,7 +76,7 @@ export const sendOtpPartner = createAsyncThunk(
 
 export const registerPartner = createAsyncThunk(
   "partner/registerPartner",
-  async (userData:UserData, { rejectWithValue }) => {
+  async (userData: UserData, { rejectWithValue }) => {
     try {
       const response = await axios.post("/api/partner/signup", userData);
       return response.data;
@@ -106,7 +105,7 @@ export const getPartnerData = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get("/api/partner/getpartnerdata");
-      console.log('axios',response.data);
+      console.log("axios", response.data);
       return response.data;
     } catch (error: any) {
       console.log(error.response.data);
@@ -115,30 +114,44 @@ export const getPartnerData = createAsyncThunk(
   }
 );
 
-
-export const updatePartner = createAsyncThunk("/partner/updatepartner", async(updatedData,{rejectWithValue}) => {
-  try{
-    const response = await axios.patch('/api/partner/updatepartner',updatedData)
-    return response.data
-  } catch (error:any) {
-    console.log(error.response.data); 
-    return rejectWithValue(error.response.data);
+export const updatePartner = createAsyncThunk(
+  "/partner/updatepartner",
+  async (updatedData, { rejectWithValue }) => {
+    try {
+      const response = await axios.patch(
+        "/api/partner/updatepartner",
+        updatedData
+      );
+      return response.data;
+    } catch (error: any) {
+      console.log(error.response.data);
+      return rejectWithValue(error.response.data);
+    }
   }
-})
+);
 
-export const updatePartnerProfilePic = createAsyncThunk("/partner/updatepartnerprofilepic", async(image: FormData,{rejectWithValue}) => {
-  try{
-    console.log("image",image);
-    
-    const response = await axios.patch('/api/partner//updatepartnerprofilepic',image, {headers: {
-      "Content-Type": "multipart/form-data",
-    }})
-    return response.data
-  } catch (error:any) {
-    console.log(error.response.data); 
-    return rejectWithValue(error.response.data);
+export const updatePartnerProfilePic = createAsyncThunk(
+  "/partner/updatepartnerprofilepic",
+  async (image: FormData, { rejectWithValue }) => {
+    try {
+      console.log("image", image);
+
+      const response = await axios.patch(
+        "/api/partner//updatepartnerprofilepic",
+        image,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      return response.data;
+    } catch (error: any) {
+      console.log(error.response.data);
+      return rejectWithValue(error.response.data);
+    }
   }
-})
+);
 
 export const logOut = createAsyncThunk("vet/logout", async () => {
   try {
@@ -149,40 +162,49 @@ export const logOut = createAsyncThunk("vet/logout", async () => {
   }
 });
 
-export const forgotPassword = createAsyncThunk('partner/forgotpasswordpartner', async(number:ContactNumber,{rejectWithValue}) => {
-  console.log("number",number);
-  
-  try {
-    const response = await axios.post("/api/partner/forgotpassword",number);
-      console.log('axios',response.data);
-      return response.data
-  } catch (error: any) {
-    console.log(error.response.data);
+export const forgotPassword = createAsyncThunk(
+  "partner/forgotpasswordpartner",
+  async (number: ContactNumber, { rejectWithValue }) => {
+    console.log("number", number);
+
+    try {
+      const response = await axios.post("/api/partner/forgotpassword", number);
+      console.log("axios", response.data);
+      return response.data;
+    } catch (error: any) {
+      console.log(error.response.data);
       return rejectWithValue(error.response.data);
+    }
   }
-})
+);
 
-export const verifyOtpPassword = createAsyncThunk('partner/verifyotppassword', async (data,{ rejectWithValue}) => {
-  try {
-    console.log("data",data);
-    
-    const response = await axios.post('/api/partner/verifyotppassword', data)
-    return response.data
-  } catch (error: any) {
-    rejectWithValue(error.response.data)
-  }
-})
+export const verifyOtpPassword = createAsyncThunk(
+  "partner/verifyotppassword",
+  async (data, { rejectWithValue }) => {
+    try {
+      console.log("data", data);
 
-export const setNewPassword = createAsyncThunk('partner/setnewpassword', async (data,{ rejectWithValue}) => {
-  try {
-    console.log("pass",data);
-    
-    const response = await axios.post('/api/partner/setnewpassword', data)
-    return response.data
-  } catch (error: any) {
-    rejectWithValue(error.response.data)
+      const response = await axios.post("/api/partner/verifyotppassword", data);
+      return response.data;
+    } catch (error: any) {
+      rejectWithValue(error.response.data);
+    }
   }
-})
+);
+
+export const setNewPassword = createAsyncThunk(
+  "partner/setnewpassword",
+  async (data, { rejectWithValue }) => {
+    try {
+      console.log("pass", data);
+
+      const response = await axios.post("/api/partner/setnewpassword", data);
+      return response.data;
+    } catch (error: any) {
+      rejectWithValue(error.response.data);
+    }
+  }
+);
 
 const vetSlice = createSlice({
   initialState,
@@ -225,10 +247,9 @@ const vetSlice = createSlice({
         state.error = "";
       })
       .addCase(loginPartner.fulfilled, (state, action) => {
-        (state.loading = false),
-         (state.userData = action.payload.user);
-         console.log(action.payload.user);
-         
+        (state.loading = false), (state.userData = action.payload.user);
+        console.log(action.payload.user);
+
         state.loginSuccess = true;
         state.tokenStat = true;
         localStorage.setItem("partner", JSON.stringify(action.payload.user));
@@ -240,20 +261,20 @@ const vetSlice = createSlice({
         state.error = action.payload.message || "";
       })
 
-      .addCase(getPartnerData.pending, (state, action )=> {
-        state.loading = true
+      .addCase(getPartnerData.pending, (state, action) => {
+        state.loading = true;
       })
-      .addCase(getPartnerData.rejected, (state, action )=> {
-        state.loading = false
-        state.error = action.payload.message || ''
-        state.blockStat = true
+      .addCase(getPartnerData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload.message || "";
+        state.blockStat = true;
         state.tokenStat = false;
       })
-      .addCase(getPartnerData.fulfilled, (state, action )=> {
-        state.loading = false
-        state.userData = action.payload.partnerData
+      .addCase(getPartnerData.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userData = action.payload.partnerData;
         state.tokenStat = true;
-        console.log('gotdata',action.payload)
+        console.log("gotdata", action.payload);
       })
       .addCase(logOut.fulfilled, (state, action) => {
         (state.loading = false),
@@ -263,36 +284,36 @@ const vetSlice = createSlice({
           (state.signupData = null),
           (state.otpSendStat = false),
           (state.error = ""),
-          state.tokenStat = null,
+          (state.tokenStat = null),
           (state.successMessage = "");
         localStorage.removeItem("partner");
       })
-      .addCase(updatePartner.pending, (state, action )=> {
-        state.loading = true
-        state.successMessage = ""
+      .addCase(updatePartner.pending, (state, action) => {
+        state.loading = true;
+        state.successMessage = "";
       })
-      .addCase(updatePartner.rejected, (state, action )=> {
-        state.loading = false
-        state.error = action.error.message || ''
+      .addCase(updatePartner.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "";
       })
-      .addCase(updatePartner.fulfilled, (state, action )=> {
-        state.loading = false
-        state.successMessage = action.payload.message
-        console.log('gotdata',action.payload);
+      .addCase(updatePartner.fulfilled, (state, action) => {
+        state.loading = false;
+        state.successMessage = action.payload.message;
+        console.log("gotdata", action.payload);
       })
-      .addCase(updatePartnerProfilePic.pending, (state, action )=> {
-        state.loading = true
-        state.successMessage = ""
+      .addCase(updatePartnerProfilePic.pending, (state, action) => {
+        state.loading = true;
+        state.successMessage = "";
       })
-      .addCase(updatePartnerProfilePic.rejected, (state, action )=> {
-        state.loading = false
-        state.error = action.error.message || ''
+      .addCase(updatePartnerProfilePic.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "";
       })
-      .addCase(updatePartnerProfilePic.fulfilled, (state, action )=> {
-        state.loading = false
-        state.successMessage = action.payload.message
-        console.log('gotdata',action.payload);
-      })
+      .addCase(updatePartnerProfilePic.fulfilled, (state, action) => {
+        state.loading = false;
+        state.successMessage = action.payload.message;
+        console.log("gotdata", action.payload);
+      });
   },
 });
 

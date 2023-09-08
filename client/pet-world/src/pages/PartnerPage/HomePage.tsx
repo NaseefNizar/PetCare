@@ -19,11 +19,10 @@ import KycLayout from "../../components/PartnerLayout/Kyc/KycLayout";
 export const PartnerHomePage = () => {
   const partnerData = useAppSelector((state) => state.vet.userData);
 
-  // console.log("is", partnerData);
 
   return (
     <PartnerLayout>
-      {!partnerData?.is_verified ? (
+      {!partnerData?.is_kycSubmitted ? (
         <Paper
           sx={{
             maxWidth: 936,
@@ -58,18 +57,34 @@ export const PartnerHomePage = () => {
               >
                 Complete KYC to proceed further
               </Typography>
-              {/* <Button variant="contained" 
-            sx={{ mr: 1 }}
-            >
-              Click here for verification
-            </Button> */}
+
               <KycLayout />
               <img width={"400px"} height={"250px"} src={verificationImg} />
             </Stack>
           </Box>
         </Paper>
       ) : (
-        ""
+        <Paper
+        sx={{
+          maxWidth: 936,
+          margin: "auto",
+          overflow: "hidden",
+          padding: "20px",
+        }}
+      >
+        <AppBar
+          position="static"
+          color="default"
+          elevation={0}
+          sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0.12)" }}
+        >
+          <Toolbar sx={{ justifyContent: "center" }}>
+            <Box alignItems="center" justifyContent={"center"}>
+              WELCOME TO DASHBOARD
+            </Box>
+          </Toolbar>
+        </AppBar>
+        </Paper> 
       )}
     </PartnerLayout>
   );

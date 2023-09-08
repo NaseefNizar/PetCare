@@ -16,6 +16,7 @@ type InitialState = {
   isLoggedIn: boolean;
   userList: [];
   partnerList: [];
+  unverifiedList: []
 };
 
 const initialState: InitialState = {
@@ -25,6 +26,7 @@ const initialState: InitialState = {
   isLoggedIn: false,
   userList: [],
   partnerList: [],
+  unverifiedList: []
 };
 
 export const loginAuth = createAsyncThunk(
@@ -80,6 +82,21 @@ export const getPartnerData = createAsyncThunk(
     }
   }
 );
+
+export const unverifiedPartners = createAsyncThunk(
+  'adminSlice/unverifiedpartners',
+  async () => {
+    try{
+    const response = await axios.get('api/admin/getunverifiedpartner');
+    console.log(response.data);
+    
+    return response.data
+    }
+  catch (error: any) {
+    console.log(error.response.data);
+  }
+
+})
 
 export const blockPartner = createAsyncThunk(
   "adminSlice/blockpartner",
@@ -141,6 +158,17 @@ const adminSlice = createSlice({
         state.partnerList = action.payload.partnerData;
       })
       .addCase(getPartnerData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "";
+      })
+      .addCase(unverifiedPartners.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(unverifiedPartners.fulfilled, (state, action) => {
+        state.loading = false;
+        state.unverifiedList = action.payload.unverifiedPartners;
+      })
+      .addCase(unverifiedPartners.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "";
       })
