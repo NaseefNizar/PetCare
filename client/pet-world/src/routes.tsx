@@ -22,6 +22,7 @@ import { PasswordOtp } from "./components/PasswordOtp";
 import PartnerLayout from "./components/PartnerLayout/PartnerLayout";
 import { PartnerKycPage } from "./pages/PartnerPage/PartnerKycPage";
 import { PartnerDetailsPage } from "./pages/Admin/PartnerDetailsPage";
+import { ListVetPage } from "./pages/ListVetPage";
 
 
 export const Router = () => {
@@ -33,6 +34,7 @@ export const Router = () => {
         <Route path="/login" element={<UserLoginPage />} />
         <Route path="/vet/signup" element={<SignUpPage role="Vet" />} />
         <Route path="/groomer/signup" element={<SignUpPage role="Groomer" />} />
+        <Route path="/list-vet" element={<ListVetPage />} />
 
         <Route path="/otp" element={<OtpPage />} />
 

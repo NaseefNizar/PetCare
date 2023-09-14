@@ -20,12 +20,19 @@ import { Documents } from "./Documents";
 import { PartnerKycPage } from "../../../pages/PartnerPage/PartnerKycPage";
 import { kycUpdate } from "../../../redux/features/kycSlice";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { kycData } from "../../../types/kyc";
 
 export default function KycLayout() {
   const [open, setOpen] = useState(false);
+  const [doc, setDoc] = useState<FormData | null | undefined>(null)
+
+  
   const dispatch = useAppDispatch();
   const kycData = useAppSelector( state => state.kyc.kycData)
-  const childFormRef = useRef<HTMLFormElement>(null);
+
+  const getDoc = (data:FormData) => {
+    setDoc(data)
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -44,7 +51,7 @@ export default function KycLayout() {
       case 1:
         return <BankDetails />;
       case 2:
-        return <Documents />;
+        return <Documents sendData={getDoc}/>;
     }
   };
 
@@ -92,7 +99,37 @@ export default function KycLayout() {
     // newCompleted[activeStep] = true;
     // setCompleted(newCompleted);
     // handleNext();
-    dispatch(kycUpdate(kycData))
+    // console.log({...kycData,...doc});
+    const formData = new FormData();
+    formData.append('poi',doc.poi[0])
+    formData.append('poq',doc.poq[0])
+    formData.append('photo',doc.photo[0])
+    console.log(kycData);
+    
+    // for (const key in kycData) {
+    //   if (formData.hasOwnProperty(key)) {
+    //     const value = kycData[key];
+    //     console.log(value);
+        
+    //     formData.append(key, value);
+    //   }
+    // }
+    formData.append('firstName',kycData?.firstName)
+    formData.append('lastName',kycData?.lastName)
+    formData.append('centreName',kycData?.centreName)
+    formData.append('locality',kycData?.locality)
+    formData.append('pincode',kycData?.pincode)
+    formData.append('area',kycData?.area)
+    formData.append('state',kycData?.state)
+    formData.append('bankName',kycData?.bankName)
+    formData.append('branchName',kycData?.branchName)
+    formData.append('accountHolderName',kycData?.accountHolderName)
+    formData.append('accountNumber',kycData?.accountNumber)
+    formData.append('ifsc',kycData?.ifsc)
+    // console.log(formData.get('firstName'));
+    
+    
+    dispatch(kycUpdate(formData))
   };
 
   const handleReset = () => {

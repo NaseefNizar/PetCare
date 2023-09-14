@@ -4,6 +4,7 @@ import userReducer from "./features/userSlice";
 import partnerReducer from "./features/partnerSlice";
 import kycReducer from './features/kycSlice'
 import verifyReducer from './features/adminVerifySlice'
+import listReducer from './features/partnerListSlice'
 
 
 const store = configureStore({
@@ -12,7 +13,8 @@ const store = configureStore({
         user: userReducer,
         vet : partnerReducer,
         kyc : kycReducer,
-        adminVerify: verifyReducer
+        adminVerify: verifyReducer,
+        listing: listReducer
     }
 })
 

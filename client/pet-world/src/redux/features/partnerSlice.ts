@@ -12,7 +12,7 @@ type FormValues = {
   role?: string;
 };
 
-type CredentialRespone = {};
+type CredentialResponse = {};
 
 type UserData = {
   firstName: string;
@@ -65,10 +65,10 @@ export const sendOtpPartner = createAsyncThunk(
       //   console.log("role", role);
 
       const response = await axios.post("/api/partner/sendotp", userData);
-      console.log(response);
+      // console.log(response);
       return response.data;
     } catch (error: any) {
-      console.log(error);
+      // console.log(error);
       throw error.response.data;
     }
   }
@@ -91,10 +91,10 @@ export const loginPartner = createAsyncThunk(
   async (credential, { rejectWithValue }) => {
     try {
       const response = await axios.post("/api/partner/login", credential);
-      console.log(response);
+      // console.log(response);
       return response.data;
     } catch (error: any) {
-      console.log(error.response.data.message);
+      // console.log(error.response.data.message);
       return rejectWithValue(error.response.data);
     }
   }
@@ -105,10 +105,10 @@ export const getPartnerData = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get("/api/partner/getpartnerdata");
-      console.log("axios", response.data);
+      // console.log("axios", response.data);
       return response.data;
     } catch (error: any) {
-      console.log(error.response.data);
+      // console.log(error.response.data);
       return rejectWithValue(error.response.data);
     }
   }
@@ -124,7 +124,7 @@ export const updatePartner = createAsyncThunk(
       );
       return response.data;
     } catch (error: any) {
-      console.log(error.response.data);
+      // console.log(error.response.data);
       return rejectWithValue(error.response.data);
     }
   }
@@ -134,7 +134,7 @@ export const updatePartnerProfilePic = createAsyncThunk(
   "/partner/updatepartnerprofilepic",
   async (image: FormData, { rejectWithValue }) => {
     try {
-      console.log("image", image);
+      // console.log("image", image);
 
       const response = await axios.patch(
         "/api/partner//updatepartnerprofilepic",
@@ -147,7 +147,7 @@ export const updatePartnerProfilePic = createAsyncThunk(
       );
       return response.data;
     } catch (error: any) {
-      console.log(error.response.data);
+      // console.log(error.response.data);
       return rejectWithValue(error.response.data);
     }
   }
@@ -169,10 +169,10 @@ export const forgotPassword = createAsyncThunk(
 
     try {
       const response = await axios.post("/api/partner/forgotpassword", number);
-      console.log("axios", response.data);
+      // console.log("axios", response.data);
       return response.data;
     } catch (error: any) {
-      console.log(error.response.data);
+      // console.log(error.response.data);
       return rejectWithValue(error.response.data);
     }
   }
@@ -182,7 +182,7 @@ export const verifyOtpPassword = createAsyncThunk(
   "partner/verifyotppassword",
   async (data, { rejectWithValue }) => {
     try {
-      console.log("data", data);
+      // console.log("data", data);
 
       const response = await axios.post("/api/partner/verifyotppassword", data);
       return response.data;
@@ -196,7 +196,7 @@ export const setNewPassword = createAsyncThunk(
   "partner/setnewpassword",
   async (data, { rejectWithValue }) => {
     try {
-      console.log("pass", data);
+      // console.log("pass", data);
 
       const response = await axios.post("/api/partner/setnewpassword", data);
       return response.data;
@@ -274,7 +274,7 @@ const vetSlice = createSlice({
         state.loading = false;
         state.userData = action.payload.partnerData;
         state.tokenStat = true;
-        console.log("gotdata", action.payload);
+        // console.log("gotdata", action.payload);
       })
       .addCase(logOut.fulfilled, (state, action) => {
         (state.loading = false),

@@ -7,6 +7,7 @@ import jwt, { JwtPayload }  from "jsonwebtoken";
 const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
 import pkg from "twilio";
+import Kyc from "../model/kycModel.js";
 const { Twilio } = pkg;
 
 const { TWILIO_SERVICE_SID, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } =
@@ -20,9 +21,10 @@ const client = new Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 
 interface MyCustomRequest extends Request {
   id?: string;
-  files: {
+  files?: {
     poi?: Express.Multer.File[]; // Use Express Multer's File type or your custom File type
     poq?: Express.Multer.File[]; // Use Express Multer's File type or your custom File type
+    photo?: Express.Multer.File[]; // Use Express Multer's File type or your custom File type
   };
 }
 
@@ -249,15 +251,24 @@ export const signup = async (req: Request, res: Response) => {
 
   export const kycUpdate = async(req: MyCustomRequest, res: Response) => {
     try {
+      const poi = req.files.poi?.[0]?.filename
+        const poq = req.files.poq?.[0]?.filename
+        const photo = req.files.photo?.[0]?.filename
       const {...data} = req.body
-      console.log(req.body);
+      console.log(req.body.firstName);
       console.log(req.id);
-      
-      const userData = await Partner.findByIdAndUpdate(req.id,{
-        $set:{
-          ...data,is_kycSubmitted:true
-        }
+      const kycData = new Kyc({
+        ...data,
+        poi:`http://localhost:8000/users/${poi}`,
+            poq:`http://localhost:8000/users/${poq}`,
+            photo:`http://localhost:8000/users/${photo}`,
       })
+      
+      await kycData.save()
+      const partnerData = await Partner.findByIdAndUpdate(req.id,{$set:{
+        kycDataId:kycData._id,
+        is_kycSubmitted:true
+      }})
       res.status(200).json({ message: "Updated successfully" });
 
     } catch (error) {
@@ -268,16 +279,25 @@ export const signup = async (req: Request, res: Response) => {
   export const kycDocumentUpload = async (req: MyCustomRequest, res: Response) => {
     try {
       console.log("files", req.files);
-  
       if (req.files) {
         const poi = req.files.poi?.[0]?.filename
         const poq = req.files.poq?.[0]?.filename
-        const userData = await Partner.findByIdAndUpdate(req.id, {
-          $set: {
-            poi: `http://localhost:8000/users/${poi}`,
-            poq: `http://localhost:8000/users/${poq}`,
-          },
-        });
+        const photo = req.files.photo?.[0]?.filename
+        console.log(poi);
+        
+        const userData = await Partner.findById(req.id)
+
+        const kycId = userData?.kycDataId.toHexString()
+        console.log(kycId);
+        
+        const kycData = await Kyc.findByIdAndUpdate(kycId,{
+          $set:{
+            poi:`http://localhost:8000/users/${poi}`,
+            poq:`http://localhost:8000/users/${poq}`
+          }
+        })
+        console.log(kycData);
+        
   
         res.status(200).json({ message: "Updated successfully" });
       }

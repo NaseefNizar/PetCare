@@ -43,7 +43,7 @@ export const Navbar = () => {
   }
 
   return (
-    <AppBar position="static" color="transparent">
+    <AppBar position="static" color="transparent" >
       <Toolbar>
         <IconButton size="large" edge="start" color="inherit" aria-label="logo">
           <PetsIcon color="secondary" sx={{ fontSize: 40 }} />

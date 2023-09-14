@@ -10,19 +10,24 @@ import {
 } from "@mui/material";
 import { useAppDispatch } from "../../../redux/hooks";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { kycDocUpload, setKycData } from "../../../redux/features/kycSlice";
 import { useDispatch } from "react-redux";
 
-type FormData  = {
+type Data  = {
   poi: FileList,
   poq: FileList,
+  photo: FileList
 }
 
+type Props = {
+  sendData:(data) => void
+}
 
+export const Documents = ({sendData}:Props) => {
 
-export const Documents = () => {
-  const form = useForm<FormData>({
+  const [doc, setDoc] = useState<FormData | null | undefined>(null)
+  const form = useForm<Data>({
     mode: "onTouched",
   });
   const dispatch = useDispatch()
@@ -31,19 +36,27 @@ export const Documents = () => {
 
   const ref1 = useRef<HTMLInputElement>(null);
   const ref2 = useRef<HTMLInputElement>(null);
+  const ref3 = useRef<HTMLInputElement>(null);
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: Data) => {
+    console.log('hdsfdj',data);
+    
     const formData = new FormData();
     formData.append('poi',data.poi[0])
     formData.append('poq',data.poq[0])
+    formData.append('photo',data.photo[0])
 
     console.log(data);
     
     console.log(formData);
     
-    console.log(formData.get('image'));
-    dispatch(kycDocUpload(formData))
+    console.log(formData.get('poi'));
+    // dispatch(kycDocUpload(formData))
     // dispatch(setKycData(formData))
+    // setDoc(formData)
+    sendData(data)
+    // console.log('doc',doc);
+    
   };
 
 
@@ -137,6 +150,34 @@ export const Documents = () => {
                 )}
               />
               {errors.poq && <p style={{color:'#FF0000'}}>{errors.poq.message}</p>}
+            </div>
+            </Grid>
+            <Grid item>
+              <Typography
+                sx={{ color: "#2196F3", cursor: "pointer" }}
+                onClick={() => ref3.current?.click()}
+              >
+                + Upload your photo
+              </Typography>
+              {/* <p>{errors.file?.message}</p> */}
+            <div>
+              <Controller
+                name="photo"
+                control={control}
+                // defaultValue={null}
+                rules={{ validate: validateFile }}
+                render={({ field }) => (
+                  <input
+                    type="file"
+                    ref={ref3}
+                    style={{ display: "none" }}
+                    onChange={(e) => {
+                      field.onChange(e.target.files);
+                    }}
+                  />
+                )}
+              />
+              {errors.photo && <p style={{color:'#FF0000'}}>{errors.photo.message}</p>}
             </div>
             </Grid>
           </Stack>

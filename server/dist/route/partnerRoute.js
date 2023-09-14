@@ -18,6 +18,7 @@ partnerRoute.post('/setnewpassword', setNewPassword);
 partnerRoute.patch('/kycupdate', verifyToken, upload.fields([
     { name: 'poi', maxCount: 1 },
     { name: 'poq', maxCount: 1 },
+    { name: 'photo', maxCount: 1 },
 ]), kycUpdate);
 partnerRoute.patch('/kycdocumentupload', verifyToken, upload.fields([
     { name: 'poi', maxCount: 1 },

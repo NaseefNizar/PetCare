@@ -109,7 +109,7 @@ export const getPartnerData = async (req, res) => {
 };
 export const getUnverifiedPartner = async (req, res) => {
     try {
-        const unverifiedPartners = await Partner.find({ is_verified: false });
+        const unverifiedPartners = await Partner.find({ is_verified: false }).populate('kycDataId');
         res.status(200).json({ unverifiedPartners });
     }
     catch (error) {
@@ -120,11 +120,27 @@ export const getUnverifiedPartner = async (req, res) => {
 export const individualPartnerData = async (req, res) => {
     try {
         console.log(req.body);
-        const partnerData = await Partner.findOne({ _id: req.body.id });
+        const partnerData = await Partner.findOne({ _id: req.body.id }).populate('kycDataId');
+        console.log(partnerData);
         res.status(200).json({ partnerData });
     }
     catch (error) {
         res.status(500).json({ message: 'Error getting partner data' });
+    }
+};
+export const partnerApproval = async (req, res) => {
+    try {
+        const { partnerId } = req.body;
+        console.log(req.body);
+        const partner = await Partner.findByIdAndUpdate(partnerId, {
+            $set: {
+                is_verified: true
+            }
+        });
+        res.status(200).json({ message: "Successfull" });
+    }
+    catch (error) {
+        res.status(500).json({ message: "Error approving partner" });
     }
 };
 export const partnerAccess = async (req, res) => {

@@ -208,7 +208,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import {
@@ -218,19 +218,32 @@ import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import { getPartnerData } from "../../redux/features/adminVerifySlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { approval } from "../../redux/features/adminSlice";
 
 export const PartnerViewDetails = () => {
   const [open, setOpen] = React.useState(false);
 
   const partnerData = useAppSelector((state) => state.adminVerify.partnerData);
+  const stat = useAppSelector(state => state.admin.stat)
+  console.log('stat',stat);
+  
+  const navigate = useNavigate()
 
   const dispatch = useAppDispatch();
   const { user_id } = useParams();
+
+  const handleApproval = (id: string) => {
+    dispatch(approval(id))
+  }
 
 
   useEffect(() => {
     dispatch(getPartnerData(user_id));
   }, []);
+
+  useEffect(() => {
+    stat && navigate('/admin/verify-partners')
+  },[stat])
 
 //   useEffect(() => {
 //     dispatch(getCenterDetails(id));
@@ -310,8 +323,8 @@ export const PartnerViewDetails = () => {
                     <Typography
                       sx={{ textAlign: "center", fontWeight: "bold" }}
                     >
-                      CENTER NAME
-                      <Typography>{partnerData?.firstName}</Typography>
+                      NAME
+                      <Typography>{partnerData?.kycDataId?.firstName} {partnerData?.kycDataId?.lastName}</Typography>
                     </Typography>
                   </Grid>
                   <Grid item xs={12} md={4}>
@@ -319,7 +332,7 @@ export const PartnerViewDetails = () => {
                       sx={{ textAlign: "center", fontWeight: "bold" }}
                     >
                       EMAIL ADDRESS
-                      {/* <Typography>{CenterData?.owner?.email}</Typography> */}
+                      <Typography>{partnerData?.email}</Typography>
                     </Typography>
                   </Grid>
                   <Grid item xs={12} md={4}>
@@ -327,15 +340,15 @@ export const PartnerViewDetails = () => {
                       sx={{ textAlign: "center", fontWeight: "bold" }}
                     >
                       CONTACT NUMBER
-                      {/* <Typography>{CenterData?.ContactNumber}</Typography> */}
+                      <Typography>{partnerData?.contactNumber}</Typography>
                     </Typography>
                   </Grid>
                   <Grid item xs={12} md={4}>
                     <Typography
                       sx={{ textAlign: "center", fontWeight: "bold" }}
                     >
-                      BUILDING NAME
-                      {/* <Typography>{CenterData?.BuildingName}</Typography> */}
+                      CENTER NAME
+                      <Typography>{partnerData?.kycDataId?.centreName}</Typography>
                     </Typography>
                   </Grid>
                   <Grid item xs={12} md={4}>
@@ -343,7 +356,7 @@ export const PartnerViewDetails = () => {
                       sx={{ textAlign: "center", fontWeight: "bold" }}
                     >
                       AREA
-                      {/* <Typography>{CenterData?.Area}</Typography> */}
+                      <Typography>{partnerData?.kycDataId?.area}</Typography>
                     </Typography>
                   </Grid>
                   <Grid item xs={12} md={4}>
@@ -351,15 +364,15 @@ export const PartnerViewDetails = () => {
                       sx={{ textAlign: "center", fontWeight: "bold" }}
                     >
                       LANDMARK
-                      {/* <Typography>{CenterData?.LandMark}</Typography> */}
+                      <Typography>{partnerData?.kycDataId?.pincode}</Typography>
                     </Typography>
                   </Grid>
                   <Grid item xs={12} md={4}>
                     <Typography
                       sx={{ textAlign: "center", fontWeight: "bold" }}
                     >
-                      CITY
-                      {/* <Typography>{CenterData?.City}</Typography> */}
+                      LOCALITY
+                      <Typography>{partnerData?.kycDataId?.locality}</Typography>
                     </Typography>
                   </Grid>
                   <Grid item xs={12} md={4}>
@@ -367,14 +380,14 @@ export const PartnerViewDetails = () => {
                       sx={{ textAlign: "center", fontWeight: "bold" }}
                     >
                       STATE
-                      {/* <Typography>{CenterData?.State}</Typography> */}
+                      <Typography>{partnerData?.kycDataId?.state}</Typography>
                     </Typography>
                   </Grid>
                 </Grid>
               </Stack>
             </Box>
             <Box>
-              <Typography
+              {/* <Typography
                 sx={{
                   margin: "30px",
                   marginBottom: "15px",
@@ -392,7 +405,7 @@ export const PartnerViewDetails = () => {
                   marginLeft: "10px",
                   marginRight: "30px",
                 }}
-              />
+              /> */}
               <Stack direction="row" spacing={15}>
                 {/* <Grid container spacing={3}>
                   {CenterData?.CenterImages &&
@@ -458,7 +471,7 @@ export const PartnerViewDetails = () => {
                   fontWeight: "bold",
                 }}
               >
-                Center Certificates
+                DOCUMENTS
               </Typography>
               <Divider
                 sx={{
@@ -496,14 +509,14 @@ export const PartnerViewDetails = () => {
                             // fontWeight: "bold",
                           }}
                         >
-                          {/* <Card sx={{ width: "200px" }}>
+                          <Card sx={{ width: "200px" }}>
                             <CardMedia
                               component="img"
                               sx={{ width: 200, margin: 0, height: 150 }}
-                              image={`http://localhost:5000/images/${CenterData?.CertificateImages?.[0]?.NABH}`}
+                              image={partnerData?.kycDataId?.poi}
                               alt="no Image"
                             />
-                          </Card> */}
+                          </Card>
                         </Typography>
                         <Stack
                           direction={"row"}
@@ -539,14 +552,14 @@ export const PartnerViewDetails = () => {
                             // fontWeight: "bold",
                           }}
                         >
-                          {/* <Card sx={{ width: "200px" }}>
+                          <Card sx={{ width: "200px" }}>
                             <CardMedia
                               component="img"
                               sx={{ width: 200, margin: 0, height: 150 }}
-                              image={`http://localhost:5000/images/${CenterData?.CertificateImages?.[1]?.NABL}`}
+                              image={partnerData?.kycDataId?.poq}
                               alt="no Image"
                             />
-                          </Card> */}
+                          </Card>
                         </Typography>
                         <Stack
                           direction={"row"}
@@ -571,25 +584,25 @@ export const PartnerViewDetails = () => {
                         },
                       }}
                     >
-                      <Stack>
+                      {/* <Stack>
                         <Typography
                           sx={{
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
                             height: "100%",
-                            // color: "#1778F2",
-                            // fontWeight: "bold",
+                            color: "#1778F2",
+                            fontWeight: "bold",
                           }}
                         >
-                          {/* <Card sx={{ width: "200px" }}>
+                          <Card sx={{ width: "200px" }}>
                             <CardMedia
                               component="img"
                               sx={{ width: 200, margin: 0, height: 150 }}
                               image={`http://localhost:5000/images/${CenterData?.CertificateImages?.[2]?.ISO}`}
                               alt="no Image"
                             />
-                          </Card> */}
+                          </Card>
                         </Typography>
                         <Stack
                           direction={"row"}
@@ -597,7 +610,7 @@ export const PartnerViewDetails = () => {
                           marginBottom={"10PX"}
                           marginLeft={"10px"}
                         ></Stack>
-                      </Stack>
+                      </Stack> */}
                     </Box>
                   </Grid>
                 </Grid>
@@ -636,6 +649,24 @@ export const PartnerViewDetails = () => {
               ) : (
                 ""
               )} */}
+              <Box display={"flex"} justifyContent={"flex-end"}>
+              {/* <Button
+                  variant="contained"
+                  sx={{ margin: "20px" }}
+                  color="error"
+                >
+                  Reject
+                </Button> */}
+              <Button
+                  variant="contained"
+                  sx={{ margin: "20px" }}
+                  color="success"
+                  onClick={() => handleApproval(user_id)}
+
+                >
+                  Approve
+                </Button>
+            </Box>
             </Box>
           </Paper>
         </Container>

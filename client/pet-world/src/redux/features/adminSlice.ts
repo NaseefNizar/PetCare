@@ -16,7 +16,9 @@ type InitialState = {
   isLoggedIn: boolean;
   userList: [];
   partnerList: [];
-  unverifiedList: []
+  unverifiedList: [];
+  successMsg : string ;
+  stat: boolean
 };
 
 const initialState: InitialState = {
@@ -26,7 +28,9 @@ const initialState: InitialState = {
   isLoggedIn: false,
   userList: [],
   partnerList: [],
-  unverifiedList: []
+  unverifiedList: [],
+  successMsg: '',
+  stat: false
 };
 
 export const loginAuth = createAsyncThunk(
@@ -120,6 +124,20 @@ export const logout = createAsyncThunk("adminSlice/logout", async () => {
   }
 });
 
+export const approval = createAsyncThunk(
+  'admin/partnerapproval',
+  async(partnerId,{rejectWithValue}) => {
+    try {
+      console.log(partnerId);
+      
+      const response = await axios.patch('api/admin/approvepartner',{partnerId})
+      return response.data
+    } catch (error: any) {
+      rejectWithValue(error.response.data)
+    }
+  }
+)
+
 const adminSlice = createSlice({
   initialState,
   name: "adminSlice",
@@ -139,6 +157,8 @@ const adminSlice = createSlice({
         state.error = action.error.message || "";
         state.isLoggedIn = false;
       })
+
+
       .addCase(getUserData.pending, (state, action) => {
         state.loading = true;
       })
@@ -150,6 +170,8 @@ const adminSlice = createSlice({
         state.loading = false;
         state.error = action.payload.message || "";
       })
+
+
       .addCase(getPartnerData.pending, (state, action) => {
         state.loading = true;
       })
@@ -161,6 +183,8 @@ const adminSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "";
       })
+
+
       .addCase(unverifiedPartners.pending, (state, action) => {
         state.loading = true;
       })
@@ -172,6 +196,8 @@ const adminSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "";
       })
+
+
       .addCase(blockUser.pending, (state, action) => {
         state.loading = true;
       })
@@ -183,6 +209,8 @@ const adminSlice = createSlice({
         state.loading = false;
         state.error = action.payload.message || "";
       })
+
+
       .addCase(blockPartner.pending, (state, action) => {
         state.loading = true;
       })
@@ -194,6 +222,25 @@ const adminSlice = createSlice({
         state.loading = false;
         state.error = action.payload.message || "";
       })
+
+
+
+      .addCase(approval.pending, (state,action) => {
+        state.loading = true
+        state.stat = false
+      })
+      .addCase(approval.fulfilled, (state, action) =>{
+        state.loading = false;
+        state.successMsg = action.payload.message
+        state.stat = true
+      })
+      .addCase(approval.rejected, (state, action) =>{
+        state.loading = false;
+        state.error = action.payload.message
+        state.stat = false
+      })
+
+
       .addCase(logout.fulfilled, (state, action: PayloadAction<UserState>) => {
         (state.userData = []),
           (state.loading = false),

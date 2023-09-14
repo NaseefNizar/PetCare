@@ -46,12 +46,14 @@ export const kycDocUpload = createAsyncThunk(
   }
 );
 
+
+
 const kycSlice = createSlice({
   initialState,
   name: "kyc",
   reducers: {
     setKycData: (state, action) => {
-      state.kycData = { ...state.kycData, ...action.payload };
+      state.kycData = { ...state.kycData,...action.payload };
     },
   },
   extraReducers: (builder) => {

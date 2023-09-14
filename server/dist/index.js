@@ -9,6 +9,7 @@ import partnerRoute from './route/partnerRoute.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import listRoute from './route/listRoute.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const PORT = 8000;
@@ -31,6 +32,7 @@ app.use(cookieParser());
 app.use('/api', userRoute);
 app.use('/api/admin', adminRoute);
 app.use('/api/partner', partnerRoute);
+app.use('/api/list', listRoute);
 app.use(express.static(path.join(__dirname, ('../dist/public'))));
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

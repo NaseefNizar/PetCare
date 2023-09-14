@@ -1,22 +1,20 @@
 import bcrypt from "bcrypt";
 import { NextFunction, Request, Response } from "express";
-import { OAuth2Client, TokenPayload } from "google-auth-library";
+import { OAuth2Client, TokenPayload bvm} from "google-auth-library";
 import User from "../model/UserModel.js";
 import Partner from "../model/PartnerModel.js";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { handleUpload } from "../middleware/cloudinary/cloudinary.js";
 
 import pkg from "twilio";
 const { Twilio } = pkg;
 
 const { TWILIO_SERVICE_SID, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } =
   process.env;
-
 if (!TWILIO_SERVICE_SID || !TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN) {
   throw new Error("Twilio environment variables are not defined.");
 }
-
 const client = new Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
-
 const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
 interface DecodedToken extends JwtPayload {
@@ -257,22 +255,44 @@ export const updateUser = async (req: MyCustomRequest, res: Response) => {
 };
 
 export const updateProfilePic = async (req: MyCustomRequest, res: Response) => {
-  try {
-    console.log("files", req.file);
+  // try {
+  //   console.log("files", req.file);
 
-    if (req.file) {
-      const imagePath = req.file.filename;
-      const userData = await User.findByIdAndUpdate(req.id, {
-        $set: {
-          picture: `http://localhost:8000/users/${imagePath}`,
-        },
-      });
+  //   if (req.file) {
+  //     const imagePath = req.file.filename;
+  //     const userData = await User.findByIdAndUpdate(req.id, {
+  //       $set: {
+  //         picture: `http://localhost:8000/users/${imagePath}`,
+  //       },
+  //     });
+
+  //     res.status(200).json({ message: "Updated successfully" });
+  //   }
+  // } catch (error) {
+  //   res.status(500).json({ message: "Error updating user data" });
+  // }
+
+  try {
+    const b64 = Buffer.from(req.file?.buffer).toString("base64");
+    let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+    const cldRes = await handleUpload(dataURI);
+    console.log(cldRes);
+      //     const userData = await User.findByIdAndUpdate(req.id, {
+      //   $set: {
+      //     picture: cldRes.secure_url,
+      //   },
+      // });
 
       res.status(200).json({ message: "Updated successfully" });
-    }
+    
+    res.json(cldRes);
   } catch (error) {
-    res.status(500).json({ message: "Error updating user data" });
+    console.log(error);
+    res.send({
+      message: error.message,
+    });
   }
+
 };
 
 
@@ -331,4 +351,6 @@ export const verifyPasswordOTP = async (
     res.status(400).json({ message: "Invalid OTP" });
   }
 };
+
+
 

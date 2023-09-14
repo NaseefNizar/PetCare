@@ -30,12 +30,14 @@ type InitialState = {
     loading: boolean
     partnerData: PartnerData | null
     errorMsg : string
+    stat: boolean
 }
 
 const initialState: InitialState = {
     loading: false,
     partnerData :  null,
-    errorMsg : ""
+    errorMsg : "",
+    stat: false
 }
 
 export const getPartnerData = createAsyncThunk('adminVerifySlice/getpartnerdata',async (id,{rejectWithValue}) =>{
@@ -57,14 +59,17 @@ const adminVerifySlice = createSlice({
     extraReducers: builder => {
         builder.addCase(getPartnerData.pending, (state, action) => {
             state.loading = true;
+            state.stat = false
         })
         .addCase(getPartnerData.fulfilled, (state, action) => {
             state.loading = false,
             state.partnerData = action.payload.partnerData
+            state.stat = true
         })
         .addCase(getPartnerData.rejected, (state, action) => {
             state.loading = false,
             state.partnerData = action.payload.message || ''
+            state.stat = false
         })
     }
 })

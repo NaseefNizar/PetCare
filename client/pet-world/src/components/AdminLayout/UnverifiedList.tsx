@@ -129,7 +129,7 @@ import { Link } from "react-router-dom";
     ];
     const userData:UserData[] = useAppSelector((state) => state.admin.unverifiedList);
     const userDataWithSlno = userData.map((row, index) => {
-      return { ...row, slno: index + 1, name: `${row.firstName} ${row?.lastName}` };
+      return { ...row, slno: index + 1, name: `${row.kycDataId.firstName} ${row.kycDataId.lastName}` };
     });
     useEffect(() => {
       dispatch(unverifiedPartners());

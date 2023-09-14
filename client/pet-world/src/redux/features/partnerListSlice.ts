@@ -1,0 +1,55 @@
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import axios from '../../utils/axiosInstance'
+import { initialState } from '../../types/kyc';
+
+
+type InitialState = {
+    loading: boolean;
+    partnerData : []
+    responseMsg : string
+}
+
+const initialState: InitialState = {
+    loading: false,
+    partnerData : [],
+    responseMsg : ''
+}
+
+
+export const getVetList =  createAsyncThunk(
+    'list/vet',
+    async(_,{rejectWithValue}) => {
+        try {
+            const response = await axios.get('api/list/getvetlist')
+            // console.log('response',response);
+            
+            return response.data
+        } catch (error: any) {
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
+
+
+const listSlice = createSlice({
+    initialState,
+    name:'partnerlist',
+    reducers:{},
+    extraReducers: builder => {
+        builder
+        .addCase(getVetList.pending, (state, action) => {
+            state.loading = true;
+        })
+        .addCase(getVetList.fulfilled, (state, action) => {
+            state.loading = false;
+            state.partnerData = action.payload.vetList
+        })
+        .addCase(getVetList.rejected, (state, action) => {
+            state.loading = false;
+            state.responseMsg = action.error.message || ''
+        })
+    }
+})
+
+
+export default listSlice.reducer

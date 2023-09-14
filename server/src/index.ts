@@ -2,13 +2,14 @@ import express from 'express'
 import 'dotenv/config';
 import cookieParser from "cookie-parser";
 import mongoose from 'mongoose';
-import cors from 'cors'
+import cors from 'cors';
 import userRoute from './route/userRoute.js';
 import adminRoute from './route/adminRoute.js';
 import partnerRoute from './route/partnerRoute.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import listRoute from './route/listRoute.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -35,6 +36,7 @@ app.use(cookieParser());
 app.use('/api', userRoute)
 app.use('/api/admin',adminRoute)
 app.use('/api/partner',partnerRoute)
+app.use('/api/list',listRoute)
 
 
 app.use(express.static(path.join(__dirname,('../dist/public'))));

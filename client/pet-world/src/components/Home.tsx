@@ -46,6 +46,7 @@ const Userhomepage = () => {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    text-decoration: none;
     &:hover {
       border-color: #ff0000;
     }`;
@@ -53,15 +54,18 @@ const Userhomepage = () => {
     const features =[
       {
         heading:'Pet Grooming',
-        description:'Book In-Home Grooming Session For Your Pet'
+        description:'Book In-Home Grooming Session For Your Pet',
+        link:'/list-vet'
       },
       {
         heading:'Vet on Call',
-        description:'Expert Veterinary Care Service At Your Home'
+        description:'Expert Veterinary Care Service At Your Home',
+        link:'/list-vet'
       },
       {
         heading:'Adopt a Pet',
-        description:'Book In-Home Grooming Session For Your Pet'
+        description:'Book In-Home Grooming Session For Your Pet',
+        link:'/list-vet'
       },
     ]
 
@@ -148,7 +152,7 @@ const Userhomepage = () => {
                 <Grid item 
                 // xs={12} sm={12} md={6} lg={3.5}
                 >
-                  <FeatureBox>
+                  <FeatureBox component={Link} to={feature.link}>
                      <img src={banner} width={"75"} height={"75%"} />
                     <Stack 
                     // spacing={0.25} 

@@ -31,42 +31,6 @@ const partnerSchema = new mongoose.Schema({
       type:Boolean,
       default:false
     },
-    centreName:{
-      type: String
-    },
-    locality:{
-      type: String
-    },
-    area: {
-      type: String
-    },
-    pincode: {
-      type: String
-    },
-    state: {
-      type: String
-    },
-    bankName: {
-      type: String
-    },
-    branchName: {
-      type: String
-    },
-    accountHolderName: {
-      type: String
-    },
-    accountNumber: {
-      type: String
-    },
-    ifsc: {
-      type: String
-    },
-    poi: {
-      type: String
-    },
-    poq: {
-      type: String
-    },
     is_verified:{
       type:Boolean,
       default:false
@@ -74,7 +38,11 @@ const partnerSchema = new mongoose.Schema({
     is_kycSubmitted: {
       type:Boolean,
       default:false
-    }
+    },
+    kycDataId: {
+      type: mongoose.Types.ObjectId,
+      ref: "Kyc",
+    },
   });
 
 const Partner = mongoose.model('Partner', partnerSchema)

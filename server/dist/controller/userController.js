@@ -3,6 +3,7 @@ import { OAuth2Client } from "google-auth-library";
 import User from "../model/UserModel.js";
 import Partner from "../model/PartnerModel.js";
 import jwt from "jsonwebtoken";
+import { handleUpload } from "../middleware/cloudinary/cloudinary.js";
 import pkg from "twilio";
 const { Twilio } = pkg;
 const { TWILIO_SERVICE_SID, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } = process.env;
@@ -211,20 +212,38 @@ export const updateUser = async (req, res) => {
     }
 };
 export const updateProfilePic = async (req, res) => {
+    // try {
+    //   console.log("files", req.file);
+    //   if (req.file) {
+    //     const imagePath = req.file.filename;
+    //     const userData = await User.findByIdAndUpdate(req.id, {
+    //       $set: {
+    //         picture: `http://localhost:8000/users/${imagePath}`,
+    //       },
+    //     });
+    //     res.status(200).json({ message: "Updated successfully" });
+    //   }
+    // } catch (error) {
+    //   res.status(500).json({ message: "Error updating user data" });
+    // }
     try {
-        console.log("files", req.file);
-        if (req.file) {
-            const imagePath = req.file.filename;
-            const userData = await User.findByIdAndUpdate(req.id, {
-                $set: {
-                    picture: `http://localhost:8000/users/${imagePath}`,
-                },
-            });
-            res.status(200).json({ message: "Updated successfully" });
-        }
+        const b64 = Buffer.from(req.file?.buffer).toString("base64");
+        let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+        const cldRes = await handleUpload(dataURI);
+        console.log(cldRes);
+        //     const userData = await User.findByIdAndUpdate(req.id, {
+        //   $set: {
+        //     picture: cldRes.secure_url,
+        //   },
+        // });
+        res.status(200).json({ message: "Updated successfully" });
+        res.json(cldRes);
     }
     catch (error) {
-        res.status(500).json({ message: "Error updating user data" });
+        console.log(error);
+        res.send({
+            message: error.message,
+        });
     }
 };
 export const forgotPassword = async (req, res, next) => {

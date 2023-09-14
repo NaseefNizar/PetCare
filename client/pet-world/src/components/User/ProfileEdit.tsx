@@ -40,7 +40,7 @@ export const ProfileEdit = ({
   const { errors } = formState
   const [updatedUserDetails, setUpdatedUserDetails] =
     useState<UserDetails>(userDetails);
-  console.log("update", updatedUserDetails);
+  // console.log("update", updatedUserDetails);
 
   const handleUpdate = () => {
     onUpdate(updatedUserDetails);

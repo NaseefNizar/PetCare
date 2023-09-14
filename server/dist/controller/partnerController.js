@@ -3,6 +3,7 @@ import Partner from "../model/PartnerModel.js";
 import jwt from "jsonwebtoken";
 const jwtSecretKey = process.env.JWT_SECRET_KEY;
 import pkg from "twilio";
+import Kyc from "../model/kycModel.js";
 const { Twilio } = pkg;
 const { TWILIO_SERVICE_SID, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } = process.env;
 if (!TWILIO_SERVICE_SID || !TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN) {
@@ -193,14 +194,23 @@ export const verifyPasswordOTP = async (req, res) => {
 };
 export const kycUpdate = async (req, res) => {
     try {
+        const poi = req.files.poi?.[0]?.filename;
+        const poq = req.files.poq?.[0]?.filename;
+        const photo = req.files.photo?.[0]?.filename;
         const { ...data } = req.body;
-        console.log(req.body);
+        console.log(req.body.firstName);
         console.log(req.id);
-        const userData = await Partner.findByIdAndUpdate(req.id, {
-            $set: {
-                ...data, is_kycSubmitted: true
-            }
+        const kycData = new Kyc({
+            ...data,
+            poi: `http://localhost:8000/users/${poi}`,
+            poq: `http://localhost:8000/users/${poq}`,
+            photo: `http://localhost:8000/users/${photo}`,
         });
+        await kycData.save();
+        const partnerData = await Partner.findByIdAndUpdate(req.id, { $set: {
+                kycDataId: kycData._id,
+                is_kycSubmitted: true
+            } });
         res.status(200).json({ message: "Updated successfully" });
     }
     catch (error) {
@@ -213,12 +223,18 @@ export const kycDocumentUpload = async (req, res) => {
         if (req.files) {
             const poi = req.files.poi?.[0]?.filename;
             const poq = req.files.poq?.[0]?.filename;
-            const userData = await Partner.findByIdAndUpdate(req.id, {
+            const photo = req.files.photo?.[0]?.filename;
+            console.log(poi);
+            const userData = await Partner.findById(req.id);
+            const kycId = userData?.kycDataId.toHexString();
+            console.log(kycId);
+            const kycData = await Kyc.findByIdAndUpdate(kycId, {
                 $set: {
                     poi: `http://localhost:8000/users/${poi}`,
-                    poq: `http://localhost:8000/users/${poq}`,
-                },
+                    poq: `http://localhost:8000/users/${poq}`
+                }
             });
+            console.log(kycData);
             res.status(200).json({ message: "Updated successfully" });
         }
     }

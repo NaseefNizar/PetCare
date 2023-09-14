@@ -80,9 +80,7 @@ export const PartnerProfile = () => {
   // };
   };
 
-  useEffect(() => {
-    console.log('profile');
-    
+  useEffect(() => {    
     dispatch(getPartnerData());
   }, [partnerState.successMessage]);
 
