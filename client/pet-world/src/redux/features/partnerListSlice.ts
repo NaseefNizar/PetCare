@@ -7,12 +7,14 @@ type InitialState = {
     loading: boolean;
     partnerData : []
     responseMsg : string
+    individualData : {} | null
 }
 
 const initialState: InitialState = {
     loading: false,
     partnerData : [],
-    responseMsg : ''
+    responseMsg : '',
+    individualData : null
 }
 
 
@@ -20,7 +22,7 @@ export const getVetList =  createAsyncThunk(
     'list/vet',
     async(_,{rejectWithValue}) => {
         try {
-            const response = await axios.get('api/list/getvetlist')
+            const response = await axios.get('api/general/getvetlist')
             // console.log('response',response);
             
             return response.data
@@ -30,6 +32,17 @@ export const getVetList =  createAsyncThunk(
     }
 )
 
+export const getIndividualDetails = createAsyncThunk(
+    'getdetail/vet',
+    async(partnerId,{ rejectWithValue}) => {        
+        try {
+            const response = await axios.post('api/general/getindividualdetail',partnerId)
+            return response.data
+        } catch (error:any) {
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
 
 const listSlice = createSlice({
     initialState,
@@ -45,6 +58,17 @@ const listSlice = createSlice({
             state.partnerData = action.payload.vetList
         })
         .addCase(getVetList.rejected, (state, action) => {
+            state.loading = false;
+            state.responseMsg = action.error.message || ''
+        })
+        .addCase(getIndividualDetails.pending, (state, action) => {
+            state.loading = true;
+        })
+        .addCase(getIndividualDetails.fulfilled, (state, action) => {
+            state.loading = false;
+            state.individualData = action.payload.partnerData
+        })
+        .addCase(getIndividualDetails.rejected, (state, action) => {
             state.loading = false;
             state.responseMsg = action.error.message || ''
         })

@@ -95,11 +95,7 @@ export default function KycLayout() {
   };
 
   const handleComplete = () => {
-    // const newCompleted = completed;
-    // newCompleted[activeStep] = true;
-    // setCompleted(newCompleted);
-    // handleNext();
-    // console.log({...kycData,...doc});
+
     const formData = new FormData();
     formData.append('poi',doc.poi[0])
     formData.append('poq',doc.poq[0])
@@ -130,6 +126,7 @@ export default function KycLayout() {
     
     
     dispatch(kycUpdate(formData))
+    setOpen(false)
   };
 
   const handleReset = () => {

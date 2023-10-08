@@ -1,14 +1,21 @@
 import React from 'react'
 import { Navbar } from '../components/Navbar'
 import  ListPartners  from '../components/ListPartners'
-import { Box } from '@mui/material'
+import Footer from '../components/Footer'
+
+
+
 
 export const ListVetPage = () => {
   return (
-    <>
+    < >
     <Navbar />
 
     <ListPartners />
+
+
+
+    <Footer />
 
     </>
   )

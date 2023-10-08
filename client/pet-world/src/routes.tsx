@@ -12,7 +12,7 @@ import { PartnerHomePage } from "./pages/PartnerPage/HomePage";
 import { UserProfilePage } from "./pages/User/UserProfilePage";
 import { UserListPage } from "./pages/Admin/UserListPage";
 import { PartnerListPage } from "./pages/Admin/PartnerListPage";
-import { UnverifiedListPage } from "./pages/Admin/UnverifiedListPage"
+import { UnverifiedListPage } from "./pages/Admin/UnverifiedListPage";
 import { OtpPage } from "./pages/OtpPage";
 import { PartnerAuth } from "./components/PartnerLayout/PartnerAuth";
 import { PartnerProfilePage } from "./pages/PartnerPage/PartnerProfilePage";
@@ -23,7 +23,9 @@ import PartnerLayout from "./components/PartnerLayout/PartnerLayout";
 import { PartnerKycPage } from "./pages/PartnerPage/PartnerKycPage";
 import { PartnerDetailsPage } from "./pages/Admin/PartnerDetailsPage";
 import { ListVetPage } from "./pages/ListVetPage";
-
+import { DetailPage } from "./pages/DetailPage";
+import { PartnerSlotPage } from "./pages/PartnerPage/PartnerSlotPage";
+import { PartnerDetailPage } from "./pages/PartnerPage/PartnerDetailPage";
 
 export const Router = () => {
   return (
@@ -35,6 +37,10 @@ export const Router = () => {
         <Route path="/vet/signup" element={<SignUpPage role="Vet" />} />
         <Route path="/groomer/signup" element={<SignUpPage role="Groomer" />} />
         <Route path="/list-vet" element={<ListVetPage />} />
+        <Route
+          path="/partner-details/:partnerId"
+          element={<PartnerDetailPage />}
+        />
 
         <Route path="/otp" element={<OtpPage />} />
 
@@ -47,8 +53,14 @@ export const Router = () => {
           <Route path="/admin/home" element={<AdminHomePage />} />
           <Route path="/admin/users" element={<UserListPage />} />
           <Route path="/admin/partner" element={<PartnerListPage />} />
-          <Route path="/admin/verify-partners" element={<UnverifiedListPage />} />
-          <Route path="/admin/viewdetails/:user_id" element={<PartnerDetailsPage />} />
+          <Route
+            path="/admin/verify-partners"
+            element={<UnverifiedListPage />}
+          />
+          <Route
+            path="/admin/viewdetails/:user_id"
+            element={<PartnerDetailsPage />}
+          />
         </Route>
 
         <Route element={<UserAuth />}>
@@ -57,12 +69,22 @@ export const Router = () => {
 
         <Route path="/partner/signup" element={<PartnerSignUpPage />} />
 
-        <Route element={<PartnerAuth />}>
+        {/* <Route element={<PartnerAuth />}>
           <Route path="/partner/home" element={<PartnerHomePage />} />
           <Route path="/partner/profile" element={<PartnerProfilePage />} />
-          <Route path="/partner/kyc" element={<PartnerKycPage />} />
+          <Route path="/partner/addslot" element={<PartnerSlotPage />} />
+        </Route> */}
+
+        <Route element={<PartnerAuth />}>
+          <Route path="/partner" element={<PartnerLayout />}>
+            <Route index element={<PartnerHomePage />} />
+            <Route path="home" element={<PartnerHomePage />} />
+            <Route path="profile" element={<PartnerProfilePage />} />
+            <Route path="addslot" element={<PartnerSlotPage />} />
+          </Route>
         </Route>
-        
+
+
       </Routes>
     </div>
   );

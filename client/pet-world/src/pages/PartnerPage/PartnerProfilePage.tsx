@@ -4,8 +4,8 @@ import PartnerLayout from "../../components/PartnerLayout/PartnerLayout";
 
 export const PartnerProfilePage = () => {
   return (
-    <PartnerLayout>
+    // <PartnerLayout>
       <PartnerProfile />
-    </PartnerLayout>
+    // </PartnerLayout>
   );
 };

@@ -3,24 +3,17 @@ import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
-import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import MailIcon from '@mui/icons-material/Mail';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -58,6 +51,28 @@ interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
 
+const options =[
+  {
+    name:'Dashboard',
+    navigate:'/partner/home',
+    icon:<DashboardIcon />
+  },
+  {
+    name:'Add slot',
+    navigate:'/partner/addslot',
+    icon:<MailIcon />
+  },
+  {
+    name:'Appointments',
+    navigate:'/partner/home',
+    icon:<DashboardIcon />
+  },
+  {
+    name:'NNN',
+    navigate:'/partner/home',
+    icon:<DashboardIcon />
+  },
+]
 
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -83,13 +98,13 @@ export default function MiniDrawer({open,children}:AppBarProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const navigate = useNavigate()
 
-  const handleClick = (e:React.MouseEvent<HTMLDivElement,MouseEvent>,index:number):void => {
+  const handleClick = (e:React.MouseEvent<HTMLAnchorElement,MouseEvent>,index:number):void => {
     setSelectedIndex(index)
-    if(index === 0) {
-      navigate('/partner/home')
-    } else if (index === 2) {
-      // navigate('/admin/partner')
-    }
+    // if(index === 0) {
+    //   navigate('/partner/home')
+    // } else if (index === 2) {
+    //   navigate('/admin/partner')
+    // }
   }
 
 
@@ -101,9 +116,9 @@ export default function MiniDrawer({open,children}:AppBarProps) {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Dashboard', 'Pet Owners', 'Doctors', 'Groomers'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
+          {options.map((text, index) => (
+            <ListItem key={text.name} disablePadding sx={{ display: 'block' }}>
+              <ListItemButton component={Link} to={text.navigate}
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
@@ -121,7 +136,7 @@ export default function MiniDrawer({open,children}:AppBarProps) {
                 >
                   {index % 2 === 0 ? <DashboardIcon /> : <MailIcon />}
                 </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary={text.name} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
           ))}

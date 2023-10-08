@@ -14,6 +14,7 @@ import {
   setNewPassword,
   kycUpdate,
   kycDocumentUpload,
+  addSlot,
 } from "../controller/partnerController.js";
 import { sendOTP, verifyOTP } from "../middleware/otpService/otp.js";
 import { upload } from "../middleware/multer/multer.js";
@@ -59,5 +60,8 @@ partnerRoute.patch('/kycdocumentupload',verifyToken,upload.fields([
   {name:'poi', maxCount: 1},
   {name:'poq', maxCount: 1},
 ]),kycDocumentUpload)
+
+
+partnerRoute.patch('/addslot',verifyToken,addSlot)
 
 export default partnerRoute;

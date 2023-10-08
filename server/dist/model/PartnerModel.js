@@ -42,6 +42,12 @@ const partnerSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "Kyc",
     },
+    availableSlots: [
+        {
+            date: Date,
+            slots: []
+        }
+    ]
 });
 const Partner = mongoose.model('Partner', partnerSchema);
 export default Partner;

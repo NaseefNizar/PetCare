@@ -5,6 +5,7 @@ import partnerReducer from "./features/partnerSlice";
 import kycReducer from './features/kycSlice'
 import verifyReducer from './features/adminVerifySlice'
 import listReducer from './features/partnerListSlice'
+import slotReducer from './features/slotSlice'
 
 
 const store = configureStore({
@@ -14,7 +15,8 @@ const store = configureStore({
         vet : partnerReducer,
         kyc : kycReducer,
         adminVerify: verifyReducer,
-        listing: listReducer
+        listing: listReducer,
+        slot: slotReducer
     }
 })
 
