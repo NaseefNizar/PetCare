@@ -32,16 +32,12 @@ module.exports = {
     // ]
     apps: [
       {
-        name: 'my-app-dev',
-        script: 'node_modules/.bin/concurrently',
-        args: [
-          'tsc -p ./src/server -w',  // Watch TypeScript files
-          'nodemon ./dist/server/server.js',  // Run the compiled server
-        ],
-        instances: 1,  // Number of instances you want to run (can be adjusted)
-        exec_mode: 'fork',  // You can choose 'cluster' or 'fork' mode
-        watch: true,  // Enable automatic restarts on file changes
-        interpreter: 'none',  // Avoid interpreting your command
+        name: 'your-app-name',
+        script: 'dist/index.js',
+        instances: 'max', // You can adjust the number of instances as needed
+        exec_mode: 'cluster', // Use the cluster mode for better performance
+        watch: true, // Automatically restart the app when files change
+        ignore_watch: ['node_modules'],
       },
     ],
   };
