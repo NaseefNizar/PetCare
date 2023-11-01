@@ -1,10 +1,13 @@
 // ecosystem.config.cjs
 const { createRequire } = require('module');
-// const require = createRequire(import.meta.url);
 
-// Import the ESM configuration file using dynamic import
-const esmConfig = await import('./ecosystem.config.js');
+async function loadConfig() {
+  // Import the ESM configuration file using dynamic import
+  const esmConfig = await import('./ecosystem.config.js');
 
-module.exports = esmConfig.default;
+  // Export the default configuration
+  module.exports = esmConfig.default;
+}
 
-  
+// Call the asynchronous function to load the configuration
+loadConfig();
