@@ -2,39 +2,42 @@ import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
-        required: true,
+        // required: true,
     },
     lastName: {
+        type: String,
+    },
+    userId: {
         type: String
     },
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     password: {
         type: String,
-        minlength: 8
+        minlength: 8,
     },
     contactNumber: {
         type: Number,
     },
     is_admin: {
         type: Number,
-        default: 0
+        default: 0,
     },
     picture: {
-        type: String
+        type: String,
     },
     role: {
         type: String,
-        default: 'user'
+        default: "user",
     },
     is_blocked: {
         type: Boolean,
-        default: false
-    }
+        default: false,
+    },
 });
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 export default User;
 //# sourceMappingURL=UserModel.js.map

@@ -20,12 +20,21 @@ import { ForgotPasswordPage } from "./pages/User/ForgotPasswordPage";
 import { NewPassword } from "./components/NewPassword";
 import { PasswordOtp } from "./components/PasswordOtp";
 import PartnerLayout from "./components/PartnerLayout/PartnerLayout";
-import { PartnerKycPage } from "./pages/PartnerPage/PartnerKycPage";
+import PartnerKycPage from "./pages/PartnerPage/PartnerKycPage";
 import { PartnerDetailsPage } from "./pages/Admin/PartnerDetailsPage";
 import { ListVetPage } from "./pages/ListVetPage";
 import { DetailPage } from "./pages/DetailPage";
 import { PartnerSlotPage } from "./pages/PartnerPage/PartnerSlotPage";
 import { PartnerDetailPage } from "./pages/PartnerPage/PartnerDetailPage";
+import { PaymentPage } from "./pages/PartnerPage/PaymentPage";
+import { PaymentSuccessPage } from "./pages/PaymentSuccessPage";
+import { PartnerAppointment } from "./components/PartnerLayout/PartnerAppointment";
+import { UserAppointmentPage } from "./pages/User/UserAppointmentPage";
+import { ProfileLayout } from "./components/User/ProfileLayout";
+import { ProfileLayoutPage } from "./pages/User/ProfileLayoutPage";
+import { UserInfoPage } from "./pages/User/UserInfoPage";
+import { PetDetailPage } from "./pages/User/PetDetailPage";
+// import Videocall from "./components/Videocall/videocall";
 
 export const Router = () => {
   return (
@@ -43,7 +52,6 @@ export const Router = () => {
         />
 
         <Route path="/otp" element={<OtpPage />} />
-
         <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
         <Route path="/otpverifypassword" element={<PasswordOtp />} />
         <Route path="/setnewpassword" element={<NewPassword />} />
@@ -63,8 +71,22 @@ export const Router = () => {
           />
         </Route>
 
-        <Route element={<UserAuth />}>
+        {/* <Route element={<UserAuth />}>
           <Route path="/user/profile" element={<UserProfilePage />} />
+          <Route path="/user/appointment" element={<UserAppointmentPage />} />
+          <Route path="/appointment-booking" element={<PaymentPage />} />
+          <Route path="/success" element={<PaymentSuccessPage />} />
+        </Route> */}
+        <Route element={<UserAuth />}>
+          <Route path="/user" element={<ProfileLayoutPage />}>
+            <Route index element={<UserInfoPage />} />
+            <Route path="profileinfo" element={<UserInfoPage />} />
+            <Route path="appointment" element={<UserAppointmentPage />} />
+            <Route path="petdetails" element={<PetDetailPage />} />
+            {/* <Route path="videocall" element={<Videocall />} /> */}
+          </Route>
+          <Route path="/appointment-booking" element={<PaymentPage />} />
+          <Route path="/success" element={<PaymentSuccessPage />} />
         </Route>
 
         <Route path="/partner/signup" element={<PartnerSignUpPage />} />
@@ -81,10 +103,10 @@ export const Router = () => {
             <Route path="home" element={<PartnerHomePage />} />
             <Route path="profile" element={<PartnerProfilePage />} />
             <Route path="addslot" element={<PartnerSlotPage />} />
+            <Route path="appointments" element={<PartnerAppointment />} />
+            <Route path="kyc" element={<PartnerKycPage />} />
           </Route>
         </Route>
-
-
       </Routes>
     </div>
   );

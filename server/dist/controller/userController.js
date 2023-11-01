@@ -23,7 +23,7 @@ export const existingUser = async (req, res, next) => {
 };
 export const signup = async (req, res) => {
     console.log("next");
-    const { firstName, email, password, contactNumber } = req.body;
+    const { userId, email, password, contactNumber } = req.body;
     try {
         // const existingUser = await User.findOne({ email, contactNumber });
         // if (existingUser) {
@@ -31,7 +31,7 @@ export const signup = async (req, res) => {
         // }
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = new User({
-            firstName,
+            userId,
             email,
             password: hashedPassword,
             contactNumber,
@@ -66,7 +66,10 @@ export const googleVerify = async (req, res) => {
             const token = jwt.sign({ userId: user._id }, jwtSecretKey, {
                 expiresIn: "1d",
             });
-            res.status(201).json({ message: "Signup successful", user }).cookie('token', token, {
+            res
+                .status(201)
+                .json({ message: "Signup successful", user })
+                .cookie("token", token, {
                 path: "/",
                 expires: new Date(Date.now() + 1000 * 60 * 60),
                 httpOnly: true,
@@ -78,7 +81,7 @@ export const googleVerify = async (req, res) => {
                 expiresIn: "1d",
             });
             // res.cookie(String(user._id), token, {
-            res.cookie('token', token, {
+            res.cookie("token", token, {
                 path: "/",
                 expires: new Date(Date.now() + 1000 * 60 * 60),
                 httpOnly: true,
@@ -119,7 +122,7 @@ export const login = async (req, res) => {
         //   req.cookies[`${user._id}`] = "";
         // }
         // res.cookie(String(user._id), token, {
-        res.cookie('token', token, {
+        res.cookie("token", token, {
             path: "/",
             expires: new Date(Date.now() + 1000 * 60 * 60),
             httpOnly: true,
@@ -133,38 +136,16 @@ export const login = async (req, res) => {
     }
 };
 export const verifyToken = (req, res, next) => {
-    console.log("query", req.query.userId);
-    const userId = req.query.userId;
-    // const cookies: string | undefined = req.headers.cookie;
     const cookies = req.cookies.token;
-    // console.log(req.cookies[userId]);
-    if (req.cookies && req.cookies[userId]) {
-        console.log(req.cookies[userId]);
-    }
-    // const desiredCookieName = req.body;
-    // if (req.headers.cookie) {
-    //   const cookies = req.headers.cookie.split('; ');
-    //   let desiredCookieValue = null;
-    //   cookies.forEach(cookie => {
-    //     const [name, value] = cookie.split('=');
-    //     if (name === desiredCookieName) {
-    //       desiredCookieValue = value;
-    //     }
-    //   })
-    //
-    // console.log(1);
-    console.log(cookies);
     if (!cookies) {
         return res.status(404).json({ message: "No token found" });
     }
-    // const token: string = cookies.split("=")[1];
     const token = req.cookies.token;
-    // console.log(cookies.split("=")[0]);
+    console.log(token);
     jwt.verify(String(token), jwtSecretKey, (err, user) => {
         if (err) {
             return res.status(400).json({ message: "Invalid token" });
         }
-        // console.log('jwt',user);
         req.id = user.userId;
     });
     next();
@@ -172,7 +153,7 @@ export const verifyToken = (req, res, next) => {
 export const logout = (req, res) => {
     try {
         // res.clearCookie(String(req.id));
-        res.clearCookie('token');
+        res.clearCookie("token");
         res.status(200).json({ message: "Successfully logged out" });
     }
     catch (error) {
@@ -247,7 +228,8 @@ export const updateProfilePic = async (req, res) => {
 };
 export const forgotPassword = async (req, res, next) => {
     const { contactNumber } = req.body;
-    const existingUser = await User.findOne({ contactNumber }) || await Partner.findOne({ contactNumber });
+    const existingUser = (await User.findOne({ contactNumber })) ||
+        (await Partner.findOne({ contactNumber }));
     if (!existingUser) {
         return res.status(409).json({ message: "User doesnt exist" });
     }
@@ -258,8 +240,9 @@ export const setNewPassword = async (req, res) => {
         console.log(req.body);
         const { password, contactNumber } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = await User.findOneAndUpdate({ contactNumber }, { password: hashedPassword }) || await Partner.findOneAndUpdate({ contactNumber }, { password: hashedPassword });
-        console.log(user);
+        const user = (await User.findOneAndUpdate({ contactNumber }, { password: hashedPassword })) ||
+            (await Partner.findOneAndUpdate({ contactNumber }, { password: hashedPassword }));
+        // console.log(user);
         res.status(200).json({ message: "Password updated successfully" });
     }
     catch (error) {
@@ -287,6 +270,20 @@ export const verifyPasswordOTP = async (req, res) => {
     }
     catch (error) {
         res.status(400).json({ message: "Invalid OTP" });
+    }
+};
+export const updateContact = async (req, res) => {
+    const { contactNumber } = req.body;
+    try {
+        const userData = await User.findByIdAndUpdate(req.id, {
+            $set: {
+                contactNumber,
+            },
+        });
+        res.status(200).json({ message: "Updated successfully" });
+    }
+    catch (error) {
+        res.status(500).json({ message: "Error updating user data" });
     }
 };
 //# sourceMappingURL=userController.js.map

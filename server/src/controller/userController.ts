@@ -1,8 +1,6 @@
 import bcrypt from "bcrypt";
 import { NextFunction, Request, Response } from "express";
-import { OAuth2Client, TokenPayload 
-
-} from "google-auth-library";
+import { OAuth2Client, TokenPayload } from "google-auth-library";
 import User from "../model/UserModel.js";
 import Partner from "../model/PartnerModel.js";
 import jwt, { JwtPayload } from "jsonwebtoken";
@@ -23,8 +21,9 @@ interface DecodedToken extends JwtPayload {
   userId: string;
 }
 
-interface MyCustomRequest extends Request {
+export interface MyCustomRequest extends Request {
   id?: string;
+  rawBody?: Buffer
 }
 
 export const existingUser = async (
@@ -45,7 +44,7 @@ export const existingUser = async (
 
 export const signup = async (req: Request, res: Response) => {
   console.log("next");
-  const { firstName, email, password, contactNumber } = req.body;
+  const { userId, email, password, contactNumber } = req.body;
   try {
     // const existingUser = await User.findOne({ email, contactNumber });
     // if (existingUser) {
@@ -53,7 +52,7 @@ export const signup = async (req: Request, res: Response) => {
     // }
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({
-      firstName,
+      userId,
       email,
       password: hashedPassword,
       contactNumber,
@@ -67,9 +66,7 @@ export const signup = async (req: Request, res: Response) => {
   }
 };
 
-
 export const googleVerify = async (req: Request, res: Response) => {
-
   try {
     const { clientId, credential } = req.body;
     const client = new OAuth2Client(clientId);
@@ -91,27 +88,28 @@ export const googleVerify = async (req: Request, res: Response) => {
       const token = jwt.sign({ userId: user._id }, jwtSecretKey, {
         expiresIn: "1d",
       });
-      res.status(201).json({ message: "Signup successful", user}).cookie('token', token, {
+      res
+        .status(201)
+        .json({ message: "Signup successful", user })
+        .cookie("token", token, {
+          path: "/",
+          expires: new Date(Date.now() + 1000 * 60 * 60),
+          httpOnly: true,
+          sameSite: "lax",
+        });
+    } else {
+      const token = jwt.sign({ userId: user._id }, jwtSecretKey, {
+        expiresIn: "1d",
+      });
+      // res.cookie(String(user._id), token, {
+      res.cookie("token", token, {
         path: "/",
         expires: new Date(Date.now() + 1000 * 60 * 60),
         httpOnly: true,
         sameSite: "lax",
       });
+      res.status(201).json({ message: "Signup successful", user });
     }
-    else {
-    const token = jwt.sign({ userId: user._id }, jwtSecretKey, {
-      expiresIn: "1d",
-    });
-    // res.cookie(String(user._id), token, {
-    res.cookie('token', token, {
-      path: "/",
-      expires: new Date(Date.now() + 1000 * 60 * 60),
-      httpOnly: true,
-      sameSite: "lax",
-    });
-    res.status(201).json({ message: "Signup successful", user });
-  }
-
   } catch (error) {
     console.error("Error during signup", error);
     res.status(500).json({ message: "Error during signup" });
@@ -150,9 +148,8 @@ export const login = async (req: Request, res: Response) => {
     //   req.cookies[`${user._id}`] = "";
     // }
 
-    
     // res.cookie(String(user._id), token, {
-    res.cookie('token', token, {
+    res.cookie("token", token, {
       path: "/",
       expires: new Date(Date.now() + 1000 * 60 * 60),
       httpOnly: true,
@@ -171,52 +168,26 @@ export const verifyToken = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("query",req.query.userId);
-  const userId = req.query.userId as string
-  // const cookies: string | undefined = req.headers.cookie;
   const cookies: string | undefined = req.cookies.token;
-  // console.log(req.cookies[userId]);
-  if (req.cookies && req.cookies[userId]) {
-    console.log(req.cookies[userId]);
-  }
-
-  // const desiredCookieName = req.body;
-  // if (req.headers.cookie) {
-  //   const cookies = req.headers.cookie.split('; ');
-  //   let desiredCookieValue = null;
-
-  //   cookies.forEach(cookie => {
-  //     const [name, value] = cookie.split('=');
-  //     if (name === desiredCookieName) {
-  //       desiredCookieValue = value;
-  //     }
-  //   })
-  //
-  // console.log(1);
-  console.log(cookies);
   if (!cookies) {
     return res.status(404).json({ message: "No token found" });
   }
-  // const token: string = cookies.split("=")[1];
   const token: string = req.cookies.token;
-  // console.log(cookies.split("=")[0]);
-
+  console.log(token);
+  
   jwt.verify(String(token), jwtSecretKey, (err: any, user: any) => {
     if (err) {
       return res.status(400).json({ message: "Invalid token" });
     }
-    // console.log('jwt',user);
-
     req.id = user.userId;
   });
   next();
 };
 
-
 export const logout = (req: MyCustomRequest, res: Response) => {
   try {
     // res.clearCookie(String(req.id));
-    res.clearCookie('token');
+    res.clearCookie("token");
     res.status(200).json({ message: "Successfully logged out" });
   } catch (error) {
     console.error("Error during logout", error);
@@ -226,7 +197,6 @@ export const logout = (req: MyCustomRequest, res: Response) => {
 
 export const getData = async (req: MyCustomRequest, res: Response) => {
   try {
-    
     const userData = await User.findById({ _id: req.id });
     // console.log(userData);
     res.status(200).json({ userData });
@@ -279,24 +249,22 @@ export const updateProfilePic = async (req: MyCustomRequest, res: Response) => {
   //   let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
   //   const cldRes = await handleUpload(dataURI);
   //   console.log(cldRes);
-      //     const userData = await User.findByIdAndUpdate(req.id, {
-      //   $set: {
-      //     picture: cldRes.secure_url,
-      //   },
-      // });
+  //     const userData = await User.findByIdAndUpdate(req.id, {
+  //   $set: {
+  //     picture: cldRes.secure_url,
+  //   },
+  // });
 
-    //   res.status(200).json({ message: "Updated successfully" });
-    
-    // res.json(cldRes);
+  //   res.status(200).json({ message: "Updated successfully" });
+
+  // res.json(cldRes);
   // } catch (error) {
   //   console.log(error);
   //   res.send({
   //     message: error.message,
   //   });
   // }
-
 };
-
 
 export const forgotPassword = async (
   req: Request,
@@ -304,7 +272,9 @@ export const forgotPassword = async (
   next: NextFunction
 ) => {
   const { contactNumber } = req.body;
-  const existingUser = await User.findOne({contactNumber}) || await Partner.findOne({contactNumber});
+  const existingUser =
+    (await User.findOne({ contactNumber })) ||
+    (await Partner.findOne({ contactNumber }));
 
   if (!existingUser) {
     return res.status(409).json({ message: "User doesnt exist" });
@@ -312,25 +282,30 @@ export const forgotPassword = async (
   next();
 };
 
-export const setNewPassword = async( req: Request, res: Response) => {
+export const setNewPassword = async (req: Request, res: Response) => {
   try {
     console.log(req.body);
-    
-    const { password,contactNumber } = req.body;
+
+    const { password, contactNumber } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.findOneAndUpdate({contactNumber},{password:hashedPassword}) ||  await Partner.findOneAndUpdate({contactNumber},{password:hashedPassword})
-    console.log(user);
-    
+    const user =
+      (await User.findOneAndUpdate(
+        { contactNumber },
+        { password: hashedPassword }
+      )) ||
+      (await Partner.findOneAndUpdate(
+        { contactNumber },
+        { password: hashedPassword }
+      ));
+    // console.log(user);
+
     res.status(200).json({ message: "Password updated successfully" });
   } catch (error) {
     res.status(500).json({ message: "Error updating password" });
   }
-}
+};
 
-export const verifyPasswordOTP = async (
-  req: Request,
-  res: Response,
-) => {
+export const verifyPasswordOTP = async (req: Request, res: Response) => {
   const { contactNumber, otp } = req.body;
   console.log(contactNumber, otp);
 
@@ -344,7 +319,7 @@ export const verifyPasswordOTP = async (
     // res.status(200).json({message:"otp verified successfully"})
     if (verifiedResponse.status === "approved") {
       console.log("verified");
-      res.status(200).json({message:"OTP verified succcessfully"})
+      res.status(200).json({ message: "OTP verified succcessfully" });
     } else {
       res.status(409).json({ message: "Invalid OTP" });
     }
@@ -352,3 +327,19 @@ export const verifyPasswordOTP = async (
     res.status(400).json({ message: "Invalid OTP" });
   }
 };
+
+export const updateContact = async (req:MyCustomRequest, res:Response) => {
+  const {contactNumber} = req.body
+  try {
+    const userData = await User.findByIdAndUpdate(req.id, {
+      $set: {
+        contactNumber,
+      },
+    });
+    res.status(200).json({ message: "Updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating user data" });
+  }
+}
+
+

@@ -18,21 +18,20 @@ import BasicDetails from "./BasicDetails";
 import { BankDetails } from "./BankDetails";
 import { Documents } from "./Documents";
 import { PartnerKycPage } from "../../../pages/PartnerPage/PartnerKycPage";
-import { kycUpdate } from "../../../redux/features/kycSlice";
+import { kycUpdate } from "../../../redux/features/partnerSlice";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { kycData } from "../../../types/kyc";
 
 export default function KycLayout() {
   const [open, setOpen] = useState(false);
-  const [doc, setDoc] = useState<FormData | null | undefined>(null)
+  const [doc, setDoc] = useState<FormData | null | undefined>(null);
 
-  
   const dispatch = useAppDispatch();
-  const kycData = useAppSelector( state => state.kyc.kycData)
+  const kycData = useAppSelector((state) => state.vet.kycData);
 
-  const getDoc = (data:FormData) => {
-    setDoc(data)
-  }
+  const getDoc = (data: FormData) => {
+    setDoc(data);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -51,7 +50,7 @@ export default function KycLayout() {
       case 1:
         return <BankDetails />;
       case 2:
-        return <Documents sendData={getDoc}/>;
+        return <Documents sendData={getDoc} />;
     }
   };
 
@@ -95,38 +94,39 @@ export default function KycLayout() {
   };
 
   const handleComplete = () => {
-
     const formData = new FormData();
-    formData.append('poi',doc.poi[0])
-    formData.append('poq',doc.poq[0])
-    formData.append('photo',doc.photo[0])
+    formData.append("poi", doc.poi[0]);
+    formData.append("poq", doc.poq[0]);
+    formData.append("photo", doc.photo[0]);
     console.log(kycData);
-    
+
     // for (const key in kycData) {
     //   if (formData.hasOwnProperty(key)) {
     //     const value = kycData[key];
     //     console.log(value);
-        
+
     //     formData.append(key, value);
     //   }
     // }
-    formData.append('firstName',kycData?.firstName)
-    formData.append('lastName',kycData?.lastName)
-    formData.append('centreName',kycData?.centreName)
-    formData.append('locality',kycData?.locality)
-    formData.append('pincode',kycData?.pincode)
-    formData.append('area',kycData?.area)
-    formData.append('state',kycData?.state)
-    formData.append('bankName',kycData?.bankName)
-    formData.append('branchName',kycData?.branchName)
-    formData.append('accountHolderName',kycData?.accountHolderName)
-    formData.append('accountNumber',kycData?.accountNumber)
-    formData.append('ifsc',kycData?.ifsc)
-    // console.log(formData.get('firstName'));
-    
-    
-    dispatch(kycUpdate(formData))
-    setOpen(false)
+    formData.append("firstName", kycData?.firstName);
+    formData.append("lastName", kycData?.lastName);
+    formData.append("centreName", kycData?.centreName);
+    formData.append("locality", kycData?.locality);
+    formData.append("pincode", kycData?.pincode);
+    formData.append("area", kycData?.area);
+    formData.append("state", kycData?.state);
+    formData.append("bankName", kycData?.bankName);
+    formData.append("branchName", kycData?.branchName);
+    formData.append("accountHolderName", kycData?.accountHolderName);
+    formData.append("accountNumber", kycData?.accountNumber);
+    formData.append("ifsc", kycData?.ifsc);
+    formData.append("experience", kycData?.experience);
+    formData.append("qualification", kycData?.qualification);
+    formData.append("onlineconsultationfee", kycData?.onlineconsultationfee);
+    formData.append("offlineconsultationfee", kycData?.offlineconsultationfee);
+
+    dispatch(kycUpdate(formData));
+    setOpen(false);
   };
 
   const handleReset = () => {
@@ -158,7 +158,6 @@ export default function KycLayout() {
           <Box
           // sx={{ width: '100%' }}
           >
-
             <Stepper activeStep={activeStep} alternativeLabel>
               {steps.map((label, index) => (
                 <Step key={index} completed={completed[index]}>
@@ -180,15 +179,15 @@ export default function KycLayout() {
                   </Box>
                 </>
               ) : ( */}
-                <>
-                  {/* <Typography sx={{ mt: 2, mb: 1, py: 1 }}> */}
-                  <Stack>
-                    {/* Step {activeStep + 1} */}
-                    {content(activeStep)}
-                  </Stack>
-                  {/* </Typography> */}
-                  <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-                    {/* <Button
+              <>
+                {/* <Typography sx={{ mt: 2, mb: 1, py: 1 }}> */}
+                <Stack>
+                  {/* Step {activeStep + 1} */}
+                  {content(activeStep)}
+                </Stack>
+                {/* </Typography> */}
+                <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+                  {/* <Button
                 color="inherit"
                 disabled={activeStep === 0}
                 onClick={handleBack}
@@ -196,20 +195,17 @@ export default function KycLayout() {
               >
                 Back
               </Button> */}
-                    <Box sx={{ flex: "1 1 auto" }} />
-                    {activeStep !== steps.length - 1 && (
-                      <Button onClick={handleNext} sx={{ mr: 1 }}>
-                        Next
-                      </Button>
-                    )}
-                    {
-                      activeStep === steps.length - 1 && (
-
-                        <Button onClick={handleComplete}>Submit</Button>
-                      )
-                    }
-                  </Box>
-                </>
+                  <Box sx={{ flex: "1 1 auto" }} />
+                  {activeStep !== steps.length - 1 && (
+                    <Button onClick={handleNext} sx={{ mr: 1 }}>
+                      Next
+                    </Button>
+                  )}
+                  {activeStep === steps.length - 1 && (
+                    <Button onClick={handleComplete}>Submit</Button>
+                  )}
+                </Box>
+              </>
               {/* // )} */}
             </>
           </Box>

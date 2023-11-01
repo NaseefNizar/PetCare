@@ -39,7 +39,7 @@ export const Navbar = () => {
   let user
   if(data) {
     user = JSON.parse(data)
-    console.log("navbar", user);
+    // console.log("navbar", user);
   }
 
   return (
@@ -94,7 +94,7 @@ export const Navbar = () => {
                 {/* {settings.map((setting) => ( */}
                 <MenuItem onClick={handleCloseUserMenu}>
                   {/* <Typography component={Link} textAlign="center" to='/user/profile'>Profile</Typography> */}
-                  <Button component={Link} to='/user/profile'>Profile</Button>
+                  <Button component={Link} to='/user'>Profile</Button>
                 </MenuItem>
                 <MenuItem onClick={handleCloseUserMenu}>
                   <Button  onClick={handleLogout}>

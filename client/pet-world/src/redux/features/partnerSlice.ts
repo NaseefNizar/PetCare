@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "../../utils/axiosInstance";
+import { initialState,kycData } from "../../types/kyc";
 import { act } from "react-dom/test-utils";
 
 type FormValues = {
@@ -44,7 +45,10 @@ type InitialState = {
   successMessage: string;
   tokenStat: boolean | null;
   blockStat: boolean;
+  status:String;
+  kycData: null | kycData
 };
+
 const initialState: InitialState = {
   loading: false,
   registerStatus: false,
@@ -56,6 +60,8 @@ const initialState: InitialState = {
   otpSendStat: false,
   tokenStat: null,
   blockStat: false,
+  status: "",
+  kycData: null,
 };
 
 export const sendOtpPartner = createAsyncThunk(
@@ -196,12 +202,42 @@ export const setNewPassword = createAsyncThunk(
   "partner/setnewpassword",
   async (data, { rejectWithValue }) => {
     try {
-      // console.log("pass", data);
-
       const response = await axios.post("/api/partner/setnewpassword", data);
       return response.data;
     } catch (error: any) {
       rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const kycUpdate = createAsyncThunk(
+  "/kyc/upload",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.patch("api/partner/kycupdate", data);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const kycDocUpload = createAsyncThunk(
+  "kyc/documentUpload",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.patch(
+        "/api/partner/kycdocumentupload",
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -211,8 +247,11 @@ const vetSlice = createSlice({
   name: "partner",
   reducers: {
     setSignupDataPartner: (state, action) => {
-      console.log(action.payload);
+      // console.log(action.payload);
       state.signupData = action.payload;
+    },
+    setKycData: (state, action) => {
+      state.kycData = { ...state.kycData,...action.payload };
     },
   },
   extraReducers: (builder) => {
@@ -313,9 +352,21 @@ const vetSlice = createSlice({
         state.loading = false;
         state.successMessage = action.payload.message;
         console.log("gotdata", action.payload);
+      })
+      .addCase(kycUpdate.pending, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(kycUpdate.fulfilled, (state, action) => {
+        state.status = action.payload.message;
+      })
+      .addCase(kycDocUpload.fulfilled, (state, action) => {
+        state.status = action.payload.message;
+      })
+      .addCase(kycDocUpload.rejected, (state, action) => {
+        state.status = action.error.message;
       });
   },
 });
 
 export default vetSlice.reducer;
-export const { setSignupDataPartner } = vetSlice.actions;
+export const { setSignupDataPartner,setKycData } = vetSlice.actions;

@@ -7,6 +7,12 @@ const kycSchema = new mongoose.Schema({
     lastName: {
         type: String,
     },
+    qualification: {
+        type: String,
+    },
+    experience: {
+        type: String,
+    },
     centreName: {
         type: String,
         required: true,
@@ -22,6 +28,12 @@ const kycSchema = new mongoose.Schema({
     pincode: {
         type: String,
         required: true,
+    },
+    onlineconsultationfee: {
+        type: String,
+    },
+    offlineconsultationfee: {
+        type: String,
     },
     state: {
         type: String,

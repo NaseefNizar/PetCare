@@ -14,7 +14,7 @@ export const UserAuth = () => {
     // !user && navigate('/')
   },[user])
   return (
-    localStorage.getItem('user') ? <Outlet/> : < Navigate to='/' />
+    localStorage.getItem('user') ? <Outlet/> : < Navigate to='/login' />
     // isLoggedIn ? <Outlet/> : < Navigate to='/' />
   )
 }

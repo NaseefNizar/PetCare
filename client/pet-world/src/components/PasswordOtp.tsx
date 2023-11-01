@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { registerUser, sendOtp, verifyOtpPassword } from "../redux/features/userSlice";
+import { forgotPassword, registerUser, sendOtp, verifyOtpPassword } from "../redux/features/userSlice";
 import { useNavigate } from "react-router-dom";
 import { registerPartner, sendOtpPartner } from "../redux/features/partnerSlice";
 
@@ -26,7 +26,7 @@ export const PasswordOtp = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const userState = useAppSelector((state) => state.user);
-  const phoneNumber = userState.phoneNumber
+  const contactNumber = userState.phoneNumber
   const otpStat = userState.otpVerify
   const error = userState.error;
   const signupDataUser = userState.signupData;
@@ -37,13 +37,13 @@ export const PasswordOtp = () => {
 //   const signupDataPartner = partnerState.signupData;
 //   const registerStatusPartner = partnerState.registerStatus;
 
-  // console.log('signupdatapartner',signupDataPartner);
+  // console.log(phoneNumber);
   
 
   const { register, handleSubmit, formState } = form;
   const { errors } = formState;
   const [showButton, setShowButton] = useState(false);
-  const [timer, setTimer] = useState(0);
+  const [timer, setTimer] = useState(10);
 
   const onSubmit: SubmitHandler<Otp> = (otp): void => {
 // if(signupDataUser) {
@@ -51,17 +51,17 @@ export const PasswordOtp = () => {
 // } else if (signupDataPartner) {
 //     dispatch(registerPartner({ ...signupDataPartner, ...otp }))
 // }
-dispatch(verifyOtpPassword({...otp,contactNumber:phoneNumber}))
+dispatch(verifyOtpPassword({...otp,contactNumber}))
   };
 
   const handleClick = () => {
-    setTimer(0);
+    setTimer(10);
     setShowButton(false);
     // if(signupDataUser) {
     //   dispatch(sendOtpPartner(signupDataUser))
     // } else if(signupDataPartner){
 
-    //   dispatch(sendOtp(signupDataPartner));
+      dispatch(forgotPassword({contactNumber}));
     // }
   };
 
@@ -79,10 +79,10 @@ dispatch(verifyOtpPassword({...otp,contactNumber:phoneNumber}))
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setTimer((prevCount) => prevCount + 1);
+      setTimer((prevCount) => prevCount - 1 );
     }, 1000);
 
-    if (timer >= 10) {
+    if (timer <= 0) {
       setShowButton(true);
       clearInterval(intervalId);
     }

@@ -13,12 +13,12 @@ const client = new Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 
 export const sendOTP = async (
   req: Request,
-  res: Response,
-//   next: NextFunction
+  res: Response
+  //   next: NextFunction
 ) => {
   try {
-    
     const { contactNumber } = req.body;
+console.log(req.body);
 
     const otpResponse = await client.verify.v2
       .services(TWILIO_SERVICE_SID)
@@ -54,7 +54,6 @@ export const verifyOTP = async (
     if (verifiedResponse.status === "approved") {
       console.log("verified");
       next();
-      
     } else {
       res.status(409).json({ message: "Invalid OTP" });
     }

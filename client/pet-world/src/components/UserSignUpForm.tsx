@@ -19,8 +19,8 @@ import zxcvbn from "zxcvbn";
 import "react-toastify/dist/ReactToastify.css";
 
 type FormValues = {
-  firstName: string;
-  lastName?:string;
+  userId: string;
+  // lastName?:string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -137,14 +137,14 @@ export const UserSignUpForm = (props: Props) => {
             <Grid item xs={6}>
               <TextField
                 size="small"
-                label="FirstName"
+                label="User ID"
                 type="name"
                 placeholder="Please enter your name"
-                {...register("firstName", {
-                  required: "Username is required",
+                {...register("userId", {
+                  required: "UserID is required",
                 })}
-                error={!!errors.firstName}
-                helperText={errors.firstName?.message}
+                error={!!errors.userId}
+                helperText={errors.userId?.message}
                 fullWidth
               ></TextField>
             </Grid>

@@ -33,7 +33,7 @@ export default function PartnerCard() {
     display: "block",
     maxWidth: "100%",
     maxHeight: "100%",
-    border: "1px solid",
+    border: "1px solid ",
   });
 
   useEffect(() => {
@@ -48,13 +48,14 @@ export default function PartnerCard() {
         spacing={2}
       >
         {getList.map((element: any, index) => (
-          <Grid item lg={12} sm={12}>
+          <Grid item lg={12} sm={12} >
             <Paper
               sx={{
                 p: 2,
                 margin: "auto",
                 maxWidth: "100%",
                 flexGrow: 1,
+                borderRadius:'10px',
                 backgroundColor: (theme) =>
                   theme.palette.mode === "dark" ? "#1A2027" : "#fff",
               }}
@@ -62,7 +63,7 @@ export default function PartnerCard() {
               <Grid container spacing={2}>
                 <Grid item>
                   <ButtonBase sx={{ width: 200, height: 200 }}>
-                    <Img alt="complex" src={element.kycDataId.photo} />
+                    <Img alt="complex" src={element.photo} />
                   </ButtonBase>
                 </Grid>
                 <Grid item xs={12} sm container>
@@ -73,8 +74,8 @@ export default function PartnerCard() {
                         variant="subtitle1"
                         component="div"
                       >
-                        {element.kycDataId.firstName}{" "}
-                        {element.kycDataId.lastName}
+                        {element.firstName}{" "}
+                        {element.lastName}
                       </Typography>
                       <Typography variant="body2" gutterBottom>
                         BVSc & AH
@@ -108,16 +109,16 @@ export default function PartnerCard() {
                 </Grid>
                 <Grid item xs={12} lg={4} md={3}>
                   <Typography gutterBottom variant="subtitle1" component="div">
-                  {element.kycDataId.centreName}
+                  {element.centreName}
                   </Typography>
                   <Typography variant="body2" gutterBottom>
-                  {element.kycDataId.area}
+                  {element.area}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                  {element.kycDataId.locality}
+                  {element.locality}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                  {element.kycDataId.state} - {element.kycDataId.pincode}
+                  {element.state} - {element.pincode}
                   </Typography>
                   
                   <Grid
@@ -126,11 +127,11 @@ export default function PartnerCard() {
                     direction={"column"}
                     sx={{ mt: "10px" }}
                   >
-                    <Grid item xs={12}>
+                    {/* <Grid item xs={12}>
                       <Button variant="outlined" fullWidth color="secondary">
                         Book Appointment
                       </Button>
-                    </Grid>
+                    </Grid> */}
                     <Grid item xs={12}>
                       <Button
                         variant="contained"

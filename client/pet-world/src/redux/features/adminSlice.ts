@@ -12,7 +12,7 @@ interface UserState {
 type InitialState = {
   userData: {};
   loading: boolean;
-  error: string | null;
+  error: any;
   isLoggedIn: boolean;
   userList: [];
   partnerList: [];
@@ -166,7 +166,7 @@ const adminSlice = createSlice({
         state.loading = false;
         state.userList = action.payload.userData;
       })
-      .addCase(getUserData.rejected, (state, action) => {
+      .addCase(getUserData.rejected, (state, action:any) => {
         state.loading = false;
         state.error = action.payload.message || "";
       })
@@ -205,7 +205,7 @@ const adminSlice = createSlice({
         state.loading = false;
         state.userList = action.payload.userData;
       })
-      .addCase(blockUser.rejected, (state, action) => {
+      .addCase(blockUser.rejected, (state, action:any) => {
         state.loading = false;
         state.error = action.payload.message || "";
       })
@@ -218,7 +218,7 @@ const adminSlice = createSlice({
         state.loading = false;
         state.partnerList = action.payload.partnerData;
       })
-      .addCase(blockPartner.rejected, (state, action) => {
+      .addCase(blockPartner.rejected, (state, action:any) => {
         state.loading = false;
         state.error = action.payload.message || "";
       })
@@ -234,7 +234,7 @@ const adminSlice = createSlice({
         state.successMsg = action.payload.message
         state.stat = true
       })
-      .addCase(approval.rejected, (state, action) =>{
+      .addCase(approval.rejected, (state, action:any) =>{
         state.loading = false;
         state.error = action.payload.message
         state.stat = false

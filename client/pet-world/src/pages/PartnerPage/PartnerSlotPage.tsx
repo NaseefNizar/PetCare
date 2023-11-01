@@ -123,7 +123,12 @@ export const PartnerSlotPage = () => {
   };
 
   const handleAddSlot = () => {
-    dispatch(addSlot({date:selectedDate,slots:generatedSlots}))
+    
+    const slots = generatedSlots.map(slot => ({
+      time: slot
+    }));
+    
+    dispatch(addSlot({date:selectedDate,slots}))
   }
 
   useEffect(() => {

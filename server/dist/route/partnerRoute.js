@@ -1,5 +1,7 @@
 import express from "express";
-import { login, logout, signup, verifyToken, existingUser, getPartnerData, updatePartner, updatePartnerProfilePic, forgotPassword, verifyPasswordOTP, setNewPassword, kycUpdate, kycDocumentUpload, addSlot, } from "../controller/partnerController.js";
+import { 
+// googleVerify,
+login, logout, signup, verifyToken, existingUser, getPartnerData, updatePartner, updatePartnerProfilePic, forgotPassword, verifyPasswordOTP, setNewPassword, kycUpdate, kycDocumentUpload, addSlot, } from "../controller/partnerController.js";
 import { sendOTP, verifyOTP } from "../middleware/otpService/otp.js";
 import { upload } from "../middleware/multer/multer.js";
 import { partnerBlocked } from "../middleware/partnerMiddleware/blocked.js";

@@ -11,26 +11,25 @@ import {
 import { useAppDispatch } from "../../../redux/hooks";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { useRef, useState } from "react";
-import { kycDocUpload, setKycData } from "../../../redux/features/kycSlice";
+import { kycDocUpload, setKycData } from "../../../redux/features/partnerSlice";
 import { useDispatch } from "react-redux";
 
-type Data  = {
-  poi: FileList,
-  poq: FileList,
-  photo: FileList
-}
+type Data = {
+  poi: FileList;
+  poq: FileList;
+  photo: FileList;
+};
 
 type Props = {
-  sendData:(data) => void
-}
+  sendData: (data) => void;
+};
 
-export const Documents = ({sendData}:Props) => {
-
-  const [doc, setDoc] = useState<FormData | null | undefined>(null)
+export const Documents = ({ sendData }: Props) => {
+  const [doc, setDoc] = useState<FormData | null | undefined>(null);
   const form = useForm<Data>({
     mode: "onTouched",
   });
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const { register, handleSubmit, control, formState } = form;
   const { errors } = formState;
 
@@ -39,34 +38,32 @@ export const Documents = ({sendData}:Props) => {
   const ref3 = useRef<HTMLInputElement>(null);
 
   const onSubmit = (data: Data) => {
-    console.log('hdsfdj',data);
-    
+    console.log("hdsfdj", data);
+
     const formData = new FormData();
-    formData.append('poi',data.poi[0])
-    formData.append('poq',data.poq[0])
-    formData.append('photo',data.photo[0])
+    formData.append("poi", data.poi[0]);
+    formData.append("poq", data.poq[0]);
+    formData.append("photo", data.photo[0]);
 
     console.log(data);
-    
+
     console.log(formData);
-    
-    console.log(formData.get('poi'));
+
+    console.log(formData.get("poi"));
     // dispatch(kycDocUpload(formData))
     // dispatch(setKycData(formData))
     // setDoc(formData)
-    sendData(data)
+    sendData(data);
     // console.log('doc',doc);
-    
   };
-
 
   const validateFile = (fileList: FileList | null) => {
     if (!fileList || fileList.length === 0) {
-      return 'File is required';
+      return "File is required";
     }
     const file = fileList[0];
     if (file.size > 5242880) {
-      return 'File size must be less than 5MB';
+      return "File size must be less than 5MB";
     }
     return true;
   };
@@ -99,30 +96,33 @@ export const Documents = ({sendData}:Props) => {
               ),
             }}
           /> */}
-              <Typography sx={{ color: "#2196F3", cursor: "pointer" }}
-                              onClick={() => ref1.current?.click()}
-                              >
+              <Typography
+                sx={{ color: "#2196F3", cursor: "pointer" }}
+                onClick={() => ref1.current?.click()}
+              >
                 + Upload Proof of Identity
               </Typography>
               <div>
-              <Controller
-                name="poi"
-                control={control}
-                // defaultValue={null}
-                rules={{ validate: validateFile }}
-                render={({ field }) => (
-                  <input
-                    type="file"
-                    ref={ref1}
-                    style={{ display: "none" }}
-                    onChange={(e) => {
-                      field.onChange(e.target.files);
-                    }}
-                  />
+                <Controller
+                  name="poi"
+                  control={control}
+                  // defaultValue={null}
+                  rules={{ validate: validateFile }}
+                  render={({ field }) => (
+                    <input
+                      type="file"
+                      ref={ref1}
+                      style={{ display: "none" }}
+                      onChange={(e) => {
+                        field.onChange(e.target.files);
+                      }}
+                    />
+                  )}
+                />
+                {errors.poi && (
+                  <p style={{ color: "#FF0000" }}>{errors.poi.message}</p>
                 )}
-              />
-              {errors.poi && <p style={{color:'#FF0000'}}>{errors.poi.message}</p>}
-            </div>
+              </div>
             </Grid>
             <Grid item>
               <Typography
@@ -132,25 +132,27 @@ export const Documents = ({sendData}:Props) => {
                 + Upload Proof of Qualification
               </Typography>
               {/* <p>{errors.file?.message}</p> */}
-            <div>
-              <Controller
-                name="poq"
-                control={control}
-                // defaultValue={null}
-                rules={{ validate: validateFile }}
-                render={({ field }) => (
-                  <input
-                    type="file"
-                    ref={ref2}
-                    style={{ display: "none" }}
-                    onChange={(e) => {
-                      field.onChange(e.target.files);
-                    }}
-                  />
+              <div>
+                <Controller
+                  name="poq"
+                  control={control}
+                  // defaultValue={null}
+                  rules={{ validate: validateFile }}
+                  render={({ field }) => (
+                    <input
+                      type="file"
+                      ref={ref2}
+                      style={{ display: "none" }}
+                      onChange={(e) => {
+                        field.onChange(e.target.files);
+                      }}
+                    />
+                  )}
+                />
+                {errors.poq && (
+                  <p style={{ color: "#FF0000" }}>{errors.poq.message}</p>
                 )}
-              />
-              {errors.poq && <p style={{color:'#FF0000'}}>{errors.poq.message}</p>}
-            </div>
+              </div>
             </Grid>
             <Grid item>
               <Typography
@@ -160,25 +162,27 @@ export const Documents = ({sendData}:Props) => {
                 + Upload your photo
               </Typography>
               {/* <p>{errors.file?.message}</p> */}
-            <div>
-              <Controller
-                name="photo"
-                control={control}
-                // defaultValue={null}
-                rules={{ validate: validateFile }}
-                render={({ field }) => (
-                  <input
-                    type="file"
-                    ref={ref3}
-                    style={{ display: "none" }}
-                    onChange={(e) => {
-                      field.onChange(e.target.files);
-                    }}
-                  />
+              <div>
+                <Controller
+                  name="photo"
+                  control={control}
+                  // defaultValue={null}
+                  rules={{ validate: validateFile }}
+                  render={({ field }) => (
+                    <input
+                      type="file"
+                      ref={ref3}
+                      style={{ display: "none" }}
+                      onChange={(e) => {
+                        field.onChange(e.target.files);
+                      }}
+                    />
+                  )}
+                />
+                {errors.photo && (
+                  <p style={{ color: "#FF0000" }}>{errors.photo.message}</p>
                 )}
-              />
-              {errors.photo && <p style={{color:'#FF0000'}}>{errors.photo.message}</p>}
-            </div>
+              </div>
             </Grid>
           </Stack>
         </Grid>

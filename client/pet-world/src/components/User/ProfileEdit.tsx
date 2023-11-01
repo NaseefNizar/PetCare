@@ -10,6 +10,7 @@ import {
   Stack,
 } from "@mui/material";
 
+
 type UserDetails = {
   firstName: string;
   lastName?: string;
@@ -22,6 +23,12 @@ type UserDetails = {
   __v: number;
 };
 
+type FormValues = {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
 interface UpdateDialogProps {
   open: boolean;
   onClose: () => void;
@@ -33,16 +40,20 @@ export const ProfileEdit = ({
   open,
   onClose,
   userDetails,
-  onUpdate 
-} : UpdateDialogProps) => {
-  const form = useForm();
+  onUpdate,
+}: UpdateDialogProps) => {
+  const form = useForm<FormValues>();
   const { register, handleSubmit, formState, watch } = form;
-  const { errors } = formState
+  const { errors } = formState;
   const [updatedUserDetails, setUpdatedUserDetails] =
     useState<UserDetails>(userDetails);
   // console.log("update", updatedUserDetails);
 
-  const handleUpdate = () => {
+
+
+  const handleUpdate = (updatedUserDetails) => {
+    console.log(1);
+    
     onUpdate(updatedUserDetails);
     onClose();
   };
@@ -57,50 +68,65 @@ export const ProfileEdit = ({
 
   return (
     <Dialog open={open} onClose={onClose}>
+          <form onSubmit={handleSubmit(handleUpdate)} noValidate>
       <DialogTitle>Update User Details</DialogTitle>
       <DialogContent>
         <Grid container rowSpacing={1} columnSpacing={2}>
-          <Grid item>
-            <TextField
-              label="FirstName"
-              name="firstName"
-              value={updatedUserDetails.firstName}
-              onChange={handleChange}
-              //   fullWidth
-              margin="dense"
-            />
-          </Grid>
-          <Grid item>
-            <TextField
-              label="LastName"
-              name="lastName"
-              value={updatedUserDetails.lastName}
-              onChange={handleChange}
-              //   fullWidth
-              margin="dense"
-            />
-          </Grid>
-          <Grid item>
-            <TextField
-              label="Email"
-              name="email"
-              value={updatedUserDetails.email}
-              onChange={handleChange}
-              //   fullWidth
-              margin="dense"
-            />
-          </Grid>
-          <Grid item>
+            <Grid item>
+              <TextField
+                label="FirstName"
+                // name="firstName"
+                // value={updatedUserDetails.firstName}
+                // onChange={handleChange}
+                //   fullWidth
+                margin="dense"
+                {...register("firstName", {
+                  required: "Enter your name",
+                })}
+                error={!!errors.firstName}
+                helperText={errors.firstName?.message}
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                label="LastName"
+                // name="lastName"
+                // value={updatedUserDetails.lastName}
+                // onChange={handleChange}
+                //   fullWidth
+                margin="dense"
+                {...register("lastName", {
+                  required: "Enter your name",
+                })}
+                error={!!errors.lastName}
+                helperText={errors.lastName?.message}
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                label="Email"
+                // name="email"
+                // value={updatedUserDetails.email}
+                // onChange={handleChange}
+                //   fullWidth
+                margin="dense"
+                {...register("email", {
+                  required: "Enter your name",
+                })}
+                error={!!errors.email}
+                helperText={errors.email?.message}
+              />
+            </Grid>
+            {/* <Grid item>
             <TextField
               label="Contact Number"
               name="contactNumber"
               value={updatedUserDetails.contactNumber}
               onChange={handleChange}
-              //   fullWidth
               margin="dense"
             />
-          </Grid>
-          {/* <Grid item>
+          </Grid> */}
+            {/* <Grid item>
             <TextField
               label="House Name"
               name="housename"
@@ -114,7 +140,7 @@ export const ProfileEdit = ({
           direction={"row"}
           sx={{ display: "flex", justifyContent: "space-between" }}
         >
-          <Button variant="contained" color="success" onClick={handleUpdate}>
+          <Button type='submit' variant="contained" color="success">
             Update
           </Button>
           <Button variant="contained" color="error" onClick={onClose}>
@@ -122,6 +148,8 @@ export const ProfileEdit = ({
           </Button>
         </Stack>
       </DialogContent>
+      </form>
+
     </Dialog>
   );
 };

@@ -10,6 +10,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import generalRoute from './route/generalRoute.js';
+import paymentRoute from './route/paymentRoute.js';
+import appointmentRoute from './route/appointmentRoute.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const PORT = 8000;
@@ -25,7 +27,12 @@ catch (e) {
     console.log('Error connecting to DB: ', e);
 }
 const app = express();
-app.use(express.json());
+// app.use(express.json());
+app.use(express.json({
+    verify: (req, res, buf) => {
+        req.rawBody = buf;
+    }
+}));
 app.use(express.urlencoded({ extended: false }));
 app.use(cors({ credentials: true, origin: 'http://localhost:5173' }));
 app.use(cookieParser());
@@ -33,6 +40,9 @@ app.use('/api', userRoute);
 app.use('/api/admin', adminRoute);
 app.use('/api/partner', partnerRoute);
 app.use('/api/general', generalRoute);
+app.use('/api/payment', paymentRoute);
+app.use('/api/appointment', appointmentRoute);
+// app.use('/api/payment/webhook', express.raw({ type: 'application/json' }));
 app.use(express.static(path.join(__dirname, ('../dist/public'))));
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

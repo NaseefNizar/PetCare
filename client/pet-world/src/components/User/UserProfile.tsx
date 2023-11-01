@@ -16,7 +16,11 @@ import {
 } from "@mui/material";
 import { CloudUpload, PhotoCamera } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
-import { getData, updateProfilePic, updateUser } from "../../redux/features/userSlice";
+import {
+  getData,
+  updateProfilePic,
+  updateUser,
+} from "../../redux/features/userSlice";
 import { useAppSelector } from "../../redux/hooks";
 import { ProfileEdit } from "./ProfileEdit";
 import { useNavigate } from "react-router-dom";
@@ -164,16 +168,15 @@ export const UserProfile = () => {
   }
 
   const [openDialog, setOpenDialog] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const userState = useAppSelector((state) => state.user);
   const userData = userState?.userData;
-  const blockStat = userState.blockStat
-  console.log('hdgfhsgdh',userData?.picture);
-  
-  console.log("profile", userData);
-  // const serverBaseURI = 'http://localhost:8000/images' 
+  const blockStat = userState.blockStat;
+  console.log("hdgfhsgdh", userData?.picture);
 
+  console.log("profile", userData);
+  // const serverBaseURI = 'http://localhost:8000/images'
 
   // const [userDetails, setUserDetails] = useState<UserData | null>(userData);
 
@@ -185,31 +188,31 @@ export const UserProfile = () => {
 
   // const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  const handleFileChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       console.log(e.target.files);
-      
-    // setSelectedFile(e.target.files[0]);
-    const formData = new FormData();
-    formData.append('image', e.target.files[0]) 
-    console.log("ff",formData.get('image'));
-    
-    dispatch(updateProfilePic(formData))
+
+      // setSelectedFile(e.target.files[0]);
+      const formData = new FormData();
+      formData.append("image", e.target.files[0]);
+      console.log("ff", formData.get("image"));
+
+      dispatch(updateProfilePic(formData));
     }
     // console.log("sele",selectedFile);
-    
+
     // if(selectedFile) {
     // const formData = new FormData();
-    // formData.append('image', selectedFile) 
+    // formData.append('image', selectedFile)
     // dispatch(updateProfilePic(formData))
-  // };
+    // };
   };
 
   useEffect(() => {
     dispatch(getData(user._id));
   }, [userState.successMessage]);
   useEffect(() => {
-    blockStat && navigate('/login')
+    blockStat && navigate("/login");
   }, [blockStat]);
 
   return (
@@ -217,7 +220,7 @@ export const UserProfile = () => {
       component="main"
       sx={{
         flexGrow: 1,
-        py: 8,
+        py: 3,
       }}
     >
       <Container maxWidth="lg">
@@ -237,36 +240,39 @@ export const UserProfile = () => {
                         flexDirection: "column",
                       }}
                     >
-                      <Stack direction={"row"} sx={{display:"flex",alignItems:'self-end'}}>
-                      <Avatar
-                        src={userData?.picture}
-                        sx={{
-                          height: 80,
-                          mb: 2,
-                          width: 80,
-                        }}
-                      />
-                      {/* <img src={imageUrl} width={'100px'} height={'200px'}/> */}
-                      {/* <Grid> */}
-                      <input
-                        type="file"
-                        accept="image/*"
-                        style={{ display: "none" }}
-                        id="image-upload"
-                        onChange={handleFileChange}
-                      />
-                      <label htmlFor="image-upload">
-                        <IconButton
-                          color="primary"
-                          aria-label="upload picture"
-                          component="span"
-                        >
-                          <PhotoCamera />
-                        </IconButton>
-                        {/* {selectedFile && <p>Selected: {selectedFile.name}</p>} */}
-                      </label>
+                      <Stack
+                        direction={"row"}
+                        sx={{ display: "flex", alignItems: "self-end" }}
+                      >
+                        <Avatar
+                          src={userData?.picture}
+                          sx={{
+                            height: 80,
+                            mb: 2,
+                            width: 80,
+                          }}
+                        />
+                        {/* <img src={imageUrl} width={'100px'} height={'200px'}/> */}
+                        {/* <Grid> */}
+                        <input
+                          type="file"
+                          accept="image/*"
+                          style={{ display: "none" }}
+                          id="image-upload"
+                          onChange={handleFileChange}
+                        />
+                        <label htmlFor="image-upload">
+                          <IconButton
+                            color="primary"
+                            aria-label="upload picture"
+                            component="span"
+                          >
+                            <PhotoCamera />
+                          </IconButton>
+                          {/* {selectedFile && <p>Selected: {selectedFile.name}</p>} */}
+                        </label>
                       </Stack>
-                    {/* </Grid> */}
+                      {/* </Grid> */}
                       <Typography gutterBottom variant="h6">
                         {userData?.firstName} {userData?.lastName}
                       </Typography>
@@ -277,10 +283,14 @@ export const UserProfile = () => {
                   </CardContent>
                   <Divider />
                   <CardActions>
-                    
-
                     <Button fullWidth variant="text">
-                      Upload picture
+                      Profile
+                    </Button>
+                  </CardActions>
+                  <Divider />
+                  <CardActions>
+                    <Button fullWidth variant="text">
+                      Appointments
                     </Button>
                   </CardActions>
                 </Card>

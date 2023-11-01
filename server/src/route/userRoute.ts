@@ -8,6 +8,7 @@ import {
   logout,
   setNewPassword,
   signup,
+  updateContact,
   updateProfilePic,
   updateUser,
   verifyPasswordOTP,
@@ -20,8 +21,11 @@ import { verifyBlock } from "../middleware/userMiddlewares/blockedUser.js";
 const userRoute = express.Router();
 
 userRoute.post("/sendotp", existingUser, sendOTP);
+userRoute.post("/otp", sendOTP);
+// userRoute.post("/sendotp", sendOTP);
 
 userRoute.post("/signup", verifyOTP, signup);
+userRoute.post("/updatecontact", verifyOTP, updateContact);
 
 userRoute.post("/googleVerify", googleVerify);
 

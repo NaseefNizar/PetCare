@@ -3,7 +3,6 @@ import Partner from "../model/PartnerModel.js";
 import jwt from "jsonwebtoken";
 const jwtSecretKey = process.env.JWT_SECRET_KEY;
 import pkg from "twilio";
-import Kyc from "../model/kycModel.js";
 const { Twilio } = pkg;
 const { TWILIO_SERVICE_SID, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } = process.env;
 if (!TWILIO_SERVICE_SID || !TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN) {
@@ -30,7 +29,7 @@ export const signup = async (req, res) => {
             email,
             password: hashedPassword,
             contactNumber,
-            role
+            role,
         });
         await newPartner.save();
         res.status(201).json({ message: "Signup successful", newPartner });
@@ -63,11 +62,11 @@ export const login = async (req, res) => {
         //     req.cookies[`${user._id}`] = ""
         // }
         // res.cookie(String(user._id),token, {
-        res.cookie('token', token, {
-            path: '/',
+        res.cookie("token", token, {
+            path: "/",
             expires: new Date(Date.now() + 1000 * 60 * 60),
             httpOnly: true,
-            sameSite: 'lax'
+            sameSite: "lax",
         });
         res.status(200).json({ message: "Successfully logged in", token, user });
     }
@@ -89,7 +88,7 @@ export const logout = async (req, res) => {
 export const verifyToken = (req, res, next) => {
     // const cookies: string | undefined = req.headers.cookie;
     const cookies = req.cookies.token;
-    console.log('hdjjh', req.cookies);
+    // console.log("hdjjh", req.cookies);
     if (!cookies) {
         return res.status(404).json({ message: "No token found" });
     }
@@ -153,7 +152,7 @@ export const forgotPassword = async (req, res, next) => {
     const { contactNumber } = req.body;
     const existingUser = await Partner.findOne({ contactNumber });
     if (!existingUser) {
-        return res.status(409).json({ message: "User already exists" });
+        return res.status(409).json({ message: "User doesnt exist" });
     }
     next();
 };
@@ -192,49 +191,121 @@ export const verifyPasswordOTP = async (req, res) => {
         res.status(400).json({ message: "Invalid OTP" });
     }
 };
+// export const kycUpdate = async(req: MyCustomRequest, res: Response) => {
+//   try {
+//     console.log(req.body);
+//     const poi = req.files.poi?.[0]?.filename
+//       const poq = req.files.poq?.[0]?.filename
+//       const photo = req.files.photo?.[0]?.filename
+//     const {...data} = req.body
+//     console.log(req.body.firstName);
+//     console.log(req.id);
+//     const kycData = new Kyc({
+//       ...data,
+//       poi:`http://localhost:8000/users/${poi}`,
+//           poq:`http://localhost:8000/users/${poq}`,
+//           photo:`http://localhost:8000/users/${photo}`,
+//     })
+//     await kycData.save()
+//     const partnerData = await Partner.findByIdAndUpdate(req.id,{$set:{
+//       kycDataId:kycData._id,
+//       is_kycSubmitted:true
+//     }})
+//     res.status(200).json({ message: "Updated successfully" });
+//   } catch (error) {
+//     res.status(500).json({ message: "Error updating kyc data" });
+//   }
+// }
 export const kycUpdate = async (req, res) => {
     try {
-        const poi = req.files.poi?.[0]?.filename;
-        const poq = req.files.poq?.[0]?.filename;
-        const photo = req.files.photo?.[0]?.filename;
+        console.log(req.body);
+        // const poi = req?.files?.poi?.[0]?.filename;
+        // const poq = req?.files?.poq?.[0]?.filename;
+        // const photo = req?.files?.photo?.[0]?.filename;
+        // const { ...data } = req.body;
+        const poi = req.files.poi?.[0]
+            ?.filename;
+        const poq = req.files.poq?.[0]
+            ?.filename;
+        const photo = req.files
+            .photo?.[0]?.filename;
         const { ...data } = req.body;
-        console.log(req.body.firstName);
-        console.log(req.id);
-        const kycData = new Kyc({
-            ...data,
-            poi: `http://localhost:8000/users/${poi}`,
-            poq: `http://localhost:8000/users/${poq}`,
-            photo: `http://localhost:8000/users/${photo}`,
+        // console.log(req.body.firstName);
+        // console.log(req.id);
+        // const kycData = new Kyc({
+        //   ...data,
+        //   poi:`http://localhost:8000/users/${poi}`,
+        //       poq:`http://localhost:8000/users/${poq}`,
+        //       photo:`http://localhost:8000/users/${photo}`,
+        // })
+        // await kycData.save()
+        // const partnerData = await Partner.findByIdAndUpdate(req.id,{$set:{
+        //   kycDataId:kycData._id,
+        //   is_kycSubmitted:true
+        // }})
+        const partnerData = await Partner.findByIdAndUpdate(req.id, {
+            $set: {
+                ...data,
+                is_kycSubmitted: true,
+                poi: `http://localhost:8000/users/${poi}`,
+                poq: `http://localhost:8000/users/${poq}`,
+                photo: `http://localhost:8000/users/${photo}`,
+            },
         });
-        await kycData.save();
-        const partnerData = await Partner.findByIdAndUpdate(req.id, { $set: {
-                kycDataId: kycData._id,
-                is_kycSubmitted: true
-            } });
         res.status(200).json({ message: "Updated successfully" });
     }
     catch (error) {
         res.status(500).json({ message: "Error updating kyc data" });
     }
 };
+// export const kycDocumentUpload = async (req: MyCustomRequest, res: Response) => {
+//   try {
+//     console.log("files", req.files);
+//     if (req.files) {
+//       const poi = req.files.poi?.[0]?.filename
+//       const poq = req.files.poq?.[0]?.filename
+//       const photo = req.files.photo?.[0]?.filename
+//       console.log(poi);
+//       const userData = await Partner.findById(req.id)
+//       const kycId = userData?.kycDataId.toHexString()
+//       console.log(kycId);
+//       const kycData = await Kyc.findByIdAndUpdate(kycId,{
+//         $set:{
+//           poi:`http://localhost:8000/users/${poi}`,
+//           poq:`http://localhost:8000/users/${poq}`
+//         }
+//       })
+//       console.log(kycData);
+//       res.status(200).json({ message: "Updated successfully" });
+//     }
+//   } catch (error) {
+//     res.status(500).json({ message: "Error updating user data" });
+//   }
+// };
 export const kycDocumentUpload = async (req, res) => {
     try {
         console.log("files", req.files);
         if (req.files) {
-            const poi = req.files.poi?.[0]?.filename;
-            const poq = req.files.poq?.[0]?.filename;
-            const photo = req.files.photo?.[0]?.filename;
-            console.log(poi);
+            // const poi = req.files.poi?.[0]?.filename;
+            // const poq = req.files.poq?.[0]?.filename;
+            // const photo = req.files.photo?.[0]?.filename;
+            // console.log(poi);
+            const poi = req.files.poi?.[0]
+                ?.filename;
+            const poq = req.files.poq?.[0]
+                ?.filename;
+            const photo = req.files
+                .photo?.[0]?.filename;
             const userData = await Partner.findById(req.id);
-            const kycId = userData?.kycDataId.toHexString();
-            console.log(kycId);
-            const kycData = await Kyc.findByIdAndUpdate(kycId, {
+            // const kycId = userData?.kycDataId.toHexString()
+            // console.log(kycId);
+            const kycData = await Partner.findByIdAndUpdate(req.id, {
                 $set: {
                     poi: `http://localhost:8000/users/${poi}`,
-                    poq: `http://localhost:8000/users/${poq}`
-                }
+                    poq: `http://localhost:8000/users/${poq}`,
+                },
             });
-            console.log(kycData);
+            console.log("works", kycData);
             res.status(200).json({ message: "Updated successfully" });
         }
     }
@@ -244,8 +315,6 @@ export const kycDocumentUpload = async (req, res) => {
 };
 export const addSlot = async (req, res) => {
     try {
-        console.log(req.body);
-        console.log(req.id);
         const userId = req.id;
         const update = await Partner.findOneAndUpdate({ _id: userId }, { $push: { availableSlots: req.body } });
         res.status(200).json({ message: "Slot added successfully" });

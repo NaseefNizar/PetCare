@@ -1,11 +1,7 @@
 import mongoose from "mongoose";
 const partnerSchema = new mongoose.Schema({
-    firstName: {
-        type: String,
-        required: true,
-    },
-    lastName: {
-        type: String,
+    userId: {
+        type: String
     },
     email: {
         type: String,
@@ -38,14 +34,93 @@ const partnerSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    kycDataId: {
-        type: mongoose.Types.ObjectId,
-        ref: "Kyc",
+    // kycDataId: {
+    //   type: mongoose.Types.ObjectId,
+    //   ref: "Kyc",
+    // },
+    firstName: {
+        type: String,
+        // required: true,
+    },
+    lastName: {
+        type: String,
+    },
+    qualification: {
+        type: String,
+    },
+    experience: {
+        type: String,
+    },
+    centreName: {
+        type: String,
+        // required: true,
+    },
+    locality: {
+        type: String,
+        // required: true,
+    },
+    area: {
+        type: String,
+        // required: true,
+    },
+    pincode: {
+        type: String,
+        // required: true,
+    },
+    onlineconsultationfee: {
+        type: String,
+    },
+    offlineconsultationfee: {
+        type: String,
+    },
+    state: {
+        type: String,
+        // required: true,
+    },
+    bankName: {
+        type: String,
+        // required: true,
+    },
+    branchName: {
+        type: String,
+        // required: true,
+    },
+    accountHolderName: {
+        type: String,
+        // required: true,
+    },
+    accountNumber: {
+        type: String,
+        // required: true,
+    },
+    ifsc: {
+        type: String,
+        // required: true,
+    },
+    poi: {
+        type: String,
+        // required: true,
+    },
+    poq: {
+        type: String,
+        // required: true,
+    },
+    photo: {
+        type: String,
+        // required: true,
     },
     availableSlots: [
         {
             date: Date,
-            slots: []
+            slots: [{
+                    time: {
+                        type: String
+                    },
+                    status: {
+                        type: Boolean,
+                        default: false
+                    }
+                }]
         }
     ]
 });

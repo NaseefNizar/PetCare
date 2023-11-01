@@ -1,7 +1,7 @@
 import { Grid, TextField, Paper, Box, Button } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useAppDispatch } from "../../../redux/hooks";
-import { setKycData } from "../../../redux/features/kycSlice";
+import { setKycData } from "../../../redux/features/partnerSlice";
 
 type FormValues = {
   bankName: string,

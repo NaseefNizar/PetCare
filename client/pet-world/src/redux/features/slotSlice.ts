@@ -5,6 +5,7 @@ import axios from '../../utils/axiosInstance'
 const initialState = {
     loading: false,
     stat: false,
+    slot:{},
     statMsg: '',
 }
 
@@ -22,10 +23,16 @@ export const addSlot = createAsyncThunk(
 
 
 
+
+
 const slotSlice = createSlice({
     initialState,
     name:'addSlot',
-    reducers:{},
+    reducers:{
+        setSelectedSlot: (state, action) => {
+            state.slot = {...state.slot,...action.payload}
+        }
+    },
     extraReducers: (builder) => {
         builder
         .addCase(addSlot.pending, (state,action) => {
@@ -46,3 +53,4 @@ const slotSlice = createSlice({
 
 
 export default slotSlice.reducer
+export const {setSelectedSlot} = slotSlice.actions

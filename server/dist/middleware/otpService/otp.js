@@ -5,9 +5,12 @@ if (!TWILIO_SERVICE_SID || !TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN) {
     throw new Error("Twilio environment variables are not defined.");
 }
 const client = new Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
-export const sendOTP = async (req, res) => {
+export const sendOTP = async (req, res
+//   next: NextFunction
+) => {
     try {
         const { contactNumber } = req.body;
+        console.log(req.body);
         const otpResponse = await client.verify.v2
             .services(TWILIO_SERVICE_SID)
             .verifications.create({

@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  googleVerify,
+  // googleVerify,
   login,
   logout,
   signup,

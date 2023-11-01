@@ -137,10 +137,8 @@ export const getPartnerData = async( req:Request, res:Response ) => {
 
 export const getUnverifiedPartner = async( req:Request, res:Response ) => {
   try {
-    const unverifiedPartners = await Partner.find({is_verified: false }).populate('kycDataId');
-    
+    const unverifiedPartners = await Partner.find({is_verified: false,is_kycSubmitted: true });    
     res.status(200).json({unverifiedPartners})
-
   } catch (error) {
     console.error('Error getting user data:', error);
     res.status(500).json({ message: 'Error getting user data' });
@@ -183,7 +181,6 @@ export const partnerAccess = async( req: Request, res: Response) => {
   try{
     const { partnerId,is_blocked } = req.body
     console.log(req.body);
-    
     const user = await Partner.findOneAndUpdate({ _id: partnerId },{
       $set: {
         is_blocked

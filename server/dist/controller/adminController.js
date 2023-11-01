@@ -109,7 +109,7 @@ export const getPartnerData = async (req, res) => {
 };
 export const getUnverifiedPartner = async (req, res) => {
     try {
-        const unverifiedPartners = await Partner.find({ is_verified: false }).populate('kycDataId');
+        const unverifiedPartners = await Partner.find({ is_verified: false, is_kycSubmitted: true });
         res.status(200).json({ unverifiedPartners });
     }
     catch (error) {

@@ -49,29 +49,30 @@ const Userhomepage = () => {
     text-decoration: none;
     &:hover {
       border-color: #ff0000;
-    }`;
+    }
+  `;
 
-    const features =[
-      {
-        heading:'Pet Grooming',
-        description:'Book In-Home Grooming Session For Your Pet',
-        link:'/list-vet'
-      },
-      {
-        heading:'Vet on Call',
-        description:'Expert Veterinary Care Service At Your Home',
-        link:'/list-vet'
-      },
-      {
-        heading:'Adopt a Pet',
-        description:'Book In-Home Grooming Session For Your Pet',
-        link:'/list-vet'
-      },
-    ]
+  const features = [
+    {
+      heading: "Pet Grooming",
+      description: "Book In-Home Grooming Session For Your Pet",
+      link: "/list-vet",
+    },
+    {
+      heading: "Vet on Call",
+      description: "Expert Veterinary Care Service At Your Home",
+      link: "/list-vet",
+    },
+    {
+      heading: "Adopt a Pet",
+      description: "Book In-Home Grooming Session For Your Pet",
+      link: "/list-vet",
+    },
+  ];
 
   return (
     <Box>
-      <img src={banner} width={"100%"} minHeight={{xs:'200px'}} alt="" />
+      <img src={banner} width={"100%"} alt="" />
       <Box>
         <Stack
           sx={{
@@ -81,7 +82,7 @@ const Userhomepage = () => {
             padding: "30px",
             position: "relative",
             // top: "-200px"
-            top:{lg:'-200px',xs:'-75px'}
+            top: { lg: "-200px", xs: "-75px" },
             // margin: "-50px auto",
           }}
         >
@@ -91,7 +92,7 @@ const Userhomepage = () => {
               minWidth: "75%",
               minHeight: "400px",
               borderRadius: "10px",
-              xs:12
+              xs: 12,
             }}
             // xs={12}
           >
@@ -120,7 +121,6 @@ const Userhomepage = () => {
                 spacing={5}
                 display={"flex"}
                 justifyContent={"center"}
-
               >
                 {/* <Grid item>
                   <Box
@@ -148,29 +148,30 @@ const Userhomepage = () => {
                     </Stack>
                   </Box>
                 </Grid>  */}
-                {features.map(feature => 
-                <Grid item 
-                // xs={12} sm={12} md={6} lg={3.5}
-                >
-                  <FeatureBox component={Link} to={feature.link}>
-                     <img src={banner} width={"75"} height={"75%"} />
-                    <Stack 
-                    // spacing={0.25} 
-                    paddingLeft={2}
-                    >
-                      <Typography
-                        variant="h5"
-                        sx={{ fontSize: "20px", fontWeight: "bold" }}
+                {features.map((feature) => (
+                  <Grid
+                    item
+                    // xs={12} sm={12} md={6} lg={3.5}
+                  >
+                    <FeatureBox component={Link} to={feature.link}>
+                      <img src={banner} width={"75"} height={"75%"} />
+                      <Stack
+                        // spacing={0.25}
+                        paddingLeft={2}
                       >
-                        {feature.heading}
-                      </Typography>
-                      <Typography variant="h6" sx={{ fontSize: "15px" }}>
-                        {feature.description}
-                      </Typography>
-                    </Stack>
-                  </FeatureBox>
+                        <Typography
+                          variant="h5"
+                          sx={{ fontSize: "20px", fontWeight: "bold" }}
+                        >
+                          {feature.heading}
+                        </Typography>
+                        <Typography variant="h6" sx={{ fontSize: "15px" }}>
+                          {feature.description}
+                        </Typography>
+                      </Stack>
+                    </FeatureBox>
                   </Grid>
-                )}
+                ))}
               </Grid>
             </Stack>
           </Paper>
@@ -178,7 +179,7 @@ const Userhomepage = () => {
       </Box>
 
       {/* footer */}
-      <Box
+      {/* <Box
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -317,7 +318,7 @@ const Userhomepage = () => {
             </Box>
           </GuideBox>
         </GuidesBox>
-      </Box>
+      </Box> */}
     </Box>
   );
 };

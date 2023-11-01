@@ -15,19 +15,22 @@ const PartnerLayout = (
   const [open, setOpen] = useState(false);
   const navigate = useNavigate()
 
-  const token = useAppSelector(state => state.vet.tokenStat)
-  const blocked = useAppSelector(state => state.vet.blockStat)
+  const partnerState = useAppSelector(state => state.vet)
+  const partnerData = partnerState.userData
+
+  // const token = useAppSelector(state => state.vet.tokenStat)
+  // const blocked = useAppSelector(state => state.vet.blockStat)
   const partner = localStorage.getItem('partner')
   // const partner = useAppSelector(state => state.vet.userData)
   useEffect(() => {
     !partner && navigate('/login')
   },[partner])
   useEffect(() => {
-    token === false && navigate('/login')
-  },[token])
+    partnerState.tokenStat === false && navigate('/login')
+  },[partnerState])
   useEffect(() => {
-    blocked && navigate('/login')
-  },[blocked])
+    partnerState.blockStat && navigate('/login')
+  },[partnerState])
 
   return (
     <>

@@ -13,31 +13,33 @@ import {
   Paper,
 } from "@mui/material";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
-import { setKycData } from "../../../redux/features/kycSlice";
+import { setKycData } from "../../../redux/features/partnerSlice";
 import { useAppDispatch } from "../../../redux/hooks";
 
 type FormValues = {
   firstName: string;
   lastName: string;
+  qualification: string;
+  experience: string;
   centreName: string;
   locality: string;
   area: string;
   pincode: string;
   state: string;
+  onlineconsultationfee: string;
+  offlineconsultationfee: string;
 };
 
-
-
 export default function BasicDetails() {
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  // const handleClickOpen = () => {
+  //   setOpen(true);
+  // };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
 
   const form = useForm<FormValues>({
     mode: "onTouched",
@@ -46,7 +48,7 @@ export default function BasicDetails() {
   const { errors } = formState;
   const dispatch = useAppDispatch();
 
-  const formRef = useRef<HTMLFormElement>(null)
+  // const formRef = useRef<HTMLFormElement>(null)
 
   const states = [
     {
@@ -174,7 +176,7 @@ export default function BasicDetails() {
 
   return (
     <Paper sx={{ margin: "10px", padding: "10px" }}>
-      <form onSubmit={handleSubmit(onSubmit)} noValidate >
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <Grid
           container
           rowSpacing={1}
@@ -190,14 +192,10 @@ export default function BasicDetails() {
               label="First Name"
               size="small"
               variant="filled"
-              // name="firstName"
-              // value={updatedUserDetails.firstName}
-              // onChange={handleChange}
-              // placeholder="First name"
               fullWidth
               margin="dense"
               {...register("firstName", {
-                required: "Name is required",
+                required: "First name is required",
               })}
               error={!!errors.firstName}
               helperText={errors.firstName?.message}
@@ -208,67 +206,49 @@ export default function BasicDetails() {
               label="Last Name"
               size="small"
               variant="filled"
-              // name="lastName"
-              // value={updatedUserDetails.lastName}
-              // onChange={handleChange}
-                // fullWidth
-              // placeholder="Last name"
               margin="dense"
               {...register("lastName", {
-                required: "last name is required",
+                required: "Last name is required",
               })}
               error={!!errors.lastName}
               helperText={errors.lastName?.message}
             />
           </Grid>
-          {/* <Grid item>
+          <Grid item>
             <TextField
-              label="Email"
-              // name="email"
+              label="Qualifications"
               size="small"
               variant="filled"
               margin="dense"
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value:
-                    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
-                  message: "Enter valid email",
-                },
+              {...register("qualification", {
+                required: "Qualification is required",
               })}
-              error={!!errors.email}
-              helperText={errors.email?.message}
+              error={!!errors.qualification}
+              helperText={errors.qualification?.message}
             />
-          </Grid> */}
-          {/* <Grid item>
+          </Grid>
+          <Grid item>
             <TextField
-              label="Contact Number"
+              label="Experience"
               size="small"
               variant="filled"
-              // name="contactNumber"
-              fullWidth
               margin="dense"
-              {...register("contactNumber", {
-                required: "Contact number is required",
-                pattern: {
-                  value: /^\d{10}$/,
-                  message: "Enter valid 10 digit number",
-                },
+              {...register("experience", {
+                required: "Qualification is required",
               })}
-              error={!!errors.contactNumber}
-              helperText={errors.contactNumber?.message}
+              error={!!errors.experience}
+              helperText={errors.experience?.message}
             />
-          </Grid> */}
+          </Grid>
           <Grid item>
             <TextField
               label="Centre Name"
               size="small"
               variant="filled"
-              // name="contactNumber"
               fullWidth
               margin="dense"
               {...register("centreName", {
-                required: "Centre name is required",               
+                required: "Centre name is required",
               })}
               error={!!errors.centreName}
               helperText={errors.centreName?.message}
@@ -279,7 +259,6 @@ export default function BasicDetails() {
               label="Locality"
               size="small"
               variant="filled"
-              // name="contactNumber"
               fullWidth
               margin="dense"
               {...register("locality", {
@@ -294,7 +273,6 @@ export default function BasicDetails() {
               label="City/District/Town"
               size="small"
               variant="filled"
-              // name="contactNumber"
               fullWidth
               margin="dense"
               {...register("area", {
@@ -309,11 +287,10 @@ export default function BasicDetails() {
               label="Pincode"
               size="small"
               variant="filled"
-              // name="contactNumber"
               fullWidth
               margin="dense"
               {...register("pincode", {
-                required: "Contact number is required",
+                required: "Pincode is required",
                 pattern: {
                   value: /^\d{6}$/,
                   message: "Enter valid 6 digit number",
@@ -323,41 +300,48 @@ export default function BasicDetails() {
               helperText={errors.pincode?.message}
             />
           </Grid>
-          {/* <Grid item>
+          <Grid item>
             <TextField
-              label="GSTIN"
-              // name="gstId"
-              fullWidth
+              label="Online consultation fee"
               size="small"
               variant="filled"
-              // value={updatedUserDetails.contactNumber}
-              // onChange={handleChange}
-              //   fullWidth
+              fullWidth
               margin="dense"
-              {...register("gstIn", {
-                required: "GSTIN is required",
-                pattern: {
-                  value: /^\d{15}$/,
-                  message: "Enter valid 15 digit gstin",
-                },
+              {...register("onlineconsultationfee", {
+                required: "Fees is required",
               })}
-              error={!!errors.gstIn}
-              helperText={errors.gstIn?.message}
+              error={!!errors.onlineconsultationfee}
+              helperText={errors.onlineconsultationfee?.message}
             />
-          </Grid> */}
+          </Grid>
+          <Grid item>
+            <TextField
+              label="Offline consultation fee"
+              size="small"
+              variant="filled"
+              fullWidth
+              margin="dense"
+              {...register("offlineconsultationfee", {
+                required: "Fees is required",
+              })}
+              error={!!errors.offlineconsultationfee}
+              helperText={errors.offlineconsultationfee?.message}
+            />
+          </Grid>
           <Grid item>
             <Controller
               name="state"
               control={control}
               defaultValue={states[0].value}
               rules={{ required: "State is required" }}
-              
               render={({ field }) => (
-                <FormControl sx={{ width: "225px" }} error={!!errors.state} >
+                <FormControl sx={{ width: "225px" }} error={!!errors.state}>
                   <InputLabel>Select State</InputLabel>
-                  <Select {...field} fullWidth
-                                onChange={(e) => field.onChange(e.target.value)}
-                                >
+                  <Select
+                    {...field}
+                    fullWidth
+                    onChange={(e) => field.onChange(e.target.value)}
+                  >
                     {states.map((state) => (
                       <MenuItem key={state.value} value={state.value}>
                         {state.label}
@@ -365,19 +349,11 @@ export default function BasicDetails() {
                     ))}
                   </Select>
                   {errors.state && (
-              <FormHelperText>{errors.state.message}</FormHelperText>
-            )}
+                    <FormHelperText>{errors.state.message}</FormHelperText>
+                  )}
                 </FormControl>
               )}
             />
-            {/* <Autocomplete
-              disablePortal
-              id="combo-box-demo"
-              options={states}
-              sx={{ width: 220 }}
-              size="small"
-              renderInput={(params) => <TextField margin="dense" variant="filled" {...params} label="State" />}
-            /> */}
           </Grid>
         </Grid>
         <Box display={"flex"} justifyContent={"flex-end"}>
