@@ -11,9 +11,9 @@ const { Twilio } = pkg;
 
 const { TWILIO_SERVICE_SID, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } =
   process.env;
-if (!TWILIO_SERVICE_SID || !TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN) {
-  throw new Error("Twilio environment variables are not defined.");
-}
+// if (!TWILIO_SERVICE_SID || !TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN) {
+//   throw new Error("Twilio environment variables are not defined.");
+// }
 const client = new Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
@@ -311,7 +311,7 @@ export const verifyPasswordOTP = async (req: Request, res: Response) => {
 
   try {
     const verifiedResponse = await client.verify.v2
-      .services(TWILIO_SERVICE_SID)
+      .services(TWILIO_SERVICE_SID as  string)
       .verificationChecks.create({
         to: `+91${contactNumber}`,
         code: otp,
