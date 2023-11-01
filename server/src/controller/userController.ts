@@ -14,7 +14,7 @@ const { TWILIO_SERVICE_SID, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } =
 // if (!TWILIO_SERVICE_SID || !TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN) {
 //   throw new Error("Twilio environment variables are not defined.");
 // }
-const client = new Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
+const client = new Twilio(TWILIO_ACCOUNT_SID as string, TWILIO_AUTH_TOKEN as string);
 const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
 interface DecodedToken extends JwtPayload {
@@ -23,7 +23,7 @@ interface DecodedToken extends JwtPayload {
 
 export interface MyCustomRequest extends Request {
   id?: string;
-  rawBody?: Buffer
+  rawBody?: Buffer;
 }
 
 export const existingUser = async (
@@ -174,7 +174,7 @@ export const verifyToken = (
   }
   const token: string = req.cookies.token;
   console.log(token);
-  
+
   jwt.verify(String(token), jwtSecretKey, (err: any, user: any) => {
     if (err) {
       return res.status(400).json({ message: "Invalid token" });
@@ -311,7 +311,7 @@ export const verifyPasswordOTP = async (req: Request, res: Response) => {
 
   try {
     const verifiedResponse = await client.verify.v2
-      .services(TWILIO_SERVICE_SID as  string)
+      .services(TWILIO_SERVICE_SID as string)
       .verificationChecks.create({
         to: `+91${contactNumber}`,
         code: otp,
@@ -328,8 +328,8 @@ export const verifyPasswordOTP = async (req: Request, res: Response) => {
   }
 };
 
-export const updateContact = async (req:MyCustomRequest, res:Response) => {
-  const {contactNumber} = req.body
+export const updateContact = async (req: MyCustomRequest, res: Response) => {
+  const { contactNumber } = req.body;
   try {
     const userData = await User.findByIdAndUpdate(req.id, {
       $set: {
@@ -340,6 +340,4 @@ export const updateContact = async (req:MyCustomRequest, res:Response) => {
   } catch (error) {
     res.status(500).json({ message: "Error updating user data" });
   }
-}
-
-
+};
