@@ -39,7 +39,7 @@ module.exports = {
           'nodemon ./dist/server/server.js',  // Run the compiled server
         ],
         instances: 1,  // Number of instances you want to run (can be adjusted)
-        exec_mode: 'cluster',  // You can choose 'cluster' or 'fork' mode
+        exec_mode: 'fork',  // You can choose 'cluster' or 'fork' mode
         watch: true,  // Enable automatic restarts on file changes
         interpreter: 'none',  // Avoid interpreting your command
       },
