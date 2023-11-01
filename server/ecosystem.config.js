@@ -11,13 +11,23 @@ module.exports = {
     //     interpreter: 'none',  // Avoid interpreting your command
     //   },
     // ],
+    // apps: [
+    //     {
+    //       name: 'my-app',
+    //       script: 'index.js',
+    //       args: 'start',
+    //       watch: true,  // Enable automatic restarts on file changes
+    //       interpreter: 'none',  // Avoid interpreting your command
+    //     },
+    //   ],
     apps: [
         {
           name: 'my-app',
-          script: 'npm',
-          args: 'start',
-          watch: true,  // Enable automatic restarts on file changes
-          interpreter: 'none',  // Avoid interpreting your command
-        },
-      ],
+          script: 'node_modules/ts-node/dist/bin.js',
+          args: 'src/index.ts',
+          instances: 1,
+          autorestart: true,
+          watch: true, 
+        }
+    ]
   };
