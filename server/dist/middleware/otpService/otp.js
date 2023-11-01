@@ -1,9 +1,9 @@
 import pkg from "twilio";
 const { Twilio } = pkg;
 const { TWILIO_SERVICE_SID, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } = process.env;
-if (!TWILIO_SERVICE_SID || !TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN) {
-    throw new Error("Twilio environment variables are not defined.");
-}
+// if (!TWILIO_SERVICE_SID || !TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN) {
+//   throw new Error("Twilio environment variables are not defined.");
+// }
 const client = new Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 export const sendOTP = async (req, res
 //   next: NextFunction
