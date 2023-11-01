@@ -20,14 +20,28 @@ module.exports = {
     //       interpreter: 'none',  // Avoid interpreting your command
     //     },
     //   ],
+    // apps: [
+    //     {
+    //       name: 'my-app',
+    //       script: 'node_modules/ts-node/dist/bin.js',
+    //       args: 'src/index.ts',
+    //       instances: 1,
+    //       autorestart: true,
+    //       watch: true, 
+    //     }
+    // ]
     apps: [
-        {
-          name: 'my-app',
-          script: 'node_modules/ts-node/dist/bin.js',
-          args: 'src/index.ts',
-          instances: 1,
-          autorestart: true,
-          watch: true, 
-        }
-    ]
+      {
+        name: 'my-app-dev',
+        script: 'node_modules/.bin/concurrently',
+        args: [
+          'tsc -p ./src/server -w',  // Watch TypeScript files
+          'nodemon ./dist/server/server.js',  // Run the compiled server
+        ],
+        instances: 1,  // Number of instances you want to run (can be adjusted)
+        exec_mode: 'cluster',  // You can choose 'cluster' or 'fork' mode
+        watch: true,  // Enable automatic restarts on file changes
+        interpreter: 'none',  // Avoid interpreting your command
+      },
+    ],
   };
