@@ -43,6 +43,9 @@ app.use('/api/general', generalRoute);
 app.use('/api/payment', paymentRoute);
 app.use('/api/appointment', appointmentRoute);
 // app.use('/api/payment/webhook', express.raw({ type: 'application/json' }));
+app.get('/', (req, res) => {
+    res.json("Server is running");
+});
 app.use(express.static(path.join(__dirname, ('../dist/public'))));
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

@@ -50,6 +50,9 @@ app.use('/api/payment',paymentRoute)
 app.use('/api/appointment',appointmentRoute)
 // app.use('/api/payment/webhook', express.raw({ type: 'application/json' }));
 
+app.get('/',(req,res) => {
+    res.json("Server is running")
+})
 
 app.use(express.static(path.join(__dirname,('../dist/public'))));
 
