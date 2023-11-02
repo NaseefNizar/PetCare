@@ -1,18 +1,18 @@
 import {
-  Grid,
+  // Grid,
   Toolbar,
   Paper,
   AppBar,
   Stack,
-  TextField,
-  Button,
-  IconButton,
+  // TextField,
+  // Button,
+  // IconButton,
   Typography,
-  Tooltip,
+  // Tooltip,
   Box,
 } from "@mui/material";
 import { useEffect } from "react";
-import PartnerLayout from "../../components/PartnerLayout/PartnerLayout";
+// import PartnerLayout from "../../components/PartnerLayout/PartnerLayout";
 import verificationImg from "../../assets/verification-img.png";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import KycLayout from "../../components/PartnerLayout/Kyc/KycLayout";

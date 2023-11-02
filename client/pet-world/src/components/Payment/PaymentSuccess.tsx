@@ -1,4 +1,3 @@
-import React from "react";
 import { Grid, Paper, Typography,Button } from "@mui/material";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 

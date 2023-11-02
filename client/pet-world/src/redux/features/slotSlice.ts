@@ -9,13 +9,13 @@ const initialState = {
     statMsg: '',
 }
 
-export const addSlot = createAsyncThunk(
+export const addSlot = createAsyncThunk<any,any>(
     'slot/add',
     async(data,{rejectWithValue}) => {
         try {
             const response = await axios.patch('api/partner/addslot',data)
             return response.data
-        } catch (error) {
+        } catch (error:any) {
             return rejectWithValue(error.response.data)
         }
     }
@@ -35,7 +35,7 @@ const slotSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-        .addCase(addSlot.pending, (state,action) => {
+        .addCase(addSlot.pending, (state) => {
             state.loading = true
             state.stat = false
         })

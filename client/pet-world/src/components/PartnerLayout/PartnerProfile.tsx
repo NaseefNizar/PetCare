@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -16,9 +16,9 @@ import {
   Paper
 } from "@mui/material";
 import {  PhotoCamera } from "@mui/icons-material";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 // import { getData, updateProfilePic, updateUser } from "../../redux/features/userSlice";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { ProfileEdit } from "../User/ProfileEdit";
 import { getPartnerData, updatePartner, updatePartnerProfilePic } from "../../redux/features/partnerSlice";
 import { useNavigate } from "react-router-dom";
@@ -26,48 +26,48 @@ import { useNavigate } from "react-router-dom";
 
 
 
-type UserData = {
-  firstName: string;
-  lastName?: string;
-  email: string;
-  password: string;
-  contactNumber: string;
-  picture?: string;
-  role: string;
-  _id: string;
-  __v: number;
-};
+// type UserData = {
+//   firstName: string;
+//   lastName?: string;
+//   email: string;
+//   password: string;
+//   contactNumber: string;
+//   picture?: string;
+//   role: string;
+//   _id: string;
+//   __v: number;
+// };
 
 export const PartnerProfile = () => {
-  let user;
-  const userString: string | null = localStorage.getItem("partner");
-  if (userString !== null) {
-    user = JSON.parse(userString);
-  }
+  // let user;
+  // const userString: string | null = localStorage.getItem("partner");
+  // if (userString !== null) {
+  //   user = JSON.parse(userString);
+  // }
 
   const [openDialog, setOpenDialog] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch()
   const partnerState = useAppSelector((state) => state.vet);
   const partnerData = partnerState?.userData;
   const navigate = useNavigate()
 
 
-  const handleUpdate = (updatedDetails: UserData) => {
+  const handleUpdate = (updatedDetails:any) => {
     // setUserDetails(updatedDetails);
-    console.log("axiosupdate", updatedDetails);
+    // console.log("axiosupdate", updatedDetails);
     dispatch(updatePartner(updatedDetails));
   };
 
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  // const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const handleFileChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      console.log(e.target.files);
+      // console.log(e.target.files);
       
-    setSelectedFile(e.target.files[0]);
+    // setSelectedFile(e.target.files[0]);
     const formData = new FormData();
     formData.append('image', e.target.files[0]) 
-    console.log("ff",formData.get('image'));
+    // console.log("ff",formData.get('image'));
     
     dispatch(updatePartnerProfilePic(formData))
     }

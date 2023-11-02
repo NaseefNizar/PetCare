@@ -1,10 +1,11 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../utils/axiosInstance";
 import { initialState,kycData } from "../../types/kyc";
-import { act } from "react-dom/test-utils";
+// import { act } from "react-dom/test-utils";
 
 type FormValues = {
-  firstName: string;
+  // firstName: string;
+  userId: string;
   lastName?: string;
   email: string;
   password: string;
@@ -13,7 +14,7 @@ type FormValues = {
   role?: string;
 };
 
-type CredentialResponse = {};
+// type CredentialResponse = {};
 
 type UserData = {
   firstName: string;
@@ -40,12 +41,12 @@ type InitialState = {
   loginSuccess: null | boolean;
   userData: UserData | null;
   signupData: FormValues | null;
-  error: string;
+  error: any;
   otpSendStat: boolean;
   successMessage: string;
   tokenStat: boolean | null;
   blockStat: boolean;
-  status:String;
+  status:string;
   kycData: null | kycData
 };
 
@@ -92,7 +93,7 @@ export const registerPartner = createAsyncThunk(
   }
 );
 
-export const loginPartner = createAsyncThunk(
+export const loginPartner = createAsyncThunk<any,any>(
   "partner/loginPartner",
   async (credential, { rejectWithValue }) => {
     try {
@@ -120,7 +121,7 @@ export const getPartnerData = createAsyncThunk(
   }
 );
 
-export const updatePartner = createAsyncThunk(
+export const updatePartner = createAsyncThunk<any,any>(
   "/partner/updatepartner",
   async (updatedData, { rejectWithValue }) => {
     try {
@@ -210,7 +211,7 @@ export const setNewPassword = createAsyncThunk(
   }
 );
 
-export const kycUpdate = createAsyncThunk(
+export const kycUpdate = createAsyncThunk<void,any>(
   "/kyc/upload",
   async (data, { rejectWithValue }) => {
     try {
@@ -256,11 +257,11 @@ const vetSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(sendOtpPartner.pending, (state, action: PayloadAction) => {
+      .addCase(sendOtpPartner.pending, (state) => {
         state.loading = true;
         state.error = "";
       })
-      .addCase(sendOtpPartner.fulfilled, (state, action) => {
+      .addCase(sendOtpPartner.fulfilled, (state) => {
         state.loading = false;
         state.otpSendStat = true;
       })
@@ -270,17 +271,17 @@ const vetSlice = createSlice({
 
         state.error = action.error.message || "";
       })
-      .addCase(registerPartner.pending, (state, action: PayloadAction) => {
+      .addCase(registerPartner.pending, (state) => {
         state.loading = true;
       })
-      .addCase(registerPartner.fulfilled, (state, action) => {
+      .addCase(registerPartner.fulfilled, (state) => {
         (state.loading = false), (state.registerStatus = true);
       })
       .addCase(registerPartner.rejected, (state, action) => {
         console.log(action.error);
         (state.loading = false), (state.error = action.error.message || "");
       })
-      .addCase(loginPartner.pending, (state, action) => {
+      .addCase(loginPartner.pending, (state) => {
         state.loading = true;
         state.blockStat = false;
         state.error = "";
@@ -294,28 +295,28 @@ const vetSlice = createSlice({
         localStorage.setItem("partner", JSON.stringify(action.payload.user));
         console.log(action.payload.user);
       })
-      .addCase(loginPartner.rejected, (state, action) => {
+      .addCase(loginPartner.rejected, (state, action:any) => {
         (state.loading = false), (state.loginSuccess = false);
         state.tokenStat = false;
         state.error = action.payload.message || "";
       })
 
-      .addCase(getPartnerData.pending, (state, action) => {
+      .addCase(getPartnerData.pending, (state) => {
         state.loading = true;
       })
-      .addCase(getPartnerData.rejected, (state, action) => {
+      .addCase(getPartnerData.rejected, (state, action:any) => {
         state.loading = false;
         state.error = action.payload.message || "";
         state.blockStat = true;
         state.tokenStat = false;
       })
-      .addCase(getPartnerData.fulfilled, (state, action) => {
+      .addCase(getPartnerData.fulfilled, (state, action:any) => {
         state.loading = false;
         state.userData = action.payload.partnerData;
         state.tokenStat = true;
         // console.log("gotdata", action.payload);
       })
-      .addCase(logOut.fulfilled, (state, action) => {
+      .addCase(logOut.fulfilled, (state) => {
         (state.loading = false),
           (state.registerStatus = false),
           (state.loginSuccess = null),
@@ -327,7 +328,7 @@ const vetSlice = createSlice({
           (state.successMessage = "");
         localStorage.removeItem("partner");
       })
-      .addCase(updatePartner.pending, (state, action) => {
+      .addCase(updatePartner.pending, (state) => {
         state.loading = true;
         state.successMessage = "";
       })
@@ -340,7 +341,7 @@ const vetSlice = createSlice({
         state.successMessage = action.payload.message;
         console.log("gotdata", action.payload);
       })
-      .addCase(updatePartnerProfilePic.pending, (state, action) => {
+      .addCase(updatePartnerProfilePic.pending, (state) => {
         state.loading = true;
         state.successMessage = "";
       })
@@ -353,17 +354,17 @@ const vetSlice = createSlice({
         state.successMessage = action.payload.message;
         console.log("gotdata", action.payload);
       })
-      .addCase(kycUpdate.pending, (state, action) => {
+      .addCase(kycUpdate.pending, (state) => {
         state.loading = false;
       })
-      .addCase(kycUpdate.fulfilled, (state, action) => {
+      .addCase(kycUpdate.fulfilled, (state, action:any) => {
         state.status = action.payload.message;
       })
       .addCase(kycDocUpload.fulfilled, (state, action) => {
         state.status = action.payload.message;
       })
       .addCase(kycDocUpload.rejected, (state, action) => {
-        state.status = action.error.message;
+        state.status = action.error.message || '';
       });
   },
 });

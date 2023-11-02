@@ -1,8 +1,8 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import otplogo from "../assets/Secure Privacy.png";
-import { useRef, useEffect, useState } from "react";
-import { OtpInput } from "./OtpInput";
-import { Dispatch } from "@reduxjs/toolkit";
+import {  useEffect, useState } from "react";
+// import { OtpInput } from "./OtpInput";
+// import { Dispatch } from "@reduxjs/toolkit";
 import {
   Stack,
   Paper,
@@ -11,11 +11,11 @@ import {
   Button,
   Box,
 } from "@mui/material";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { forgotPassword, registerUser, sendOtp, verifyOtpPassword } from "../redux/features/userSlice";
+import { forgotPassword, verifyOtpPassword } from "../redux/features/userSlice";
 import { useNavigate } from "react-router-dom";
-import { registerPartner, sendOtpPartner } from "../redux/features/partnerSlice";
+// import { registerPartner, sendOtpPartner } from "../redux/features/partnerSlice";
 
 type Otp = {
   otp: string;
@@ -28,9 +28,9 @@ export const PasswordOtp = () => {
   const userState = useAppSelector((state) => state.user);
   const contactNumber = userState.phoneNumber
   const otpStat = userState.otpVerify
-  const error = userState.error;
-  const signupDataUser = userState.signupData;
-  const registerStatus = userState.registerStatus;
+  // const error = userState.error;
+  // const signupDataUser = userState.signupData;
+  // const registerStatus = userState.registerStatus;
 
 //   const partnerState = useAppSelector((state) => state.vet);
 //   const errorPartner = partnerState.error;
@@ -92,27 +92,27 @@ dispatch(verifyOtpPassword({...otp,contactNumber}))
     };
   }, [timer, showButton]);
 
-  const inputRefs = [
-    useRef<HTMLInputElement>(null),
-    useRef<HTMLInputElement>(null),
-    useRef<HTMLInputElement>(null),
-    useRef<HTMLInputElement>(null),
-    useRef<HTMLInputElement>(null),
-    useRef<HTMLInputElement>(null),
-  ];
+  // const inputRefs = [
+  //   useRef<HTMLInputElement>(null),
+  //   useRef<HTMLInputElement>(null),
+  //   useRef<HTMLInputElement>(null),
+  //   useRef<HTMLInputElement>(null),
+  //   useRef<HTMLInputElement>(null),
+  //   useRef<HTMLInputElement>(null),
+  // ];
 
-  const handleInput = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    index: number
-  ) => {
-    const input = e.target;
-    const value = input.value;
+  // const handleInput = (
+  //   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  //   index: number
+  // ) => {
+  //   const input = e.target;
+  //   const value = input.value;
 
-    if (value.length === 1 && index < inputRefs.length - 1) {
-      // Move focus to the next input element
-      inputRefs[index + 1].current!.focus();
-    }
-  };
+  //   if (value.length === 1 && index < inputRefs.length - 1) {
+  //     // Move focus to the next input element
+  //     inputRefs[index + 1].current!.focus();
+  //   }
+  // };
 
   return (
     <div>

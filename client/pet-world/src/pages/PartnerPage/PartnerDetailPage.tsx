@@ -1,4 +1,3 @@
-import React from "react";
 import { PartnerDetail } from "../../components/general/PartnerDetail";
 import { Navbar } from "../../components/Navbar";
 import Footer from "../../components/Footer";

@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from '../../utils/axiosInstance'
 import { initialState } from '../../types/kyc';
 
@@ -32,7 +32,7 @@ export const getVetList =  createAsyncThunk(
     }
 )
 
-export const getIndividualDetails = createAsyncThunk(
+export const getIndividualDetails = createAsyncThunk<string,any>(
     'getdetail/vet',
     async(partnerId,{ rejectWithValue}) => {        
         try {
@@ -50,7 +50,7 @@ const listSlice = createSlice({
     reducers:{},
     extraReducers: builder => {
         builder
-        .addCase(getVetList.pending, (state, action) => {
+        .addCase(getVetList.pending, (state) => {
             state.loading = true;
         })
         .addCase(getVetList.fulfilled, (state, action) => {
@@ -61,10 +61,10 @@ const listSlice = createSlice({
             state.loading = false;
             state.responseMsg = action.error.message || ''
         })
-        .addCase(getIndividualDetails.pending, (state, action) => {
+        .addCase(getIndividualDetails.pending, (state) => {
             state.loading = true;
         })
-        .addCase(getIndividualDetails.fulfilled, (state, action) => {
+        .addCase(getIndividualDetails.fulfilled, (state, action:any) => {
             state.loading = false;
             state.individualData = action.payload.partnerData
         })

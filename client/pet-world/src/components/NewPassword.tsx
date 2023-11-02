@@ -10,7 +10,7 @@ import {
   Button,
   Box,
 } from "@mui/material";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { useNavigate } from "react-router-dom";
 import { setNewPassword } from "../redux/features/userSlice";

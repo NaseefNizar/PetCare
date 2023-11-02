@@ -10,7 +10,12 @@ import { useAppSelector } from "../../redux/hooks";
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
 // This is your test publishable API key.
-const stripePromise =  await loadStripe("pk_test_51NyzwcSA4C0Pm233lyhz8N3ijqvw9NTzSmVcZCCYtRbk0lvEAyPuXWbWBmWLOPV43bEjvvQgKKzeFHsEpBXvzWot00qQQ451Yv");
+async function loadStripeAndRender() {
+  const stripe = await loadStripe("pk_test_51NyzwcSA4C0Pm233lyhz8N3ijqvw9NTzSmVcZCCYtRbk0lvEAyPuXWbWBmWLOPV43bEjvvQgKKzeFHsEpBXvzWot00qQQ451Yv");
+  return stripe
+  // Rest of your code
+}
+const stripePromise =  loadStripeAndRender()
 
 
 export default function StripeContainer() {

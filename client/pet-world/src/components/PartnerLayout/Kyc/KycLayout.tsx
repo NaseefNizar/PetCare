@@ -1,33 +1,33 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
-import TextField from "@mui/material/TextField";
+// import { Link } from "react-router-dom";
+// import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
+// import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
-import Typography from "@mui/material/Typography";
+// import StepLabel from "@mui/material/StepLabel";
+// import Typography from "@mui/material/Typography";
 import StepButton from "@mui/material/StepButton";
 import BasicDetails from "./BasicDetails";
 import { BankDetails } from "./BankDetails";
 import { Documents } from "./Documents";
-import { PartnerKycPage } from "../../../pages/PartnerPage/PartnerKycPage";
+// import { PartnerKycPage } from "../../../pages/PartnerPage/PartnerKycPage";
 import { kycUpdate } from "../../../redux/features/partnerSlice";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { kycData } from "../../../types/kyc";
+// import { kycData } from "../../../types/kyc";
 
 export default function KycLayout() {
   const [open, setOpen] = useState(false);
-  const [doc, setDoc] = useState<FormData | null | undefined>(null);
+  const [doc, setDoc] = useState<any>(null);
 
   const dispatch = useAppDispatch();
-  const kycData = useAppSelector((state) => state.vet.kycData);
+  const kycData:any = useAppSelector((state) => state.vet.kycData);
 
   const getDoc = (data: FormData) => {
     setDoc(data);
@@ -55,39 +55,41 @@ export default function KycLayout() {
   };
 
   const [activeStep, setActiveStep] = useState(0);
-  const [completed, setCompleted] = useState<{
-    [k: number]: boolean;
-  }>({});
+  // const [completed, setCompleted] = useState<{
+  //   [k: number]: boolean;
+  // }>({});
 
-  const totalSteps = () => {
-    return steps.length;
-  };
+  // const totalSteps = () => {
+  //   return steps.length;
+  // };
 
-  const completedSteps = () => {
-    return Object.keys(completed).length;
-  };
+  // const completedSteps = () => {
+  //   return Object.keys(completed).length;
+  // };
 
-  const isLastStep = () => {
-    return activeStep === totalSteps() - 1;
-  };
+  // const isLastStep = () => {
+  //   return activeStep === totalSteps() - 1;
+  // };
 
-  const allStepsCompleted = () => {
-    return completedSteps() === totalSteps();
-  };
+  // const allStepsCompleted = () => {
+  //   return completedSteps() === totalSteps();
+  // };
 
   const handleNext = () => {
     const newActiveStep =
-      isLastStep() && !allStepsCompleted()
-        ? // It's the last step, but not all steps have been completed,
-          // find the first step that has been completed
-          steps.findIndex((step, i) => !(i in completed))
-        : activeStep + 1;
+      // isLastStep() && !allStepsCompleted()
+      //   ? // It's the last step, but not all steps have been completed,
+      //     // find the first step that has been completed
+      //     steps.findIndex((step, i) => !(i in completed))
+      //   : 
+        activeStep + 1;
+        
     setActiveStep(newActiveStep);
   };
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
+  // const handleBack = () => {
+  //   setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  // };
 
   const handleStep = (step: number) => () => {
     setActiveStep(step);
@@ -95,10 +97,10 @@ export default function KycLayout() {
 
   const handleComplete = () => {
     const formData = new FormData();
-    formData.append("poi", doc.poi[0]);
-    formData.append("poq", doc.poq[0]);
-    formData.append("photo", doc.photo[0]);
-    console.log(kycData);
+    formData.append("poi", doc?.poi[0]);
+    formData.append("poq", doc?.poq[0]);
+    formData.append("photo", doc?.photo[0]);
+    // console.log(kycData);
 
     // for (const key in kycData) {
     //   if (formData.hasOwnProperty(key)) {
@@ -129,10 +131,10 @@ export default function KycLayout() {
     setOpen(false);
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
-    setCompleted({});
-  };
+  // const handleReset = () => {
+  //   setActiveStep(0);
+  //   setCompleted({});
+  // };
 
   return (
     <>
@@ -160,7 +162,9 @@ export default function KycLayout() {
           >
             <Stepper activeStep={activeStep} alternativeLabel>
               {steps.map((label, index) => (
-                <Step key={index} completed={completed[index]}>
+                <Step key={index} 
+                // completed={completed[index]}
+                >
                   <StepButton color="inherit" onClick={handleStep(index)}>
                     {label}
                   </StepButton>

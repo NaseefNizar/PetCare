@@ -1,14 +1,14 @@
-import React, { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import {
   PaymentElement,
-  LinkAuthenticationElement,
+  // LinkAuthenticationElement,
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
 import { Button, Container, Paper } from "@mui/material";
 import {
   StripePaymentElementOptions,
-  StripeLinkAuthenticationElementChangeEvent,
+  // StripeLinkAuthenticationElementChangeEvent,
 } from "@stripe/stripe-js"; // Import the necessary types
 
 // import "./checkout.css"
@@ -17,7 +17,7 @@ export default function CheckoutForm() {
   const stripe = useStripe();
   const elements = useElements();
 
-  const [email, setEmail] = useState("");
+  // const [email, setEmail] = useState("");
   const [message, setMessage] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState(false);
 

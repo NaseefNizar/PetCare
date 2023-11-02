@@ -13,14 +13,14 @@ import {
   IconButton,
   Unstable_Grid2 as Grid,
 } from "@mui/material";
-import { CloudUpload, PhotoCamera } from "@mui/icons-material";
-import { useDispatch } from "react-redux";
+import {  PhotoCamera } from "@mui/icons-material";
+// import { useDispatch } from "react-redux";
 import {
   getData,
   updateProfilePic,
   updateUser,
 } from "../../redux/features/userSlice";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { ProfileEdit } from "./ProfileEdit";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 
@@ -37,15 +37,15 @@ type UserData = {
 };
 
 export const ProfileLayout = () => {
-  let user;
-  const userString: string | null = localStorage.getItem("user");
-  if (userString !== null) {
-    user = JSON.parse(userString);
-  }
+  // let user:any;
+  // const userString: string | null = localStorage.getItem("user");
+  // if (userString !== null) {
+  //   user = JSON.parse(userString);
+  // }
 
   const [openDialog, setOpenDialog] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const userState = useAppSelector((state) => state.user);
   const userData = userState?.userData;
   const blockStat = userState.blockStat;
@@ -79,7 +79,7 @@ export const ProfileLayout = () => {
   };
 
   useEffect(() => {
-    dispatch(getData(user._id));
+    dispatch(getData());
   }, [userState.successMessage]);
   useEffect(() => {
     blockStat && navigate("/login");

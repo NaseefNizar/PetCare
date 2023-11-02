@@ -1,50 +1,50 @@
-import React from "react";
+// import React from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
+// import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import { Divider, Typography, Button, Card, CardMedia } from "@mui/material";
+// import TextField from "@mui/material/TextField";
+// import Dialog from "@mui/material/Dialog";
+// import DialogActions from "@mui/material/DialogActions";
+// import DialogContent from "@mui/material/DialogContent";
+// import DialogTitle from "@mui/material/DialogTitle";
+import { Divider, Typography } from "@mui/material";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
 import Box from "@mui/material/Box";
-import { useState, useEffect } from "react";
+import {  useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getAppointmentData } from "../../redux/features/appointmentSlice";
 import moment from "moment";
 
 export const PartnerAppointment = () => {
   const dispatch = useAppDispatch();
-  const data = useAppSelector((state) => state.appointment.appointments);
+  const data:any = useAppSelector((state) => state.appointment.appointments);
   console.log(data);
 
-  const [open, setOpen] = React.useState(false);
+  // const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  // const handleClickOpen = () => {
+  //   setOpen(true);
+  // };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
+  // const [page, setPage] = useState(0);
+  // const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  // };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = (event) => {
+  //   setRowsPerPage(+event.target.value);
+  //   setPage(0);
+  // };
 
   useEffect(() => {
     dispatch(getAppointmentData());
@@ -107,7 +107,7 @@ export const PartnerAppointment = () => {
             </TableHead>
             <TableBody>
               {data &&
-                data.map((element) => (
+                data.map((element:any) => (
                   <TableRow hover role="checkbox" tabIndex={-1}>
                     <TableCell align="left">
                       {element.userId.firstName} {element.userId.lastName}

@@ -16,7 +16,7 @@ export const BankDetails = () => {
   const form = useForm<FormValues>({
     mode:'onTouched'
   })
-  const { register, handleSubmit, control, formState } = form;
+  const { register, handleSubmit, formState } = form;
   const { errors } = formState;
 
   const dispatch = useAppDispatch()

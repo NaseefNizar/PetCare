@@ -1,30 +1,30 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../utils/axiosInstance';
 
 
 type PartnerData = {
-    firstName: String,
-      lastName: String,
-      email: String,
-      password: String,
-      contactNumber: Number,
-      rol:String,
-      picture: String,
-      is_blocke:Boolean,
-      centreNam: String,
-      localit: String,
-      area: String,
-      pincode: String,
-      state: String,
-      bankName: String,
-      branchName: String,
-      accountHolderName: String,
-      accountNumber: String,
-      ifsc: String,
-      poi: String,
-      poq: String,
-      is_verifie:Boolean,
-      is_kycSubmitted:Boolean,
+    firstName: string,
+      lastName: string,
+      email: string,
+      password: string,
+      contactNumber: number,
+      rol:string,
+      picture: string,
+      is_blocke:boolean,
+      centreNam: string,
+      localit: string,
+      area: string,
+      pincode: string,
+      state: string,
+      bankName: string,
+      branchName: string,
+      accountHolderName: string,
+      accountNumber: string,
+      ifsc: string,
+      poi: string,
+      poq: string,
+      is_verifie:boolean,
+      is_kycSubmitted:boolean,
 }
 type InitialState = {
     loading: boolean
@@ -40,7 +40,7 @@ const initialState: InitialState = {
     stat: false
 }
 
-export const getPartnerData = createAsyncThunk('adminVerifySlice/getpartnerdata',async (id,{rejectWithValue}) =>{
+export const getPartnerData = createAsyncThunk<void,string>('adminVerifySlice/getpartnerdata',async (id,{rejectWithValue}) =>{
     try {
         const response = await axios.post("/api/admin/getindividualpartner",{id});
         console.log(response.data);
@@ -57,16 +57,16 @@ const adminVerifySlice = createSlice({
     name:'adminVerifySlice',
     reducers:{},
     extraReducers: builder => {
-        builder.addCase(getPartnerData.pending, (state, action) => {
+        builder.addCase(getPartnerData.pending, (state) => {
             state.loading = true;
             state.stat = false
         })
-        .addCase(getPartnerData.fulfilled, (state, action) => {
+        .addCase(getPartnerData.fulfilled, (state, action:any) => {
             state.loading = false,
             state.partnerData = action.payload.partnerData
             state.stat = true
         })
-        .addCase(getPartnerData.rejected, (state, action) => {
+        .addCase(getPartnerData.rejected, (state, action:any) => {
             state.loading = false,
             state.partnerData = action.payload.message || ''
             state.stat = false

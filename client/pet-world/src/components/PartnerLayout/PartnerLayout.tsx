@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import Navbar from "./PartnerHeader";
 import SideNav from "./PartnerSidebar";
 import { useAppSelector } from "../../redux/hooks";
 import { Outlet, useNavigate } from "react-router-dom";
 
-type RL = {
-  children: React.ReactNode;
-};
+// type RL = {
+//   children: React.ReactNode;
+// };
 
 const PartnerLayout = (
   // props: RL
@@ -16,7 +16,7 @@ const PartnerLayout = (
   const navigate = useNavigate()
 
   const partnerState = useAppSelector(state => state.vet)
-  const partnerData = partnerState.userData
+  // const partnerData = partnerState.userData
 
   // const token = useAppSelector(state => state.vet.tokenStat)
   // const blocked = useAppSelector(state => state.vet.blockStat)

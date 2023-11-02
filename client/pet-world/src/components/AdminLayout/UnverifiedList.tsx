@@ -1,19 +1,19 @@
 import {
     DataGrid,
     GridColDef,
-    GridValueGetterParams,
+    // GridValueGetterParams,
     GridRenderCellParams,
   } from "@mui/x-data-grid";
   import { Button } from "@mui/material";
   import { useEffect, useState } from "react";
   import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-  import { blockPartner, getPartnerData, unverifiedPartners } from "../../redux/features/adminSlice";
+  import { blockPartner, unverifiedPartners } from "../../redux/features/adminSlice";
   import Dialog from '@mui/material/Dialog';
   import DialogActions from '@mui/material/DialogActions';
   import DialogContent from '@mui/material/DialogContent';
-  import DialogContentText from '@mui/material/DialogContentText';
+  // import DialogContentText from '@mui/material/DialogContentText';
   import DialogTitle from '@mui/material/DialogTitle';
-  import PartnerViewDetails from "./PartnerViewDetails";
+  // import PartnerViewDetails from "./PartnerViewDetails";
 import { Link } from "react-router-dom";
   // import { User } from "../../redux/api/types";
   

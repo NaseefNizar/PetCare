@@ -1,32 +1,26 @@
-import { useEffect, useState } from "react";
-import Card from "@mui/material/Card";
-import Box from "@mui/material/Box";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
+import { useEffect } from "react";
+
 import Typography from "@mui/material/Typography";
-import { Button, CardActionArea, Divider, Grid, Paper } from "@mui/material";
+import { Button, Grid, Paper } from "@mui/material";
 import Rating from "@mui/material/Rating";
-import Stack from "@mui/material/Stack";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { getVetList } from "../redux/features/partnerListSlice";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ButtonBase from "@mui/material/ButtonBase";
 import { styled } from "@mui/material/styles";
-import Pagination from "@mui/material/Pagination";
-import { Page } from "./pagination/Page";
 
 export default function PartnerCard() {
-  const [dataList, setDataList] = useState<any>(
-    useAppSelector((state) => state.listing.partnerData)
-  );
+  // const [dataList, setDataList] = useState<any>(
+  //   useAppSelector((state) => state.listing.partnerData)
+  // );
 
   const dispatch = useAppDispatch();
   const getList = useAppSelector((state) => state.listing.partnerData);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   // setDataList(getList)
   // const loading = getList.loading
   // const list = getList.partnerData
-  console.log(getList);
+  // console.log(getList);
 
   const Img = styled("img")({
     margin: "auto",
@@ -48,7 +42,7 @@ export default function PartnerCard() {
         spacing={2}
       >
         {getList.map((element: any, index) => (
-          <Grid item lg={12} sm={12} >
+          <Grid item lg={12} sm={12} key={index}>
             <Paper
               sx={{
                 p: 2,

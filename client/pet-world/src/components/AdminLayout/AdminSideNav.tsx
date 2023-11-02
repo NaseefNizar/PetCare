@@ -1,17 +1,11 @@
-import * as React from 'react';
-import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
+import { styled, Theme, CSSObject } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
+import  { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+// import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
-import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -77,12 +71,13 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function MiniDrawer({open,children}:AppBarProps) {
-  const theme = useTheme();
+  // const theme = useTheme();
 
   const [selectedIndex, setSelectedIndex] = useState(0);
   const navigate = useNavigate()
 
-  const handleClick = (e:React.MouseEvent<HTMLDivElement,MouseEvent>,index:number):void => {
+  // const handleClick = (e:React.MouseEvent<HTMLDivElement,MouseEvent>,index:number):void => {
+  const handleClick = (index:number):void => {
     setSelectedIndex(index)
     if(index === 1) {
       navigate('/admin/users')
@@ -111,7 +106,7 @@ export default function MiniDrawer({open,children}:AppBarProps) {
                   px: 2.5,
                 }}
                 selected={selectedIndex === index}
-                onClick={(e) => handleClick(e,index)}
+                onClick={() => handleClick(index)}
               >
                 <ListItemIcon
                   sx={{

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+// import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   Dialog,
@@ -39,32 +39,32 @@ interface UpdateDialogProps {
 export const ProfileEdit = ({
   open,
   onClose,
-  userDetails,
+  // userDetails,
   onUpdate,
 }: UpdateDialogProps) => {
   const form = useForm<FormValues>();
-  const { register, handleSubmit, formState, watch } = form;
+  const { register, handleSubmit, formState } = form;
   const { errors } = formState;
-  const [updatedUserDetails, setUpdatedUserDetails] =
-    useState<UserDetails>(userDetails);
+  // const [updatedUserDetails, setUpdatedUserDetails] =
+  //   useState<UserDetails>(userDetails);
   // console.log("update", updatedUserDetails);
 
 
 
-  const handleUpdate = (updatedUserDetails) => {
-    console.log(1);
+  const handleUpdate = (updatedUserDetails:any) => {
+    // console.log(1);
     
     onUpdate(updatedUserDetails);
     onClose();
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setUpdatedUserDetails((prevDetails) => ({
-      ...prevDetails,
-      [name]: value,
-    }));
-  };
+  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = event.target;
+  //   setUpdatedUserDetails((prevDetails) => ({
+  //     ...prevDetails,
+  //     [name]: value,
+  //   }));
+  // };
 
   return (
     <Dialog open={open} onClose={onClose}>

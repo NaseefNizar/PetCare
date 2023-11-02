@@ -61,7 +61,7 @@ export const getUserData = createAsyncThunk(
   }
 );
 
-export const blockUser = createAsyncThunk(
+export const blockUser = createAsyncThunk<void,{userId:string,is_blocked:boolean | null}>(
   "adminSlice/blockUser",
   async (userData, { rejectWithValue }) => {
     try {
@@ -102,7 +102,7 @@ export const unverifiedPartners = createAsyncThunk(
 
 })
 
-export const blockPartner = createAsyncThunk(
+export const blockPartner = createAsyncThunk<void,{partnerId:string,is_blocked:boolean | null}>(
   "adminSlice/blockpartner",
   async (partnerData, { rejectWithValue }) => {
     try {
@@ -124,7 +124,7 @@ export const logout = createAsyncThunk("adminSlice/logout", async () => {
   }
 });
 
-export const approval = createAsyncThunk(
+export const approval = createAsyncThunk<void,string>(
   'admin/partnerapproval',
   async(partnerId,{rejectWithValue}) => {
     try {
@@ -159,7 +159,7 @@ const adminSlice = createSlice({
       })
 
 
-      .addCase(getUserData.pending, (state, action) => {
+      .addCase(getUserData.pending, (state) => {
         state.loading = true;
       })
       .addCase(getUserData.fulfilled, (state, action) => {
@@ -172,7 +172,7 @@ const adminSlice = createSlice({
       })
 
 
-      .addCase(getPartnerData.pending, (state, action) => {
+      .addCase(getPartnerData.pending, (state) => {
         state.loading = true;
       })
       .addCase(getPartnerData.fulfilled, (state, action) => {
@@ -185,7 +185,7 @@ const adminSlice = createSlice({
       })
 
 
-      .addCase(unverifiedPartners.pending, (state, action) => {
+      .addCase(unverifiedPartners.pending, (state) => {
         state.loading = true;
       })
       .addCase(unverifiedPartners.fulfilled, (state, action) => {
@@ -198,10 +198,10 @@ const adminSlice = createSlice({
       })
 
 
-      .addCase(blockUser.pending, (state, action) => {
+      .addCase(blockUser.pending, (state) => {
         state.loading = true;
       })
-      .addCase(blockUser.fulfilled, (state, action) => {
+      .addCase(blockUser.fulfilled, (state, action:any) => {
         state.loading = false;
         state.userList = action.payload.userData;
       })
@@ -211,10 +211,10 @@ const adminSlice = createSlice({
       })
 
 
-      .addCase(blockPartner.pending, (state, action) => {
+      .addCase(blockPartner.pending, (state) => {
         state.loading = true;
       })
-      .addCase(blockPartner.fulfilled, (state, action) => {
+      .addCase(blockPartner.fulfilled, (state, action:any) => {
         state.loading = false;
         state.partnerList = action.payload.partnerData;
       })
@@ -225,11 +225,11 @@ const adminSlice = createSlice({
 
 
 
-      .addCase(approval.pending, (state,action) => {
+      .addCase(approval.pending, (state) => {
         state.loading = true
         state.stat = false
       })
-      .addCase(approval.fulfilled, (state, action) =>{
+      .addCase(approval.fulfilled, (state, action:any) =>{
         state.loading = false;
         state.successMsg = action.payload.message
         state.stat = true
@@ -241,7 +241,7 @@ const adminSlice = createSlice({
       })
 
 
-      .addCase(logout.fulfilled, (state, action: PayloadAction<UserState>) => {
+      .addCase(logout.fulfilled, (state) => {
         (state.userData = []),
           (state.loading = false),
           (state.error = ""),

@@ -1,34 +1,34 @@
-import React,{ useState, useEffect } from 'react'
+// import React,{ useState, useEffect } from 'react'
 
-export const useGeoLocation = () => {
+// export const useGeoLocation = () => {
 
-    const[location, setLocation] = useState({
-        loaded:false,
-        coordinates: {
-            lat:"",
-            lng:""
-        }
-    })
+//     const[location, setLocation] = useState({
+//         loaded:false,
+//         coordinates: {
+//             lat:"",
+//             lng:""
+//         }
+//     })
 
-    const onSuccess = location => {
-        setLocation({
-            loaded: true,
-            coordinates: {
-                lat: location.coords.latitude,
-                lng: location.coords.longitude,
-            }
-        })
-    }
+//     const onSuccess = location => {
+//         setLocation({
+//             loaded: true,
+//             coordinates: {
+//                 lat: location.coords.latitude,
+//                 lng: location.coords.longitude,
+//             }
+//         })
+//     }
 
-    const onError = location => {
+//     const onError = location => {
         
-    }
+//     }
 
-    useEffect(() => {
-        navigator.geolocation.getCurrentPosition(onSuccess,onError)
-    })
+//     useEffect(() => {
+//         navigator.geolocation.getCurrentPosition(onSuccess,onError)
+//     })
 
 
-  return location
+//   return location
   
-}
+// }

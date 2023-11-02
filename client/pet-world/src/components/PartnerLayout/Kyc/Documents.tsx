@@ -1,18 +1,18 @@
 import {
   Grid,
-  TextField,
-  InputAdornment,
+  // TextField,
+  // InputAdornment,
   Paper,
   Box,
   Button,
   Typography,
   Stack,
 } from "@mui/material";
-import { useAppDispatch } from "../../../redux/hooks";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
-import { useRef, useState } from "react";
-import { kycDocUpload, setKycData } from "../../../redux/features/partnerSlice";
-import { useDispatch } from "react-redux";
+// import { useAppDispatch } from "../../../redux/hooks";
+import { useForm, Controller } from "react-hook-form";
+import { useRef } from "react";
+// import { kycDocUpload, setKycData } from "../../../redux/features/partnerSlice";
+// import { useDispatch } from "react-redux";
 
 type Data = {
   poi: FileList;
@@ -21,16 +21,16 @@ type Data = {
 };
 
 type Props = {
-  sendData: (data) => void;
+  sendData: (data:any) => void;
 };
 
 export const Documents = ({ sendData }: Props) => {
-  const [doc, setDoc] = useState<FormData | null | undefined>(null);
+  // const [doc, setDoc] = useState<FormData | null | undefined>(null);
   const form = useForm<Data>({
     mode: "onTouched",
   });
-  const dispatch = useDispatch();
-  const { register, handleSubmit, control, formState } = form;
+  // const dispatch = useDispatch();
+  const {  handleSubmit, control, formState } = form;
   const { errors } = formState;
 
   const ref1 = useRef<HTMLInputElement>(null);

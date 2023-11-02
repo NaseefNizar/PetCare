@@ -1,7 +1,7 @@
 import {
     DataGrid,
     GridColDef,
-    GridValueGetterParams,
+    // GridValueGetterParams,
     GridRenderCellParams,
   } from "@mui/x-data-grid";
   import { Button } from "@mui/material";
@@ -11,7 +11,7 @@ import {
   import Dialog from '@mui/material/Dialog';
   import DialogActions from '@mui/material/DialogActions';
   import DialogContent from '@mui/material/DialogContent';
-  import DialogContentText from '@mui/material/DialogContentText';
+  // import DialogContentText from '@mui/material/DialogContentText';
   import DialogTitle from '@mui/material/DialogTitle';
   // import { User } from "../../redux/api/types";
   
@@ -105,7 +105,8 @@ import {
         width: 130,
         sortable: false,
         disableColumnMenu: true,
-        renderCell: (params: GridRenderCellParams) => (
+        // renderCell: (params: GridRenderCellParams) => (
+        renderCell: () => (
           <Button
             variant="contained"
             color="primary"

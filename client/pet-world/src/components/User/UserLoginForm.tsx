@@ -19,16 +19,16 @@ import {
 import { useForm } from "react-hook-form";
 import { loginPartner } from "../../redux/features/partnerSlice";
 
-type Props = {
-  role: "User" | "Vet" | "Groomer";
-};
+// type Props = {
+//   role: "User" | "Vet" | "Groomer";
+// };
 
 type Credentials = {
   email: string;
   password: string;
 };
 
-export default function UserLoginForm(props: Props) {
+export default function UserLoginForm() {
   const dispatch = useAppDispatch();
   const userData = useAppSelector((state) => state.user);
   // const partnerData = useAppSelector((state) => state.vet);
@@ -48,14 +48,12 @@ export default function UserLoginForm(props: Props) {
   const onSubmit = (data: Credentials) => {
     if (isUser) {
       dispatch(loginUser(data));
-      //  .then(() => navigate('/'))
     } else {
       dispatch(loginPartner(data));
-      // .then(() => navigate('/vet/home'))
     }
   };
 
-  const role = isUser ? 'user' : 'partner';
+  // const role = isUser ? 'user' : 'partner';
 
   useEffect(() => {
     userData.error && toast.error(userData.error, { theme: "colored" });

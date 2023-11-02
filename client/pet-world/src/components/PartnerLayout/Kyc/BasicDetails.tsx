@@ -1,8 +1,8 @@
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { useRef, useState } from "react";
+// import { useRef, useState } from "react";
 import Grid from "@mui/material/Grid";
-import Autocomplete from "@mui/material/Autocomplete";
+// import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import {
   FormControl,
@@ -12,7 +12,7 @@ import {
   FormHelperText,
   Paper,
 } from "@mui/material";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { setKycData } from "../../../redux/features/partnerSlice";
 import { useAppDispatch } from "../../../redux/hooks";
 

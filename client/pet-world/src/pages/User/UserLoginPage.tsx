@@ -6,7 +6,7 @@ export const UserLoginPage = () => {
   return (
     <>
     <Navbar />
-    <UserLoginForm role='User'/>
+    <UserLoginForm />
     <Footer />
     </>
   )

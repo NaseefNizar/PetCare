@@ -1,11 +1,11 @@
-import { Navigate, Outlet, useNavigate } from "react-router-dom"
-import { useAppSelector } from "../../redux/hooks"
+import { Navigate, Outlet } from "react-router-dom"
+// import { useAppSelector } from "../../redux/hooks"
 import { useEffect } from "react"
 
 
 export const UserAuth = () => {
-  const navigate = useNavigate()
-  const isLoggedIn = useAppSelector(state => state.user.loginSuccess)
+  // const navigate = useNavigate()
+  // const isLoggedIn = useAppSelector(state => state.user.loginSuccess)
   const user = localStorage.getItem('user')
 
   useEffect(() => {

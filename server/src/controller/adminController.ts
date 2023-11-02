@@ -11,7 +11,6 @@ interface MyRequest extends Request {
   id?: string;
 }
 
-
 export const login = async (req: Request, res: Response) => {
         
     try {

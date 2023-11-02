@@ -1,27 +1,39 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "../../utils/axiosInstance";
-import { AxiosError } from "axios";
-import { getUserData } from "./adminSlice";
+// import { AxiosError } from "axios";
+import { CredentialResponse } from "@react-oauth/google";
+// import { users } from "../../types/users";
 
 type FormValues = {
-  firstName: string;
-  lastName?: string;
+  // firstName: string;
+  // lastName?: string;
+  // email: string;
+  // password: string;
+  // confirmPassword: string;
+  // contactNumber: number;
+  userId: string;
+  lastName?:string;
   email: string;
   password: string;
   confirmPassword: string;
   contactNumber: number;
 };
 
+// type LoginCred = {
+//   email: string;
+//   password: string;
+// }
+
 type ContactNumber = {
-  contactNumber: number;
+  contactNumber: string | null | number;
 };
 
-interface GetDataRejectedAction {
-  type: string; // Replace with the actual action type
-  payload: {
-    message: string; // Define the expected payload structure
-  };
-}
+// interface GetDataRejectedAction {
+//   type: string; // Replace with the actual action type
+//   payload: {
+//     message: string; // Define the expected payload structure
+//   };
+// }
 
 type UserData = {
   firstName: string;
@@ -35,17 +47,17 @@ type UserData = {
   _id: string;
   __v: number;
 };
-const InitialUserData: UserData = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  password: "",
-  contactNumber: "",
-  picture: "",
-  role: "",
-  _id: "",
-  __v: 0,
-};
+// const InitialUserData: UserData = {
+//   firstName: "",
+//   lastName: "",
+//   email: "",
+//   password: "",
+//   contactNumber: "",
+//   picture: "",
+//   role: "",
+//   _id: "",
+//   __v: 0,
+// };
 type InitialState = {
   loading: boolean;
   registerStatus: boolean;
@@ -76,7 +88,7 @@ const initialState: InitialState = {
   blockStat: false,
 };
 
-export const sendOtp = createAsyncThunk(
+export const sendOtp = createAsyncThunk<void,FormValues>(
   "user/sendOtp",
   async (userData: FormValues) => {
     try {
@@ -88,7 +100,7 @@ export const sendOtp = createAsyncThunk(
   }
 );
 
-export const otp = createAsyncThunk(
+export const otp = createAsyncThunk<any,any>(
   "user/otp",
   async (contactNumber, { rejectWithValue }) => {
     try {
@@ -112,7 +124,7 @@ export const registerUser = createAsyncThunk(
   }
 );
 
-export const loginUser = createAsyncThunk(
+export const loginUser = createAsyncThunk<any,any>(
   "/user/loginUser",
   async (credential, { rejectWithValue }) => {
     try {
@@ -131,7 +143,7 @@ export const logOut = createAsyncThunk("/user/logout", async () => {
   } catch (error: any) {}
 });
 
-export const updateUser = createAsyncThunk(
+export const updateUser = createAsyncThunk<any,any>(
   "/user/updateuser",
   async (updatedData, { rejectWithValue }) => {
     try {
@@ -142,7 +154,7 @@ export const updateUser = createAsyncThunk(
     }
   }
 );
-export const updateContact = createAsyncThunk(
+export const updateContact = createAsyncThunk<any,any>(
   "/user/updatecontact",
   async (updatedData, { rejectWithValue }) => {
     try {
@@ -169,7 +181,7 @@ export const updateProfilePic = createAsyncThunk(
   }
 );
 
-export const googleSign = createAsyncThunk(
+export const googleSign = createAsyncThunk<void,CredentialResponse>(
   "/user/googlesign",
   async (credentialResponse) => {
     try {
@@ -185,11 +197,11 @@ export const googleSign = createAsyncThunk(
   }
 );
 
-export const getData = createAsyncThunk(
+export const getData = createAsyncThunk<void,void>(
   "user/getUserData",
-  async (userId, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`/api/getuserdata?userId=${userId}`);
+      const response = await axios.get(`/api/getuserdata`);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data);
@@ -197,7 +209,7 @@ export const getData = createAsyncThunk(
   }
 );
 
-export const forgotPassword = createAsyncThunk(
+export const forgotPassword = createAsyncThunk<void,ContactNumber>(
   "user/forgotpassword",
   async (number: ContactNumber, { rejectWithValue }) => {
     try {
@@ -209,7 +221,7 @@ export const forgotPassword = createAsyncThunk(
   }
 );
 
-export const verifyOtpPassword = createAsyncThunk(
+export const verifyOtpPassword = createAsyncThunk<void,{otp:string,contactNumber:string | null}>(
   "user/verifyotppassword",
   async (data, { rejectWithValue }) => {
     try {
@@ -221,7 +233,7 @@ export const verifyOtpPassword = createAsyncThunk(
   }
 );
 
-export const setNewPassword = createAsyncThunk(
+export const setNewPassword = createAsyncThunk<any,any>(
   "user/setnewpassword",
   async (data, { rejectWithValue }) => {
     try {
@@ -301,12 +313,12 @@ const userSlice = createSlice({
         state.registerStatus = true;
         state.successMessage = action.payload.message;
       })
-      .addCase(loginUser.pending, (state, action) => {
+      .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.blockStat = false;
         state.error = "";
       })
-      .addCase(loginUser.fulfilled, (state, action) => {
+      .addCase(loginUser.fulfilled, (state, action:any) => {
         (state.loading = false), (state.userData = action.payload.user);
         state.loginSuccess = true;
         localStorage.setItem("user", JSON.stringify(action.payload.user));
@@ -315,12 +327,12 @@ const userSlice = createSlice({
         (state.loading = false), (state.loginSuccess = false);
         state.error = action.payload.message || "";
       })
-      .addCase(googleSign.fulfilled, (state, action) => {
+      .addCase(googleSign.fulfilled, (state, action:any) => {
         (state.loading = false), (state.userData = action.payload.user);
         state.loginSuccess = true;
         localStorage.setItem("user", JSON.stringify(action.payload.user));
       })
-      .addCase(logOut.fulfilled, (state, action) => {
+      .addCase(logOut.fulfilled, (state) => {
         (state.loading = false),
           (state.registerStatus = false),
           (state.loginSuccess = null),
@@ -331,7 +343,7 @@ const userSlice = createSlice({
           (state.successMessage = "");
         localStorage.removeItem("user");
       })
-      .addCase(getData.pending, (state, action) => {
+      .addCase(getData.pending, (state) => {
         state.loading = true;
       })
       .addCase(getData.rejected, (state, action:any) => {
@@ -340,11 +352,11 @@ const userSlice = createSlice({
         state.blockStat = true;
         localStorage.removeItem("user");
       })
-      .addCase(getData.fulfilled, (state, action) => {
+      .addCase(getData.fulfilled, (state, action:any) => {
         state.loading = false;
         state.userData = action.payload.userData;
       })
-      .addCase(updateUser.pending, (state, action) => {
+      .addCase(updateUser.pending, (state) => {
         state.loading = true;
         state.successMessage = "";
         state.error = "";
@@ -353,11 +365,11 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "";
       })
-      .addCase(updateUser.fulfilled, (state, action) => {
+      .addCase(updateUser.fulfilled, (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.successMessage = action.payload.message;
       })
-      .addCase(updateContact.pending, (state, action) => {
+      .addCase(updateContact.pending, (state) => {
         state.loading = true;
         state.successMessage = "";
         state.error = "";
@@ -366,11 +378,11 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "";
       })
-      .addCase(updateContact.fulfilled, (state, action) => {
+      .addCase(updateContact.fulfilled, (state, action:any) => {
         state.loading = false;
         state.successMessage = action.payload.message;
       })
-      .addCase(updateProfilePic.pending, (state, action) => {
+      .addCase(updateProfilePic.pending, (state) => {
         state.loading = true;
         state.successMessage = "";
       })
@@ -382,7 +394,7 @@ const userSlice = createSlice({
         state.loading = false;
         state.successMessage = action.payload.message;
       })
-      .addCase(verifyOtpPassword.pending, (state, action) => {
+      .addCase(verifyOtpPassword.pending, (state) => {
         state.loading = true;
         state.successMessage = "";
         state.error = "";
@@ -392,12 +404,12 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "";
       })
-      .addCase(verifyOtpPassword.fulfilled, (state, action) => {
+      .addCase(verifyOtpPassword.fulfilled, (state, action:any) => {
         state.loading = false;
         state.successMessage = action.payload.message;
         state.otpVerify = true;
       })
-      .addCase(setNewPassword.pending, (state, action) => {
+      .addCase(setNewPassword.pending, (state) => {
         state.loading = true;
         state.successMessage = "";
         state.error = "";
@@ -407,7 +419,7 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "";
       })
-      .addCase(setNewPassword.fulfilled, (state, action) => {
+      .addCase(setNewPassword.fulfilled, (state, action:any) => {
         state.loading = false;
         state.successMessage = action.payload.message;
         state.actionStat = true;

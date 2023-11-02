@@ -1,4 +1,3 @@
-import * as React from 'react';
 import AdminLayout from "../../components/AdminLayout/AdminLayout";
 import UnverifiedList from "../../components/AdminLayout/UnverifiedList";
 

@@ -1,23 +1,23 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../utils/axiosInstance";
 
-type appointment = {
-  userId: string;
-  partnerId: string;
-  date: Date;
-  slot: string;
-  petName: string;
-  petKind: string;
-  petBreed: string;
-  petAge: string;
-  petWeight: string;
-  paymentStatus: string;
-  paymentIntentId: string;
-};
+// type appointment = {
+//   userId: string;
+//   partnerId: string;
+//   date: Date;
+//   slot: string;
+//   petName: string;
+//   petKind: string;
+//   petBreed: string;
+//   petAge: string;
+//   petWeight: string;
+//   paymentStatus: string;
+//   paymentIntentId: string;
+// };
 
 type InitialState = {
   loading: boolean;
-  appointments: null | [];
+  appointments: any;
 };
 
 const initialState: InitialState = {
@@ -27,23 +27,23 @@ const initialState: InitialState = {
 
 export const getAppointmentData = createAsyncThunk(
   "appointment/getdata",
-  async (data, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get("/api/appointment/getallappointments");
       return response.data;
-    } catch (error) {
+    } catch (error:any) {
       return rejectWithValue(error.response.data);
     }
   }
 );
 
-export const usersAppointments = createAsyncThunk(
+export const usersAppointments = createAsyncThunk<any,void>(
   "appointment/userappointments",
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get("api/appointment/userappointments");
       return response.data;
-    } catch (error) {
+    } catch (error:any) {
       return rejectWithValue(error.response.data);
     }
   }
@@ -55,14 +55,14 @@ const appointmentSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getAppointmentData.pending, (state, action) => {
+      .addCase(getAppointmentData.pending, (state) => {
         state.loading = true;
       })
       .addCase(getAppointmentData.fulfilled, (state, action) => {
         state.loading = false;
         state.appointments = action.payload.appointments;
       })
-      .addCase(usersAppointments.pending, (state, action) => {
+      .addCase(usersAppointments.pending, (state) => {
         state.loading = true;
       })
       .addCase(usersAppointments.fulfilled, (state, action) => {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+// import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   Dialog,
@@ -34,9 +34,9 @@ interface UpdateDialogProps {
   onUpdate: (updatedDetails: UserDetails) => void;
 }
 
-export const OtpModal = ({ open, onClose, onUpdate }: UpdateDialogProps) => {
+export const OtpModal = ({ open, onClose }: UpdateDialogProps) => {
   const form = useForm<FormValues>();
-  const { register, handleSubmit, formState, watch } = form;
+  const { register, handleSubmit, formState } = form;
   const { errors } = formState;
   const dispatch = useAppDispatch();
   const contactNumber = useAppSelector((state) => state.user.phoneNumber);

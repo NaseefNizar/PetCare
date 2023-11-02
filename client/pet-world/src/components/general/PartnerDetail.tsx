@@ -24,37 +24,35 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import Footer from "../Footer";
 import { setSelectedSlot } from "../../redux/features/slotSlice";
 // import { StripeContainer } from "../Payment/StripeContainer";
 
 export const PartnerDetail = () => {
   const { partnerId } = useParams();
   const dispatch = useAppDispatch();
-  const data = useAppSelector((state) => state.listing.individualData);
+  const data: any = useAppSelector((state) => state.listing.individualData);
   console.log(data);
-  
 
   const form = useForm();
-  const { register, handleSubmit, formState, watch } = form;
+  const { register, handleSubmit, formState } = form;
   const { errors } = formState;
-  const onSubmit = (data) => {
+  const onSubmit = (data:any) => {
     console.log(data);
-    dispatch(setSelectedSlot(data))
+    dispatch(setSelectedSlot(data));
   };
 
   const [defaultDate, setDefaultDate] = useState(
     new Date().toISOString().split("T")[0]
   );
 
-  const [slot, setSlot] = useState(null);
+  const [slot, setSlot] = useState<any>();
   const [isClicked, SetIsClicked] = useState(null);
   const [nextButton, setNextButton] = useState(true);
   // const [date, setDate] = useState(null)
 
   const [displaySlot, setDisplaySlot] = useState(true);
 
-  const slots = data?.availableSlots?.filter((slot) => {
+  const slots = data?.availableSlots?.filter((slot: any) => {
     const slotDate = new Date(slot.date);
     const slotDateString = slotDate.toISOString().split("T")[0];
     return slotDateString === defaultDate;
@@ -86,7 +84,7 @@ export const PartnerDetail = () => {
     dispatch(getIndividualDetails({ partnerId }));
   }, []);
 
-  function getDates(startDate, endDate) {
+  function getDates(startDate:any, endDate:any) {
     const dates = [];
     let currentDate = new Date(startDate);
 
@@ -110,7 +108,7 @@ export const PartnerDetail = () => {
   // Format the dates as strings (e.g., "yyyy-mm-dd")
   const formattedDates = datesArray.map(formatDate);
 
-  function formatDate(date) {
+  function formatDate(date:any) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0"); // Add leading zero if needed
     const day = String(date.getDate()).padStart(2, "0"); // Add leading zero if needed
@@ -119,12 +117,12 @@ export const PartnerDetail = () => {
 
   // console.log('Dates from todayDate to end of next month:', formattedDates);
 
-  const handleClick = (date) => {
+  const handleClick = (date:any) => {
     // console.log("click", date);
     setDefaultDate(date);
   };
 
-  const handleSlotClick = (slot) => {
+  const handleSlotClick = (slot:any) => {
     // console.log(slot);
     setSlot(slot);
     SetIsClicked(slot === isClicked ? null : slot);
@@ -132,11 +130,11 @@ export const PartnerDetail = () => {
 
   const handleNext = () => {
     setDisplaySlot(false);
-    dispatch(
+    slot && dispatch(
       setSelectedSlot({ partnerId, slot: slot.time, date: defaultDate })
     );
-    console.log(slot);
-    console.log(defaultDate);
+    // console.log(slot);
+    // console.log(defaultDate);
   };
 
   useEffect(() => {
@@ -182,14 +180,13 @@ export const PartnerDetail = () => {
                               borderStyle: "solid",
                               margin: "10px",
                               backgroundColor:
-                                        defaultDate === date ? "tomato" : "white",
-                                      color:
-                                        defaultDate=== date ? "white" : "black",
-                                      "&:hover": {
-                                        backgroundColor: "tomato",
-                                        color: "white",
-                                        cursor: "pointer",
-                                      },
+                                defaultDate === date ? "tomato" : "white",
+                              color: defaultDate === date ? "white" : "black",
+                              "&:hover": {
+                                backgroundColor: "tomato",
+                                color: "white",
+                                cursor: "pointer",
+                              },
                             }}
                           >
                             <Box
@@ -203,7 +200,6 @@ export const PartnerDetail = () => {
                                 margin: "auto",
                                 cursor: "pointer",
                                 fontSize: "18px",
-                                
                               }}
                               onClick={() => handleClick(date)}
                             >
@@ -221,7 +217,7 @@ export const PartnerDetail = () => {
                       <Grid container>
                         {slots && slots[0]?.slots.length > 0 ? (
                           slots[0]?.slots.map(
-                            (slot) =>
+                            (slot:any) =>
                               !slot.status && (
                                 <Grid item key={slot.time}>
                                   <Box
@@ -366,7 +362,11 @@ export const PartnerDetail = () => {
                         lg={12}
                         sx={{ display: "flex", justifyContent: "start" }}
                       >
-                        <Button variant="contained" color="secondary" type="submit">
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          type="submit"
+                        >
                           Add pet details
                         </Button>
                       </Grid>
@@ -402,11 +402,7 @@ export const PartnerDetail = () => {
                 borderRadius: "20px",
               }}
             >
-              <img
-                src={data?.photo}
-                width={"200px"}
-                height={"200px"}
-              />
+              <img src={data?.photo} width={"200px"} height={"200px"} />
 
               <Typography sx={{ fontSize: "25px" }}>
                 Dr. {data?.firstName} {data?.lastName}{" "}
@@ -414,17 +410,13 @@ export const PartnerDetail = () => {
               <Typography sx={{ fontSize: "25px" }}>
                 {data?.qualification}
               </Typography>
-              <Typography>
-                {data?.experience} years of experience
-              </Typography>
+              <Typography>{data?.experience} years of experience</Typography>
               <Rating name="read-only" value={5} readOnly />
 
               <Typography sx={{ fontSize: "25px" }}>
                 {data?.centreName}
               </Typography>
-              <Typography sx={{ fontSize: "25px" }}>
-                {data?.area}
-              </Typography>
+              <Typography sx={{ fontSize: "25px" }}>{data?.area}</Typography>
               <Typography sx={{ fontSize: "25px" }}>
                 {data?.locality}
               </Typography>

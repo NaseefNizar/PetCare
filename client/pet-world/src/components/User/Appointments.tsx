@@ -1,42 +1,42 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  Divider,
-  Stack,
-  Container,
+  // Box,
+  // Button,
+  // Card,
+  // CardActions,
+  // CardContent,
+  // CardHeader,
+  // Divider,
+  // Stack,
+  // Container,
   Typography,
-  Avatar,
-  IconButton,
+  // Avatar,
+  // IconButton,
   Paper,
   Grid,
 } from "@mui/material";
-import VideoCallIcon from "@mui/icons-material/VideoCall";
-import { useDispatch } from "react-redux";
+// import VideoCallIcon from "@mui/icons-material/VideoCall";
+// import { useDispatch } from "react-redux";
 // import { updateProfilePic, updateUser } from "../../redux/features/userSlice";
-import { useAppSelector } from "../../redux/hooks";
-import { Link, useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import {  useNavigate } from "react-router-dom";
 import { usersAppointments } from "../../redux/features/appointmentSlice";
 
 export const Appointments = () => {
-  let user;
-  const userString: string | null = localStorage.getItem("user");
-  if (userString !== null) {
-    user = JSON.parse(userString);
-  }
+  // let user;
+  // const userString: string | null = localStorage.getItem("user");
+  // if (userString !== null) {
+  //   user = JSON.parse(userString);
+  // }
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const userState = useAppSelector((state) => state.user);
   const appointmentState = useAppSelector((state) => state.appointment);
-  const appointments = appointmentState.appointments;
-  console.log("app", appointments);
+  const appointments:any = appointmentState.appointments;
+  // console.log("app", appointments);
 
-  const userData = userState?.userData;
+  // const userData = userState?.userData;
   const blockStat = userState.blockStat;
 
   useEffect(() => {
@@ -82,7 +82,7 @@ export const Appointments = () => {
           </Typography>
         </Grid>
         {appointments.length !== 0 ? (
-          appointments?.map((appointment) => (
+          appointments?.map((appointment:any) => (
             <Grid item md={12} lg={12} sm={12} xs={6}>
               <Paper sx={{ p: "10px" }}>
                 <Grid container spacing={2}>

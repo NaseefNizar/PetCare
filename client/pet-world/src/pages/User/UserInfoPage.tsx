@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
-  Box,
+  // Box,
   Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  Divider,
+  // Card,
+  // CardActions,
+  // CardContent,
+  // CardHeader,
+  // Divider,
   Typography,
   Grid,
   Paper,
@@ -15,18 +15,18 @@ import {
   Skeleton,
   Stack,
 } from "@mui/material";
-import { CloudUpload, PhotoCamera } from "@mui/icons-material";
-import { useDispatch } from "react-redux";
+// import { CloudUpload, PhotoCamera } from "@mui/icons-material";
+// import { useDispatch } from "react-redux";
 import {
   getData,
   otp,
   setPhoneNumber,
-  updateProfilePic,
+  // updateProfilePic,
   updateUser,
 } from "../../redux/features/userSlice";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { useNavigate } from "react-router-dom";
-import { ProfileEdit } from "../../components/User/ProfileEdit";
+// import { ProfileEdit } from "../../components/User/ProfileEdit";
 import { OtpModal } from "../../components/OtpModal";
 
 type UserData = {
@@ -42,15 +42,15 @@ type UserData = {
 };
 
 export const UserInfoPage = () => {
-  let user;
-  const userString: string | null = localStorage.getItem("user");
-  if (userString !== null) {
-    user = JSON.parse(userString);
-  }
+  // let user:any;
+  // const userString: string | null = localStorage.getItem("user");
+  // if (userString !== null) {
+  //   user = JSON.parse(userString);
+  // }
 
   const [openDialog, setOpenDialog] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const userState = useAppSelector((state) => state.user);
   const userData = userState?.userData;
   const blockStat = userState.blockStat;
@@ -69,34 +69,34 @@ export const UserInfoPage = () => {
   // }
 
   const handleUpdate = (updatedDetails: UserData) => {
-    console.log("axiosupdate", updatedDetails);
+    // console.log("axiosupdate", updatedDetails);
     dispatch(updateUser(updatedDetails));
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const formData = new FormData();
-      formData.append("image", e.target.files[0]);
-      dispatch(updateProfilePic(formData));
-    }
-  };
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files && e.target.files.length > 0) {
+  //     const formData = new FormData();
+  //     formData.append("image", e.target.files[0]);
+  //     dispatch(updateProfilePic(formData));
+  //   }
+  // };
 
   useEffect(() => {
-    dispatch(getData(user._id));
+    dispatch(getData());
   }, [userState.successMessage]);
   useEffect(() => {
     blockStat && navigate("/login");
   }, [blockStat]);
 
-  interface CustomTextFieldProps {
-    disabled: boolean;
-    labelText: string;
-    defaultValue1: string;
-    defaultValue2?: string;
-    showTextField?: boolean;
-    fieldLabel1?: string;
-    fieldLabel2?: string;
-  }
+  // interface CustomTextFieldProps {
+  //   disabled: boolean;
+  //   labelText: string;
+  //   defaultValue1: string;
+  //   defaultValue2?: string;
+  //   showTextField?: boolean;
+  //   fieldLabel1?: string;
+  //   fieldLabel2?: string;
+  // }
 
   const nameForm = useForm<FormValues>();
   const emailForm = useForm<FormValues>();

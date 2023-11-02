@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -14,173 +14,55 @@ import {
   IconButton,
   Unstable_Grid2 as Grid,
 } from "@mui/material";
-import { CloudUpload, PhotoCamera } from "@mui/icons-material";
-import { useDispatch } from "react-redux";
+import {  PhotoCamera } from "@mui/icons-material";
+// import { useDispatch } from "react-redux";
 import {
   getData,
   updateProfilePic,
   updateUser,
 } from "../../redux/features/userSlice";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { ProfileEdit } from "./ProfileEdit";
 import { useNavigate } from "react-router-dom";
 
-const states = [
-  {
-    value: "select state",
-    label: "Select",
-  },
-  {
-    value: "andhra-pradesh",
-    label: "Andhra Pradesh",
-  },
-  {
-    value: "arunachal-pradesh",
-    label: "Arunachal Pradesh",
-  },
-  {
-    value: "assam",
-    label: "Assam",
-  },
-  {
-    value: "bihar",
-    label: "Bihar",
-  },
-  {
-    value: "chhattisgarh",
-    label: "Chhattisgarh",
-  },
-  {
-    value: "goa",
-    label: "Goa",
-  },
-  {
-    value: "gujarat",
-    label: "Gujarat",
-  },
-  {
-    value: "haryana",
-    label: "Haryana",
-  },
-  {
-    value: "himachal-pradesh",
-    label: "Himachal Pradesh",
-  },
-  {
-    value: "jharkhand",
-    label: "Jharkhand",
-  },
-  {
-    value: "karnataka",
-    label: "Karnataka",
-  },
-  {
-    value: "kerala",
-    label: "Kerala",
-  },
-  {
-    value: "madhya-pradesh",
-    label: "Madhya Pradesh",
-  },
-  {
-    value: "maharashtra",
-    label: "Maharashtra",
-  },
-  {
-    value: "manipur",
-    label: "Manipur",
-  },
-  {
-    value: "meghalaya",
-    label: "Meghalaya",
-  },
-  {
-    value: "mizoram",
-    label: "Mizoram",
-  },
-  {
-    value: "nagaland",
-    label: "Nagaland",
-  },
-  {
-    value: "odisha",
-    label: "Odisha",
-  },
-  {
-    value: "punjab",
-    label: "Punjab",
-  },
-  {
-    value: "rajasthan",
-    label: "Rajasthan",
-  },
-  {
-    value: "sikkim",
-    label: "Sikkim",
-  },
-  {
-    value: "tamil-nadu",
-    label: "Tamil Nadu",
-  },
-  {
-    value: "telangana",
-    label: "Telangana",
-  },
-  {
-    value: "tripura",
-    label: "Tripura",
-  },
-  {
-    value: "uttar-pradesh",
-    label: "Uttar Pradesh",
-  },
-  {
-    value: "uttarakhand",
-    label: "Uttarakhand",
-  },
-  {
-    value: "west-bengal",
-    label: "West Bengal",
-  },
-];
 
 // Usage example:
 // states.forEach(state => {
 //   console.log(`Value: ${state.value}, Label: ${state.label}`);
 // });
-type UserData = {
-  firstName: string;
-  lastName?: string;
-  email: string;
-  password: string;
-  contactNumber: string;
-  picture?: string;
-  role: string;
-  _id: string;
-  __v: number;
-};
+// type UserData = {
+//   firstName?: string;
+//   lastName?: string;
+//   email?: string;
+//   password?: string;
+//   contactNumber?: string;
+//   picture?: string;
+//   role?: string;
+//   _id?: string;
+//   __v?: number;
+// };
 
 export const UserProfile = () => {
-  let user;
-  const userString: string | null = localStorage.getItem("user");
-  if (userString !== null) {
-    user = JSON.parse(userString);
-  }
+  // let user;
+  // const userString: string | null = localStorage.getItem("user");
+  // if (userString !== null) {
+  //   user = JSON.parse(userString);
+  // }
 
   const [openDialog, setOpenDialog] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const userState = useAppSelector((state) => state.user);
   const userData = userState?.userData;
   const blockStat = userState.blockStat;
-  console.log("hdgfhsgdh", userData?.picture);
+  // console.log("hdgfhsgdh", userData?.picture);
 
-  console.log("profile", userData);
+  // console.log("profile", userData);
   // const serverBaseURI = 'http://localhost:8000/images'
 
   // const [userDetails, setUserDetails] = useState<UserData | null>(userData);
 
-  const handleUpdate = (updatedDetails: UserData) => {
+  const handleUpdate = (updatedDetails: any) => {
     // setUserDetails(updatedDetails);
     console.log("axiosupdate", updatedDetails);
     dispatch(updateUser(updatedDetails));
@@ -195,7 +77,7 @@ export const UserProfile = () => {
       // setSelectedFile(e.target.files[0]);
       const formData = new FormData();
       formData.append("image", e.target.files[0]);
-      console.log("ff", formData.get("image"));
+      // console.log("ff", formData.get("image"));
 
       dispatch(updateProfilePic(formData));
     }
@@ -209,7 +91,7 @@ export const UserProfile = () => {
   };
 
   useEffect(() => {
-    dispatch(getData(user._id));
+    dispatch(getData());
   }, [userState.successMessage]);
   useEffect(() => {
     blockStat && navigate("/login");

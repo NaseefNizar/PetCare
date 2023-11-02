@@ -10,8 +10,8 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { GoogleLogin } from "@react-oauth/google";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { googleSign, registerUser, sendOtp, setSignupData } from "../redux/features/userSlice";
-import { registerPartner,sendOtpPartner,setSignupDataPartner } from "../redux/features/partnerSlice";
+import { googleSign, sendOtp, setSignupData } from "../redux/features/userSlice";
+import { sendOtpPartner,setSignupDataPartner } from "../redux/features/partnerSlice";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -56,12 +56,21 @@ export const UserSignUpForm = (props: Props) => {
 
 
   const data = useAppSelector((state) => state);
-  const signupSuccess = data.user.registerStatus || data.vet.registerStatus;
+  const signupSuccess:any = data.user.registerStatus || data.vet.registerStatus;
 
   const { score } = zxcvbn(passwordCheck);
   // console.log("score", score);
   // const strengthColors = ['success', '#ff9900', '#ffff00', '#33cc33', '#00ff00'];
-  const strengthColors:string[] = ["error", "error",'secondary',"info", "success"];
+
+
+  const strengthColors: { [key: number]: "primary" | "secondary" | "error" | "info" |"success" } = {
+    0: "error",
+    1: "error",
+    2: "secondary",
+    3: "info",
+    4: "success",
+  };
+  // const strengthColors:string[] = ["error", "error",'secondary',"info", "success"];
   const strengthColor = strengthColors[score];
 
 

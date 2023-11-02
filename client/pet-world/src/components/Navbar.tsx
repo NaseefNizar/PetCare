@@ -9,20 +9,20 @@ import {
   Avatar,
   Button,
 } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 import PetsIcon from "@mui/icons-material/Pets";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { logOut } from "../redux/features/userSlice";
 
 export const Navbar = () => {
-  const settings = ["Profile", "Logout"];
+  // const settings = ["Profile", "Logout"];
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const dispatch = useAppDispatch()
   const userData = useAppSelector(state => state.user.userData)
 
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);

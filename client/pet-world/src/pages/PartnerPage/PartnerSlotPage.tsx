@@ -1,6 +1,6 @@
-import PartnerLayout from "../../components/PartnerLayout/PartnerLayout";
+// import PartnerLayout from "../../components/PartnerLayout/PartnerLayout";
 import { ToastContainer, toast } from "react-toastify";
-import { useForm, Controller } from "react-hook-form";
+// import { useForm } from "react-hook-form";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
@@ -14,23 +14,23 @@ import {
   Button,
   Box,
   Chip,
-  TextField,
-  Typography,
+  // TextField,
+  // Typography,
 } from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
-import { DemoItem } from "@mui/x-date-pickers/internals/demo";
-import { MultiInputTimeRangeField } from "@mui/x-date-pickers-pro/MultiInputTimeRangeField";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+// import Autocomplete from "@mui/material/Autocomplete";
+// import { DemoItem } from "@mui/x-date-pickers/internals/demo";
+// import { MultiInputTimeRangeField } from "@mui/x-date-pickers-pro/MultiInputTimeRangeField";
+// import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+// import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { addSlot } from "../../redux/features/slotSlice";
 
 export const PartnerSlotPage = () => {
 
   const dispatch = useAppDispatch()
-  const form = useForm();
-  const { handleSubmit, formState, watch, control } = form;
-  const { errors } = formState;
+  // const form = useForm();
+  // const { handleSubmit, formState, watch, control } = form;
+  // const { errors } = formState;
 
   const defaultTime = new Date();
   defaultTime.setHours(0);
@@ -53,8 +53,8 @@ export const PartnerSlotPage = () => {
     }
 
     // Parse the start time and end time
-    const start = dayjs(startTim);
-    const end = dayjs(endTime);
+    // const start = dayjs(startTim);
+    // const end = dayjs(endTime);
     console.log(selectedDate);
     console.log(startTim);
     console.log(endTime);
@@ -255,7 +255,7 @@ export const PartnerSlotPage = () => {
                   label="Duration"
                   // value={duration}
                   // defaultValue={defaultTime}
-                  onChange={(time) => setDuration(time)}
+                  onChange={(time:any) => setDuration(time)}
                   views={["minutes", "seconds"]}
                   format="mm:ss"
                 />

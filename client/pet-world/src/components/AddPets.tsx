@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import  { useState } from "react";
+// import { useForm } from "react-hook-form";
 import {
   Dialog,
   DialogContent,
@@ -10,17 +10,17 @@ import {
   Stack,
   Container,
 } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { updateContact } from "../redux/features/userSlice";
+// import { useAppDispatch, useAppSelector } from "../redux/hooks";
+// import { updateContact } from "../redux/features/userSlice";
 
 export const AddPets = () => {
   const [open, setOpen] = useState<boolean>(false);
   const handleClose = () => {
     setOpen(false);
   };
-  const form = useForm();
-  const { register, handleSubmit, formState } = form;
-  const { errors } = formState;
+  // const form = useForm();
+  // const { formState } = form;
+  // const { errors } = formState;
   return (
     <>
       <Button

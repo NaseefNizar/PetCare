@@ -1,8 +1,7 @@
-import * as React from "react";
-import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
+import { styled, Theme, CSSObject } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
+import  { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import List from "@mui/material/List";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
@@ -13,8 +12,8 @@ import ListItemText from "@mui/material/ListItemText";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import MailIcon from "@mui/icons-material/Mail";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { SvgIcon } from '@mui/material';
+import { Link } from "react-router-dom";
+// import { SvgIcon } from '@mui/material';
 import AppointmentIcon from "../../assets/appointmentIcon.png";
 import { CustomIcon } from "../CustomIcon";
 
@@ -96,13 +95,12 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function MiniDrawer({ open, children }: AppBarProps) {
-  const theme = useTheme();
+  // const theme = useTheme();
 
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleClick = (
-    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
     index: number
   ): void => {
     setSelectedIndex(index);
@@ -131,7 +129,7 @@ export default function MiniDrawer({ open, children }: AppBarProps) {
                   px: 2.5,
                 }}
                 selected={selectedIndex === index}
-                onClick={(e) => handleClick(e, index)}
+                onClick={() => handleClick(index)}
               >
                 <ListItemIcon
                   sx={{

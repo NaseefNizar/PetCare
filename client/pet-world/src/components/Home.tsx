@@ -5,37 +5,37 @@ import banner from "../assets/pet-banner-tpn-12052020-v1.jpg";
 import "../pages/homePage.css";
 
 const Userhomepage = () => {
-  const CustomBox = styled(Box)(({ theme }) => ({
-    width: "30%",
-    [theme.breakpoints.down("md")]: {
-      width: "85%",
-    },
-  }));
+  // const CustomBox = styled(Box)(({ theme }) => ({
+  //   width: "30%",
+  //   [theme.breakpoints.down("md")]: {
+  //     width: "85%",
+  //   },
+  // }));
 
-  const GuidesBox = styled(Box)(({ theme }) => ({
-    display: "flex",
-    justifyContent: "space-around",
-    width: "70%",
-    marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(5),
-    [theme.breakpoints.down("md")]: {
-      width: "100%",
-    },
-    [theme.breakpoints.down("sm")]: {
-      marginBottom: "0",
-      flexDirection: "column",
-    },
-  }));
+  // const GuidesBox = styled(Box)(({ theme }) => ({
+  //   display: "flex",
+  //   justifyContent: "space-around",
+  //   width: "70%",
+  //   marginTop: theme.spacing(5),
+  //   marginBottom: theme.spacing(5),
+  //   [theme.breakpoints.down("md")]: {
+  //     width: "100%",
+  //   },
+  //   [theme.breakpoints.down("sm")]: {
+  //     marginBottom: "0",
+  //     flexDirection: "column",
+  //   },
+  // }));
 
-  const GuideBox = styled(Box)(({ theme }) => ({
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    marginTop: theme.spacing(5),
-    [theme.breakpoints.down("sm")]: {
-      margin: theme.spacing(2, 0, 2, 0),
-    },
-  }));
+  // const GuideBox = styled(Box)(({ theme }) => ({
+  //   display: "flex",
+  //   flexDirection: "column",
+  //   alignItems: "center",
+  //   marginTop: theme.spacing(5),
+  //   [theme.breakpoints.down("sm")]: {
+  //     margin: theme.spacing(2, 0, 2, 0),
+  //   },
+  // }));
 
   const FeatureBox = styled(Box)`
     width: 300px;
@@ -153,7 +153,8 @@ const Userhomepage = () => {
                     item
                     // xs={12} sm={12} md={6} lg={3.5}
                   >
-                    <FeatureBox component={Link} to={feature.link}>
+                    <Link to={feature.link}>
+                    <FeatureBox >
                       <img src={banner} width={"75"} height={"75%"} />
                       <Stack
                         // spacing={0.25}
@@ -170,6 +171,7 @@ const Userhomepage = () => {
                         </Typography>
                       </Stack>
                     </FeatureBox>
+                    </Link>
                   </Grid>
                 ))}
               </Grid>

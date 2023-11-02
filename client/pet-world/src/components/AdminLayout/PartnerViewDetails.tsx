@@ -201,21 +201,15 @@ import {
   Card,
   CardMedia,
 } from "@mui/material";
-import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import { useForm } from "react-hook-form";
+
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 // import {
 //   getCenterDetails,
 //   centerapproval,
 // } from "../../../redux/features/admiSlice";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import { getPartnerData } from "../../redux/features/adminVerifySlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { approval } from "../../redux/features/adminSlice";
@@ -223,14 +217,15 @@ import { approval } from "../../redux/features/adminSlice";
 export const PartnerViewDetails = () => {
   const [open, setOpen] = React.useState(false);
 
-  const partnerData = useAppSelector((state) => state.adminVerify.partnerData);
+  const partnerData:any = useAppSelector((state) => state.adminVerify.partnerData);
   const stat = useAppSelector(state => state.admin.stat)
-  console.log('stat',stat);
+  // console.log('stat',stat);
   
   const navigate = useNavigate()
 
   const dispatch = useAppDispatch();
-  const { user_id } = useParams();
+  const { userid } = useParams<{ userid: string }>();
+  const user_id: string = userid || '' 
 
   const handleApproval = (id: string) => {
     dispatch(approval(id))
@@ -254,9 +249,9 @@ export const PartnerViewDetails = () => {
 //     dispatch(centerapproval(data));
 //   };
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  // const handleClickOpen = () => {
+  //   setOpen(true);
+  // };
 
   const handleClose = () => {
     setOpen(false);
