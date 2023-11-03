@@ -28,13 +28,13 @@ catch (e) {
 }
 const app = express();
 // app.use(express.json());
+app.use(cors({ credentials: true, origin: ['https://www.pet-nest.shop/', 'http://localhost:5173'] }));
 app.use(express.json({
     verify: (req, res, buf) => {
         req.rawBody = buf;
     }
 }));
 app.use(express.urlencoded({ extended: false }));
-app.use(cors({ credentials: true, origin: ['https://www.pet-nest.shop/', 'http://localhost:5173'] }));
 app.use(cookieParser());
 app.use('/api', userRoute);
 app.use('/api/admin', adminRoute);
