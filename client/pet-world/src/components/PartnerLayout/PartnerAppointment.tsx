@@ -110,16 +110,16 @@ export const PartnerAppointment = () => {
                 data.map((element:any) => (
                   <TableRow hover role="checkbox" tabIndex={-1}>
                     <TableCell align="left">
-                      {element.userId.firstName} {element.userId.lastName}
+                      {element.userId?.firstName} {element.userId?.lastName}
                     </TableCell>
                     <TableCell align="left">
-                      {element.userId.contactNumber}
+                      {element.userId?.contactNumber}
                     </TableCell>
-                    <TableCell align="left">{element.userId.email}</TableCell>
+                    <TableCell align="left">{element.userId?.email}</TableCell>
                     <TableCell align="left">
-                      {moment(element.date).format("MMMM DD, YYYY")}
+                      {moment(element?.date).format("MMMM DD, YYYY")}
                     </TableCell>
-                    <TableCell align="left">{element.slot}</TableCell>
+                    <TableCell align="left">{element?.slot}</TableCell>
                     <VideoCallIcon color="success" fontSize="large" sx={{marginTop:"6px"}}/>
                     {/* <TableCell align="left"></TableCell> */}
                     {/* <TableCell align="left"></TableCell> */}

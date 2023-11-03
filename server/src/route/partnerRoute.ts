@@ -15,6 +15,7 @@ import {
   kycUpdate,
   kycDocumentUpload,
   addSlot,
+  getSlot,
 } from "../controller/partnerController.js";
 import { sendOTP, verifyOTP } from "../middleware/otpService/otp.js";
 import { upload } from "../middleware/multer/multer.js";
@@ -63,5 +64,6 @@ partnerRoute.patch('/kycdocumentupload',verifyToken,upload.fields([
 
 
 partnerRoute.patch('/addslot',verifyToken,addSlot)
+partnerRoute.get('/getslot',verifyToken,getSlot)
 
 export default partnerRoute;

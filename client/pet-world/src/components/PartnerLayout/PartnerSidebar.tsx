@@ -71,8 +71,8 @@ const options = [
     icon: <CustomIcon icon={AppointmentIcon}/>,
   },
   {
-    name: "NNN",
-    navigate: "/partner/home",
+    name: "Edit appointments",
+    navigate: "/partner/edit-appointments",
     icon: <DashboardIcon />,
   },
 ];

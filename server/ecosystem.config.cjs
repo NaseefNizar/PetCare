@@ -1,17 +1,31 @@
 module.exports = {
-    apps: [
-      {
-        name: 'my-app',
-        // script: 'node_modules/.bin/concurrently',
-        script: 'node_modules/.bin/ concurrently \"npx tsc -w\" \"nodemon dist/index.js\"',
-        args: [
-          'node_modules/.bin/tsc -w',  // Watch TypeScript files
-          'node_modules/.bin/nodemon dist/index.js',  // Run the compiled app.js
-        ],
-        watch: true,  // Enable automatic restarts on file changes
-        interpreter: 'none',  // Avoid interpreting your command
-      },
-    ],
+
+  "apps": [
+    {
+      "name": "my-app",
+      "script": "dist/app.js",
+      "watch": true,
+      "ignore_watch": ["node_modules", "logs"],
+      "instances": "max",
+      "exec_mode": "cluster",
+      // "env": {
+      //   "NODE_ENV": "production"
+      // }
+    }
+  ]
+    // apps: [
+    //   {
+    //     name: 'my-app',
+    //     // script: 'node_modules/.bin/concurrently',
+    //     script: 'node_modules/.bin/ concurrently \"npx tsc -w\" \"nodemon dist/index.js\"',
+    //     args: [
+    //       'node_modules/.bin/tsc -w',  // Watch TypeScript files
+    //       'node_modules/.bin/nodemon dist/index.js',  // Run the compiled app.js
+    //     ],
+    //     watch: true,  // Enable automatic restarts on file changes
+    //     interpreter: 'none',  // Avoid interpreting your command
+    //   },
+    // ],
     // apps: [
     //     {
     //       name: 'my-app',

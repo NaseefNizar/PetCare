@@ -31,19 +31,20 @@ export const getAppointmentData = createAsyncThunk(
     try {
       const response = await axios.get("/api/appointment/getallappointments");
       return response.data;
-    } catch (error:any) {
+    } catch (error: any) {
       return rejectWithValue(error.response.data);
     }
   }
 );
 
-export const usersAppointments = createAsyncThunk<any,void>(
+export const usersAppointments = createAsyncThunk<any, void>(
   "appointment/userappointments",
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get("api/appointment/userappointments");
+      console.log(response.data);
       return response.data;
-    } catch (error:any) {
+    } catch (error: any) {
       return rejectWithValue(error.response.data);
     }
   }

@@ -55,10 +55,10 @@ export const PartnerSlotPage = () => {
     // Parse the start time and end time
     // const start = dayjs(startTim);
     // const end = dayjs(endTime);
-    console.log(selectedDate);
-    console.log(startTim);
-    console.log(endTime);
-    console.log(duration);
+    // console.log(selectedDate);
+    // console.log(startTim);
+    // console.log(endTime);
+    // console.log(duration);
 
     const intervalMinutes = 15; // Duration interval in minutes
 
@@ -68,7 +68,7 @@ export const PartnerSlotPage = () => {
       currentTime = currentTime.add(intervalMinutes, "minutes");
     }
 
-    console.log("Generated Slots:", slots);
+    // console.log("Generated Slots:", slots);
     setGeneratedSlots(slots);
 
     // const slotDuration = duration.split(":");

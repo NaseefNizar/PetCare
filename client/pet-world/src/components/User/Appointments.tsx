@@ -81,7 +81,7 @@ export const Appointments = () => {
             <strong>Appointments</strong>
           </Typography>
         </Grid>
-        {appointments.length !== 0 ? (
+        {appointments?.length !== 0 ? (
           appointments?.map((appointment:any) => (
             <Grid item md={12} lg={12} sm={12} xs={6}>
               <Paper sx={{ p: "10px" }}>

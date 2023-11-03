@@ -323,4 +323,34 @@ export const addSlot = async (req, res) => {
         res.status(500).json({ message: "Error adding slots" });
     }
 };
+export const getSlot = async (req, res) => {
+    try {
+        const id = req.id;
+        const { date } = req.query;
+        console.log(date);
+        const appointmentSlots = await Partner.aggregate([
+            {
+                $match: {
+                    _id: id,
+                },
+            },
+            {
+                $unwind: '$availableSlots',
+            },
+            {
+                $match: {
+                    'availableSlots.date': date,
+                },
+            },
+            {
+                $project: {
+                    slots: '$availableSlots.slots',
+                },
+            },
+        ]);
+        console.log(appointmentSlots);
+    }
+    catch (error) {
+    }
+};
 //# sourceMappingURL=partnerController.js.map

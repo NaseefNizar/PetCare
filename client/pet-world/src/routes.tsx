@@ -26,6 +26,7 @@ import { ListVetPage } from "./pages/ListVetPage";
 // import { DetailPage } from "./pages/DetailPage";
 import { PartnerSlotPage } from "./pages/PartnerPage/PartnerSlotPage";
 import { PartnerDetailPage } from "./pages/PartnerPage/PartnerDetailPage";
+import {AppointmentEditing} from "./pages/PartnerPage/AppointmentEditing"
 import { PaymentPage } from "./pages/PartnerPage/PaymentPage";
 import { PaymentSuccessPage } from "./pages/PaymentSuccessPage";
 import { PartnerAppointment } from "./components/PartnerLayout/PartnerAppointment";
@@ -103,6 +104,7 @@ export const Router = () => {
             <Route path="home" element={<PartnerHomePage />} />
             <Route path="profile" element={<PartnerProfilePage />} />
             <Route path="addslot" element={<PartnerSlotPage />} />
+            <Route path="edit-appointments" element={<AppointmentEditing />} />
             <Route path="appointments" element={<PartnerAppointment />} />
             <Route path="kyc" element={<PartnerKycPage />} />
           </Route>
