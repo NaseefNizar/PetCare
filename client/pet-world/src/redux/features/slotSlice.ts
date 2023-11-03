@@ -57,7 +57,7 @@ const slotSlice = createSlice({
         (state.loading = false), (state.statMsg = action.error.message || "");
         state.stat = false;
       })
-      .addCase(getSlot.fulfilled, (state,action) => {
+      .addCase(getSlot.fulfilled, (state) => {
         state.loading = false
         state
       })
