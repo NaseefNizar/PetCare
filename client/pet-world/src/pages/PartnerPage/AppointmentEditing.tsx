@@ -2,11 +2,11 @@ import { ToastContainer, toast } from "react-toastify";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+// import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { useEffect, useState } from "react";
-import dayjs from "dayjs";
-import { Toolbar, AppBar, Stack, Button, Box, Chip, Grid } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+// import dayjs from "dayjs";
+import { Toolbar, AppBar, Button, Box, Grid } from "@mui/material";
+import { useAppDispatch } from "../../redux/hooks";
 import { getSlot } from "../../redux/features/slotSlice";
 
 export const AppointmentEditing = () => {
