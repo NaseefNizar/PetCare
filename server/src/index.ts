@@ -39,7 +39,7 @@ app.use(express.json({
     }
   }))
 app.use(express.urlencoded({extended: false}));
-app.use(cors({credentials: true, origin:['http://www.pet-nest.shop','http://localhost:5173']}));
+app.use(cors({credentials: true, origin:['https://www.pet-nest.shop','http://localhost:5173']}));
 app.use(cookieParser());
 
 app.use('/api', userRoute)
