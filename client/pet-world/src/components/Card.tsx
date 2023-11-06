@@ -134,7 +134,7 @@ export default function PartnerCard() {
                         component={Link}
                         to={`/partner-details/${element._id}`}
                       >
-                        Book Online Consultation
+                        Book Appointment
                       </Button>
                     </Grid>
                   </Grid>

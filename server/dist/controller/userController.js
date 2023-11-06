@@ -4,6 +4,7 @@ import User from "../model/UserModel.js";
 import Partner from "../model/PartnerModel.js";
 import jwt from "jsonwebtoken";
 import pkg from "twilio";
+import PetDetails from "../model/petDetails.js";
 const { Twilio } = pkg;
 const { TWILIO_SERVICE_SID, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } = process.env;
 // if (!TWILIO_SERVICE_SID || !TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN) {
@@ -22,7 +23,7 @@ export const existingUser = async (req, res, next) => {
     next();
 };
 export const signup = async (req, res) => {
-    console.log("next");
+    // console.log("next");
     const { userId, email, password, contactNumber } = req.body;
     try {
         // const existingUser = await User.findOne({ email, contactNumber });
@@ -40,7 +41,7 @@ export const signup = async (req, res) => {
         res.status(201).json({ message: "Signup successful", newUser });
     }
     catch (error) {
-        console.error("Error during signup", error);
+        // console.error("Error during signup", error);
         res.status(500).json({ message: "Error during signup" });
     }
 };
@@ -54,7 +55,7 @@ export const googleVerify = async (req, res) => {
         });
         const payload = ticket.getPayload();
         const email = payload?.email;
-        console.log(payload);
+        // console.log(payload);
         const user = await User.findOne({ email });
         if (!user) {
             const user = new User({
@@ -91,16 +92,16 @@ export const googleVerify = async (req, res) => {
         }
     }
     catch (error) {
-        console.error("Error during signup", error);
+        // console.error("Error during signup", error);
         res.status(500).json({ message: "Error during signup" });
     }
 };
 export const login = async (req, res) => {
     const { email, password } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
     try {
         const user = await User.findOne({ email, is_admin: 0 });
-        console.log(user);
+        // console.log(user);
         if (!user) {
             return res.status(401).json({ message: "Invalid email or password" });
         }
@@ -117,7 +118,7 @@ export const login = async (req, res) => {
         const token = jwt.sign({ userId: user._id }, jwtSecretKey, {
             expiresIn: "1d",
         });
-        console.log("Generated Token \n", token);
+        // console.log("Generated Token \n", token);
         // if (req.cookies[`${user._id}`]) {
         //   req.cookies[`${user._id}`] = "";
         // }
@@ -131,7 +132,7 @@ export const login = async (req, res) => {
         res.status(200).json({ message: "Successfully logged in", token, user });
     }
     catch (error) {
-        console.error("Error during login", error);
+        // console.error("Error during login", error);
         res.status(500).json({ message: "Error during login" });
     }
 };
@@ -141,7 +142,7 @@ export const verifyToken = (req, res, next) => {
         return res.status(404).json({ message: "No token found" });
     }
     const token = req.cookies.token;
-    console.log(token);
+    // console.log(token);
     jwt.verify(String(token), jwtSecretKey, (err, user) => {
         if (err) {
             return res.status(400).json({ message: "Invalid token" });
@@ -157,7 +158,7 @@ export const logout = (req, res) => {
         res.status(200).json({ message: "Successfully logged out" });
     }
     catch (error) {
-        console.error("Error during logout", error);
+        // console.error("Error during logout", error);
         res.status(500).json({ message: "Error during logout" });
     }
 };
@@ -168,14 +169,14 @@ export const getData = async (req, res) => {
         res.status(200).json({ userData });
     }
     catch (error) {
-        console.error("Error getting user data:", error);
+        // console.error("Error getting user data:", error);
         res.status(500).json({ message: "Error getting user data" });
     }
 };
 export const updateUser = async (req, res) => {
     try {
-        console.log("update", req.body);
-        console.log("id", req.id);
+        // console.log("update", req.body);
+        // console.log("id", req.id);
         const { firstName, lastName, contactNumber, email } = req.body;
         const userData = await User.findByIdAndUpdate(req.id, {
             $set: {
@@ -193,7 +194,7 @@ export const updateUser = async (req, res) => {
 };
 export const updateProfilePic = async (req, res) => {
     try {
-        console.log("files", req.file);
+        // console.log("files", req.file);
         if (req.file) {
             const imagePath = req.file.filename;
             const userData = await User.findByIdAndUpdate(req.id, {
@@ -237,7 +238,7 @@ export const forgotPassword = async (req, res, next) => {
 };
 export const setNewPassword = async (req, res) => {
     try {
-        console.log(req.body);
+        // console.log(req.body);
         const { password, contactNumber } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = (await User.findOneAndUpdate({ contactNumber }, { password: hashedPassword })) ||
@@ -251,7 +252,7 @@ export const setNewPassword = async (req, res) => {
 };
 export const verifyPasswordOTP = async (req, res) => {
     const { contactNumber, otp } = req.body;
-    console.log(contactNumber, otp);
+    // console.log(contactNumber, otp);
     try {
         const verifiedResponse = await client.verify.v2
             .services(TWILIO_SERVICE_SID)
@@ -261,7 +262,7 @@ export const verifyPasswordOTP = async (req, res) => {
         });
         // res.status(200).json({message:"otp verified successfully"})
         if (verifiedResponse.status === "approved") {
-            console.log("verified");
+            // console.log("verified");
             res.status(200).json({ message: "OTP verified succcessfully" });
         }
         else {
@@ -281,6 +282,30 @@ export const updateContact = async (req, res) => {
             },
         });
         res.status(200).json({ message: "Updated successfully" });
+    }
+    catch (error) {
+        res.status(500).json({ message: "Error updating user data" });
+    }
+};
+export const addPetDetail = async (req, res) => {
+    const { ...data } = req.body;
+    // console.log(req.body);
+    try {
+        const newPet = new PetDetails({
+            userId: req.id,
+            ...data,
+        });
+        await newPet.save();
+        res.status(200).json({ message: "Updated successfully" });
+    }
+    catch (error) {
+        res.status(500).json({ message: "Error updating user data" });
+    }
+};
+export const getPetDetail = async (req, res) => {
+    try {
+        const petDetails = await PetDetails.find({ userId: req.id });
+        res.status(200).json({ petDetails });
     }
     catch (error) {
         res.status(500).json({ message: "Error updating user data" });

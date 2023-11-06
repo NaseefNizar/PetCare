@@ -1,5 +1,5 @@
 import express from "express";
-import { existingUser, forgotPassword, getData, googleVerify, login, logout, setNewPassword, signup, updateContact, updateProfilePic, updateUser, verifyPasswordOTP, verifyToken, } from "../controller/userController.js";
+import { addPetDetail, existingUser, forgotPassword, getData, getPetDetail, googleVerify, login, logout, setNewPassword, signup, updateContact, updateProfilePic, updateUser, verifyPasswordOTP, verifyToken, } from "../controller/userController.js";
 import { sendOTP, verifyOTP } from "../middleware/otpService/otp.js";
 import { upload } from "../middleware/multer/multer.js";
 import { verifyBlock } from "../middleware/userMiddlewares/blockedUser.js";
@@ -9,6 +9,8 @@ userRoute.post("/otp", sendOTP);
 // userRoute.post("/sendotp", sendOTP);
 userRoute.post("/signup", verifyOTP, signup);
 userRoute.post("/updatecontact", verifyOTP, updateContact);
+userRoute.post("/addpetdetail", verifyToken, addPetDetail);
+userRoute.get("/getpetdetail", verifyToken, getPetDetail);
 userRoute.post("/googleVerify", googleVerify);
 userRoute.post("/login", login);
 userRoute.get("/logout", verifyToken, logout);

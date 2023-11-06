@@ -1,5 +1,6 @@
 import { Grid, Paper, Typography,Button } from "@mui/material";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { Link } from "react-router-dom";
 
 export const PaymentSuccess = () => {
   return (
@@ -23,7 +24,7 @@ export const PaymentSuccess = () => {
               <Typography variant="h4">Appointment booked Successfully!</Typography>
             </Grid>
             <Grid item lg={6}>
-            <Button variant="contained" color="secondary">View appointments</Button>
+            <Button variant="contained" color="secondary" component={Link} to='/user/appointment'>View appointments</Button>
             </Grid>
           </Grid>
         </Paper>

@@ -15,10 +15,10 @@ const petDetailSchema = new mongoose.Schema({
     type: String,
   },
   petAge: {
-    type: String,
+    type: Number,
   },
   petWeight: {
-    type: String,
+    type: Number,
   },
 });
 

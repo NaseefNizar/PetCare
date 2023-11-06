@@ -162,7 +162,7 @@ const Userhomepage = () => {
                       >
                         <Typography
                           variant="h5"
-                          sx={{ fontSize: "20px", fontWeight: "bold" }}
+                          sx={{ fontSize: "20px", fontWeight: "bold",textDecorationLine:'none' }}
                         >
                           {feature.heading}
                         </Typography>

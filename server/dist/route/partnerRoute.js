@@ -1,7 +1,7 @@
 import express from "express";
 import { 
 // googleVerify,
-login, logout, signup, verifyToken, existingUser, getPartnerData, updatePartner, updatePartnerProfilePic, forgotPassword, verifyPasswordOTP, setNewPassword, kycUpdate, kycDocumentUpload, addSlot, getSlot, } from "../controller/partnerController.js";
+login, logout, signup, verifyToken, existingUser, getPartnerData, updatePartner, updatePartnerProfilePic, forgotPassword, verifyPasswordOTP, setNewPassword, kycUpdate, kycDocumentUpload, addSlot, getSlot, editSlot, } from "../controller/partnerController.js";
 import { sendOTP, verifyOTP } from "../middleware/otpService/otp.js";
 import { upload } from "../middleware/multer/multer.js";
 import { partnerBlocked } from "../middleware/partnerMiddleware/blocked.js";
@@ -28,5 +28,6 @@ partnerRoute.patch('/kycdocumentupload', verifyToken, upload.fields([
 ]), kycDocumentUpload);
 partnerRoute.patch('/addslot', verifyToken, addSlot);
 partnerRoute.get('/getslot', verifyToken, getSlot);
+partnerRoute.patch('/editslot', verifyToken, editSlot);
 export default partnerRoute;
 //# sourceMappingURL=partnerRoute.js.map

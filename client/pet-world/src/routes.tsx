@@ -26,7 +26,7 @@ import { ListVetPage } from "./pages/ListVetPage";
 // import { DetailPage } from "./pages/DetailPage";
 import { PartnerSlotPage } from "./pages/PartnerPage/PartnerSlotPage";
 import { PartnerDetailPage } from "./pages/PartnerPage/PartnerDetailPage";
-import {AppointmentEditing} from "./pages/PartnerPage/AppointmentEditing"
+import { AppointmentEditing } from "./pages/PartnerPage/AppointmentEditing";
 import { PaymentPage } from "./pages/PartnerPage/PaymentPage";
 import { PaymentSuccessPage } from "./pages/PaymentSuccessPage";
 import { PartnerAppointment } from "./components/PartnerLayout/PartnerAppointment";
@@ -35,7 +35,6 @@ import { UserAppointmentPage } from "./pages/User/UserAppointmentPage";
 import { ProfileLayoutPage } from "./pages/User/ProfileLayoutPage";
 import { UserInfoPage } from "./pages/User/UserInfoPage";
 import { PetDetailPage } from "./pages/User/PetDetailPage";
-// import Videocall from "./components/Videocall/videocall";
 
 export const Router = () => {
   return (

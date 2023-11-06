@@ -7,6 +7,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { handleUpload } from "../middleware/cloudinary/cloudinary.js";
 
 import pkg from "twilio";
+import PetDetails from "../model/petDetails.js";
 const { Twilio } = pkg;
 
 const { TWILIO_SERVICE_SID, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } =
@@ -14,7 +15,10 @@ const { TWILIO_SERVICE_SID, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } =
 // if (!TWILIO_SERVICE_SID || !TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN) {
 //   throw new Error("Twilio environment variables are not defined.");
 // }
-const client = new Twilio(TWILIO_ACCOUNT_SID as string, TWILIO_AUTH_TOKEN as string);
+const client = new Twilio(
+  TWILIO_ACCOUNT_SID as string,
+  TWILIO_AUTH_TOKEN as string
+);
 const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
 interface DecodedToken extends JwtPayload {
@@ -25,7 +29,6 @@ export interface MyCustomRequest extends Request {
   id?: string;
   rawBody?: Buffer;
 }
-
 
 export const existingUser = async (
   req: Request,
@@ -44,7 +47,7 @@ export const existingUser = async (
 };
 
 export const signup = async (req: Request, res: Response) => {
-  console.log("next");
+  // console.log("next");
   const { userId, email, password, contactNumber } = req.body;
   try {
     // const existingUser = await User.findOne({ email, contactNumber });
@@ -62,7 +65,7 @@ export const signup = async (req: Request, res: Response) => {
 
     res.status(201).json({ message: "Signup successful", newUser });
   } catch (error) {
-    console.error("Error during signup", error);
+    // console.error("Error during signup", error);
     res.status(500).json({ message: "Error during signup" });
   }
 };
@@ -77,7 +80,7 @@ export const googleVerify = async (req: Request, res: Response) => {
     });
     const payload: Partial<TokenPayload> | undefined = ticket.getPayload();
     const email = payload?.email;
-    console.log(payload);
+    // console.log(payload);
     const user = await User.findOne({ email });
     if (!user) {
       const user = new User({
@@ -112,17 +115,17 @@ export const googleVerify = async (req: Request, res: Response) => {
       res.status(201).json({ message: "Signup successful", user });
     }
   } catch (error) {
-    console.error("Error during signup", error);
+    // console.error("Error during signup", error);
     res.status(500).json({ message: "Error during signup" });
   }
 };
 
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
-  console.log(req.body);
+  // console.log(req.body);
   try {
     const user = await User.findOne({ email, is_admin: 0 });
-    console.log(user);
+    // console.log(user);
 
     if (!user) {
       return res.status(401).json({ message: "Invalid email or password" });
@@ -143,7 +146,7 @@ export const login = async (req: Request, res: Response) => {
       expiresIn: "1d",
     });
 
-    console.log("Generated Token \n", token);
+    // console.log("Generated Token \n", token);
 
     // if (req.cookies[`${user._id}`]) {
     //   req.cookies[`${user._id}`] = "";
@@ -159,7 +162,7 @@ export const login = async (req: Request, res: Response) => {
 
     res.status(200).json({ message: "Successfully logged in", token, user });
   } catch (error) {
-    console.error("Error during login", error);
+    // console.error("Error during login", error);
     res.status(500).json({ message: "Error during login" });
   }
 };
@@ -174,7 +177,7 @@ export const verifyToken = (
     return res.status(404).json({ message: "No token found" });
   }
   const token: string = req.cookies.token;
-  console.log(token);
+  // console.log(token);
 
   jwt.verify(String(token), jwtSecretKey, (err: any, user: any) => {
     if (err) {
@@ -191,7 +194,7 @@ export const logout = (req: MyCustomRequest, res: Response) => {
     res.clearCookie("token");
     res.status(200).json({ message: "Successfully logged out" });
   } catch (error) {
-    console.error("Error during logout", error);
+    // console.error("Error during logout", error);
     res.status(500).json({ message: "Error during logout" });
   }
 };
@@ -202,15 +205,15 @@ export const getData = async (req: MyCustomRequest, res: Response) => {
     // console.log(userData);
     res.status(200).json({ userData });
   } catch (error) {
-    console.error("Error getting user data:", error);
+    // console.error("Error getting user data:", error);
     res.status(500).json({ message: "Error getting user data" });
   }
 };
 
 export const updateUser = async (req: MyCustomRequest, res: Response) => {
   try {
-    console.log("update", req.body);
-    console.log("id", req.id);
+    // console.log("update", req.body);
+    // console.log("id", req.id);
 
     const { firstName, lastName, contactNumber, email } = req.body;
     const userData = await User.findByIdAndUpdate(req.id, {
@@ -229,7 +232,7 @@ export const updateUser = async (req: MyCustomRequest, res: Response) => {
 
 export const updateProfilePic = async (req: MyCustomRequest, res: Response) => {
   try {
-    console.log("files", req.file);
+    // console.log("files", req.file);
 
     if (req.file) {
       const imagePath = req.file.filename;
@@ -285,7 +288,7 @@ export const forgotPassword = async (
 
 export const setNewPassword = async (req: Request, res: Response) => {
   try {
-    console.log(req.body);
+    // console.log(req.body);
 
     const { password, contactNumber } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -308,7 +311,7 @@ export const setNewPassword = async (req: Request, res: Response) => {
 
 export const verifyPasswordOTP = async (req: Request, res: Response) => {
   const { contactNumber, otp } = req.body;
-  console.log(contactNumber, otp);
+  // console.log(contactNumber, otp);
 
   try {
     const verifiedResponse = await client.verify.v2
@@ -319,7 +322,7 @@ export const verifyPasswordOTP = async (req: Request, res: Response) => {
       });
     // res.status(200).json({message:"otp verified successfully"})
     if (verifiedResponse.status === "approved") {
-      console.log("verified");
+      // console.log("verified");
       res.status(200).json({ message: "OTP verified succcessfully" });
     } else {
       res.status(409).json({ message: "Invalid OTP" });
@@ -342,3 +345,30 @@ export const updateContact = async (req: MyCustomRequest, res: Response) => {
     res.status(500).json({ message: "Error updating user data" });
   }
 };
+
+export const addPetDetail = async (req: MyCustomRequest, res: Response) => {
+  const { ...data } = req.body;
+  // console.log(req.body);
+
+  try {
+    const newPet = new PetDetails({
+      userId: req.id,
+      ...data,
+    });
+    await newPet.save();
+    res.status(200).json({ message: "Updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating user data" });
+  }
+};
+export const getPetDetail = async (req: MyCustomRequest, res: Response) => {
+  try {
+    const petDetails = await PetDetails.find({userId:req.id});
+    res.status(200).json({petDetails });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating user data" });
+  }
+};
+
+
+

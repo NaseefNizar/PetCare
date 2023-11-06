@@ -23,6 +23,7 @@ import {
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { ProfileEdit } from "./ProfileEdit";
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 type UserData = {
   firstName: string;
@@ -52,7 +53,7 @@ export const ProfileLayout = () => {
 
   const handleUpdate = (updatedDetails: UserData) => {
     // setUserDetails(updatedDetails);
-    console.log("axiosupdate", updatedDetails);
+    // console.log("axiosupdate", updatedDetails);
     dispatch(updateUser(updatedDetails));
   };
 
@@ -60,14 +61,16 @@ export const ProfileLayout = () => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      console.log(e.target.files);
+      const file = e.target.files[0];
+      const allowedTypes = ["image/jpeg", "image/jpg"]
+      if (allowedTypes.includes(file.type)) {
 
-      // setSelectedFile(e.target.files[0]);
       const formData = new FormData();
       formData.append("image", e.target.files[0]);
-      // console.log("ff", formData.get("image"));
-
       dispatch(updateProfilePic(formData));
+      } else {
+        toast.error("Please select a valid JPEG or JPG image file.", { theme: "colored" })
+      }
     }
     // console.log("sele",selectedFile);
 
@@ -93,6 +96,7 @@ export const ProfileLayout = () => {
         py: 5,
       }}
     >
+      <ToastContainer/>
       <Container>
         <Grid container spacing={2}>
           <Grid lg={3}>
@@ -119,7 +123,7 @@ export const ProfileLayout = () => {
                     />
                     <input
                       type="file"
-                      accept="image/*"
+                      accept="image/jpeg, image/jpg"
                       style={{ display: "none" }}
                       id="image-upload"
                       onChange={handleFileChange}

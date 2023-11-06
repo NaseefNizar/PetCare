@@ -5,25 +5,32 @@ import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 // import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { useEffect, useState } from "react";
 // import dayjs from "dayjs";
-import { Toolbar, AppBar, Button, Box, Grid } from "@mui/material";
-import { useAppDispatch } from "../../redux/hooks";
-import { getSlot } from "../../redux/features/slotSlice";
+import { Toolbar, AppBar, Button, Box, Grid, Chip, Typography } from "@mui/material";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { editSlot, getSlot } from "../../redux/features/slotSlice";
+
+
 
 export const AppointmentEditing = () => {
-  const [selectedDate, setSelectedDate] = useState(null);
-  console.log(selectedDate);
-  const dispatch = useAppDispatch();
   const currDate = new Date();
-  console.log(currDate);
 
+  const dispatch = useAppDispatch();
+  const slot:any = useAppSelector(state => state.slot.slot)
+  const [selectedDate, setSelectedDate] = useState<any>(null);
 
-  const formattedDate = currDate
+  console.log(selectedDate);
+  console.log(slot);
 
+  const handleDelete = (id:string) => {
+    console.log(id);
+    dispatch(editSlot({id,date:selectedDate}))
+  }
   
-
   useEffect(() => {
-    console.log(1);
-    dispatch(getSlot(formattedDate));
+    dispatch(getSlot(currDate));
+  }, []);
+  useEffect(() => {
+    dispatch(getSlot(selectedDate));
   }, [selectedDate]);
 
   return (
@@ -62,6 +69,19 @@ export const AppointmentEditing = () => {
                   onChange={(newDate) => setSelectedDate(newDate)}
                   sx={{ borderRadius: "10px" }}
                 />
+              </Grid>
+              <Grid item md={6}>
+                <Typography variant="h5">Added slots</Typography>
+                {slot?.slots?.length > 0 ? 
+                  (slot?.slots?.map((slot:any, index:any) => (
+                    !slot.status &&                    
+                    <Chip
+                      key={index}
+                      label={slot.time}
+                      sx={{ margin: "10px" }}
+                      onDelete={() => handleDelete(slot._id)}
+                      />
+                  ))) : <Typography>No slots added</Typography> }
               </Grid>
               <Grid
                 item

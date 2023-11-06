@@ -11,7 +11,6 @@ export const getAllAppointments = async (req, res) => {
 export const userAppointments = async (req, res) => {
     try {
         const appointments = await Appointment.find({ userId: req.id }).populate('partnerId');
-        console.log(appointments);
         res.status(200).json({ appointments });
     }
     catch {

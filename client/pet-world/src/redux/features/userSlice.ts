@@ -71,6 +71,7 @@ type InitialState = {
   phoneNumber: string | null;
   actionStat: boolean;
   blockStat: boolean;
+  petDetails: any
 };
 
 const initialState: InitialState = {
@@ -86,6 +87,7 @@ const initialState: InitialState = {
   phoneNumber: null,
   actionStat: false,
   blockStat: false,
+  petDetails : []
 };
 
 export const sendOtp = createAsyncThunk<void,FormValues>(
@@ -174,6 +176,28 @@ export const updateProfilePic = createAsyncThunk(
           "Content-Type": "multipart/form-data",
         },
       });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+export const addPetDetail = createAsyncThunk<any,any>(
+  "/user/addpetdetail",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.post("/api/addpetdetail", data);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+export const getPetDetail = createAsyncThunk<any,void>(
+  "/user/getpetdetail",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get("/api/getpetdetail");
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data);
@@ -423,7 +447,15 @@ const userSlice = createSlice({
         state.loading = false;
         state.successMessage = action.payload.message;
         state.actionStat = true;
-      });
+      })
+      .addCase(addPetDetail.fulfilled, (state, action:any) => {
+        state.loading = false;
+        state.successMessage = action.payload.message;
+      })
+      .addCase(getPetDetail.fulfilled, (state, action:any) => {
+        state.loading = false;
+        state.petDetails = action.payload.petDetails
+      })
   },
 });
 

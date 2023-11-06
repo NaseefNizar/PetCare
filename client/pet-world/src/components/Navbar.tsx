@@ -45,11 +45,11 @@ export const Navbar = () => {
   return (
     <AppBar position="static" sx={{backgroundColor:'#f8f8f8'}}>
       <Toolbar>
-        <IconButton size="large" edge="start" color="inherit" aria-label="logo">
-          <PetsIcon color="secondary" sx={{ fontSize: 40 }} />
+        <IconButton size="large" edge="start" color="inherit" aria-label="logo" component={Link} to="/">
+          <PetsIcon color="secondary" sx={{ fontSize: 40 }}  />
         </IconButton>
 
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1,color:"black" }}>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1,color:"black" }} >
           PETCARE
         </Typography>
 

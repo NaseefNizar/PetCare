@@ -19,7 +19,6 @@ export const getAllAppointments = async(req:MyRequest,res:Response) => {
 export const userAppointments = async(req:MyRequest, res:Response) => {
     try{
         const appointments = await Appointment.find({userId:req.id}).populate('partnerId') 
-        console.log(appointments);      
         res.status(200).json({appointments})
     } catch {
         res.status(500).json({message:"Error getting data"})

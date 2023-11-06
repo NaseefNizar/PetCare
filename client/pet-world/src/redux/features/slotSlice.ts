@@ -1,6 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../utils/axiosInstance";
 
+
+// interface SlotData {
+//   date: Date;
+//   slots: { [key: string]: any }[]; // You can define a more specific type for the objects inside the array
+//   _id: string; // Assuming _id is a string
+// }
+
+type initialState = {
+  loading: boolean,
+  stat: boolean,
+  slot: any 
+  statMSg: string
+}
+
 const initialState = {
   loading: false,
   stat: false,
@@ -35,6 +49,21 @@ export const getSlot = createAsyncThunk<any, any>(
   }
 );
 
+export const editSlot = createAsyncThunk<any, any>(
+  "slot/editslots",
+  async (data, { rejectWithValue }) => {
+    try {
+        console.log(data);
+      const response = await axios.patch("api/partner/editslot",data);
+      return response.data;
+    } catch (error: any) {
+    return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+
+
 const slotSlice = createSlice({
   initialState,
   name: "addSlot",
@@ -42,6 +71,11 @@ const slotSlice = createSlice({
     setSelectedSlot: (state, action) => {
       state.slot = { ...state.slot, ...action.payload };
     },
+    // setEdittedSlots: (state, action) => {
+    //   console.log(action.payload);
+    //   const updateSlot = state.slot?.slots.find(element => element._id == action.payload)
+    //   console.log(updateSlot);
+    //       }
   },
   extraReducers: (builder) => {
     builder
@@ -57,9 +91,13 @@ const slotSlice = createSlice({
         (state.loading = false), (state.statMsg = action.error.message || "");
         state.stat = false;
       })
-      .addCase(getSlot.fulfilled, (state) => {
+      .addCase(getSlot.fulfilled, (state,action) => {
         state.loading = false
-        state
+        state.slot = action.payload.slots
+      })
+      .addCase(editSlot.fulfilled, (state,action) => {
+        state.loading = false
+        state.slot = action.payload.slots
       })
   },
 });

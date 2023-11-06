@@ -316,6 +316,7 @@ export const kycDocumentUpload = async (req, res) => {
 export const addSlot = async (req, res) => {
     try {
         const userId = req.id;
+        console.log(req.body);
         const update = await Partner.findOneAndUpdate({ _id: userId }, { $push: { availableSlots: req.body } });
         res.status(200).json({ message: "Slot added successfully" });
     }
@@ -326,29 +327,50 @@ export const addSlot = async (req, res) => {
 export const getSlot = async (req, res) => {
     try {
         const id = req.id;
-        const { date } = req.query;
-        console.log(date);
-        const appointmentSlots = await Partner.aggregate([
-            {
-                $match: {
-                    _id: id,
-                },
-            },
-            {
-                $unwind: '$availableSlots',
-            },
-            {
-                $match: {
-                    'availableSlots.date': date,
-                },
-            },
-            {
-                $project: {
-                    slots: '$availableSlots.slots',
-                },
-            },
-        ]);
-        console.log(appointmentSlots);
+        const date = req.query.date;
+        if (date) {
+            const selectedDate = new Date(date).toISOString();
+            // console.log(date);
+            // console.log(selectedDate);
+            const partnerData = await Partner.findOne({ _id: id });
+            const slots = partnerData?.availableSlots.filter((slot) => {
+                return slot.date && new Date(slot.date).toISOString() === selectedDate;
+            });
+            console.log(slots);
+            res.status(200).json({ slots: slots?.[0] });
+        }
+    }
+    catch (error) {
+        res.status(500).json({ message: "Error getting slots" });
+    }
+};
+export const editSlot = async (req, res) => {
+    try {
+        const userId = req.id;
+        const { id, date } = req.body;
+        // console.log(id,date);
+        // const partnerData = await Partner.findById({_id:userId})
+        // const slots = partnerData?.availableSlots.filter((slot) => {
+        //   return slot.date && new Date(slot.date).toISOString() === new Date(date).toISOString();
+        // });
+        // const update = slots?.[0].slots
+        // const newSlot = update &&  update?.map(element => console.log(element)
+        // )
+        // // const update = partnerData.
+        // console.log(partnerData);
+        // console.log(slots);
+        // console.log(update?.[0]);
+        // console.log(newSlot);
+        const updateSlot = await Partner.updateOne({
+            "availableSlots.slots._id": id,
+        }, {
+            $set: { "availableSlots.$[outer].slots.$[inner].status": true },
+        }, {
+            arrayFilters: [
+                { "outer.date": { $exists: true } },
+                { "inner._id": id },
+            ],
+        });
     }
     catch (error) {
     }
