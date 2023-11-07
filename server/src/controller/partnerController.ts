@@ -185,7 +185,8 @@ export const updatePartnerProfilePic = async (
       const imagePath = req.file.filename;
       const userData = await Partner.findByIdAndUpdate(req.id, {
         $set: {
-          picture: `http://localhost:8000/users/${imagePath}`,
+          // picture: `http://localhost:8000/users/${imagePath}`,
+          picture: imagePath,
         },
       });
 
@@ -310,9 +311,12 @@ export const kycUpdate = async (req: MyCustomRequest, res: Response) => {
       $set: {
         ...data,
         is_kycSubmitted: true,
-        poi: `http://localhost:8000/users/${poi}`,
-        poq: `http://localhost:8000/users/${poq}`,
-        photo: `http://localhost:8000/users/${photo}`,
+        // poi: `http://localhost:8000/users/${poi}`,
+        // poq: `http://localhost:8000/users/${poq}`,
+        // photo: `http://localhost:8000/users/${photo}`,
+        poi,
+        poq,
+        photo,
       },
     });
     res.status(200).json({ message: "Updated successfully" });
@@ -374,8 +378,10 @@ export const kycDocumentUpload = async (
 
       const kycData = await Partner.findByIdAndUpdate(req.id, {
         $set: {
-          poi: `http://localhost:8000/users/${poi}`,
-          poq: `http://localhost:8000/users/${poq}`,
+          // poi: `http://localhost:8000/users/${poi}`,
+          // poq: `http://localhost:8000/users/${poq}`,
+          poi,
+          poq,
         },
       });
       console.log("works", kycData);

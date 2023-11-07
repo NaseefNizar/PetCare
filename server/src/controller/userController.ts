@@ -238,7 +238,8 @@ export const updateProfilePic = async (req: MyCustomRequest, res: Response) => {
       const imagePath = req.file.filename;
       const userData = await User.findByIdAndUpdate(req.id, {
         $set: {
-          picture: `http://localhost:8000/users/${imagePath}`,
+          // picture: `http://localhost:8000/users/${imagePath}`,
+          picture: imagePath,
         },
       });
 
