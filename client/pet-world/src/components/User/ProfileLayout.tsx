@@ -24,6 +24,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { ProfileEdit } from "./ProfileEdit";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { baseUrl } from "../../utils/constants";
 
 type UserData = {
   firstName: string;
@@ -114,7 +115,7 @@ export const ProfileLayout = () => {
                     sx={{ display: "flex", alignItems: "self-end" }}
                   >
                     <Avatar
-                      src={userData?.picture}
+                      src={`${baseUrl}/users/${userData?.picture}`}
                       sx={{
                         height: 80,
                         mb: 2,
