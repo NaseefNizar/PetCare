@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 // import Navbar from "../AdminNavbar/Navbar";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-import Paper from "@mui/material/Paper";
+// import Paper from "@mui/material/Paper";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { Stack } from "@mui/material";
@@ -12,13 +12,13 @@ import StorefrontIcon from "@mui/icons-material/Storefront";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 // import "../../../Dash.css";
-import { useAppDispatch } from "../../redux/hooks";
+// import { useAppDispatch } from "../../redux/hooks";
 // import { adminDashboard } from "../../../redux/features/admiSlice";
 // import BarChart from "../../Chart/BarChart";
 // import PieChart from "../../Chart/PieChart";
 
 const Dashboard = () => {
-  const dispatch = useAppDispatch();
+//   const dispatch = useAppDispatch();
   useEffect(() => {}, []);
   return (
     <>
