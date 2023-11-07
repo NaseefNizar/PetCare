@@ -14,6 +14,7 @@ import { useState } from "react";
 import PetsIcon from "@mui/icons-material/Pets";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { logOut } from "../redux/features/userSlice";
+import { baseUrl } from "../utils/constants";
 
 export const Navbar = () => {
   // const settings = ["Profile", "Logout"];
@@ -73,7 +74,7 @@ export const Navbar = () => {
           {localStorage.getItem("user") ? (
             <>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={user.name} src={userData?.picture} />
+                <Avatar alt={user.name} src={`${baseUrl}/userData?.picture`} />
               </IconButton>
               <Menu
                 sx={{ mt: "45px" }}
