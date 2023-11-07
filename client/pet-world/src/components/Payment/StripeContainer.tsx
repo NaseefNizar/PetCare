@@ -5,6 +5,7 @@ import { StripeElementsOptions } from '@stripe/stripe-js'; // Import the necessa
 import axios from "../../utils/axiosInstance";
 import CheckoutForm from "./PaymentForm";
 import { useAppSelector } from "../../redux/hooks";
+import { baseUrl } from "../../utils/constants";
 // import "./checkout.css"
 
 // Make sure to call loadStripe outside of a component’s render to avoid
@@ -32,7 +33,7 @@ export default function StripeContainer() {
     //   headers: { "Content-Type": "application/json" },
     //   body: JSON.stringify({ items: [{ id: "xl-tshirt" }] }),
     // })
-    axios.post("http://localhost:8000/api/payment/createpaymentintent",data)
+    axios.post(`${baseUrl}/api/payment/createpaymentintent`,data)
       // .then((res) => res.json())
       .then((res) => 
       setClientSecret(res.data.clientSecret));
