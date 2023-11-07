@@ -12,18 +12,20 @@ import TableRow from "@mui/material/TableRow";
 // import DialogActions from "@mui/material/DialogActions";
 // import DialogContent from "@mui/material/DialogContent";
 // import DialogTitle from "@mui/material/DialogTitle";
-import { Divider, Typography } from "@mui/material";
+import { Button, Divider, Typography } from "@mui/material";
+// import VisibilityIcon from '@mui/icons-material/Visibility';
 // import VideoCallIcon from "@mui/icons-material/VideoCall";
 import Box from "@mui/material/Box";
 import {  useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getAppointmentData } from "../../redux/features/appointmentSlice";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 export const PartnerAppointment = () => {
   const dispatch = useAppDispatch();
   const data:any = useAppSelector((state) => state.appointment.appointments);
-  console.log(data);
+  // console.log(data);
 
   // const [open, setOpen] = React.useState(false);
 
@@ -101,7 +103,7 @@ export const PartnerAppointment = () => {
                   Booking Time
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
-                  {/* Booked Scan */}
+                  {/* View Details */}
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -120,6 +122,7 @@ export const PartnerAppointment = () => {
                       {moment(element?.date).format("MMMM DD, YYYY")}
                     </TableCell>
                     <TableCell align="left">{element?.slot}</TableCell>
+                    <TableCell align="left" size="small" ><Button variant="contained" component={Link} to={'/'}>View details</Button> </TableCell>
                     {/* <VideoCallIcon color="success" fontSize="large" sx={{marginTop:"6px"}}/> */}
                     {/* <TableCell align="left"></TableCell> */}
                     {/* <TableCell align="left"></TableCell> */}

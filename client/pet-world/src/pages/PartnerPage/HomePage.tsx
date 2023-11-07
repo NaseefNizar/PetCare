@@ -17,6 +17,7 @@ import verificationImg from "../../assets/verification-img.png";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import KycLayout from "../../components/PartnerLayout/Kyc/KycLayout";
 import { getPartnerData } from "../../redux/features/partnerSlice";
+import Dashboard from "./Dashboard";
 
 export const PartnerHomePage = () => {
   const dispatch = useAppDispatch();
@@ -111,43 +112,44 @@ export const PartnerHomePage = () => {
           </Paper>
         )
       ) : (
-        <Paper
-          sx={{
-            maxWidth: 936,
-            margin: "auto",
-            overflow: "hidden",
-            padding: "20px",
-          }}
-        >
-          <AppBar
-            position="static"
-            color="default"
-            elevation={0}
-            sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0.12)" }}
-          >
-            <Toolbar sx={{ justifyContent: "center" }}>
-              <Box alignItems="center" justifyContent={"center"}>
-                WELCOME TO DASHBOARD
-              </Box>
-            </Toolbar>
-          </AppBar>
-          <Box
-            display={"flex"}
-            flexDirection={"column"}
-            alignItems="center"
-            justifyContent={"center"}
-          >
-            <Stack spacing={4}>
-              <Typography
-                sx={{ mt: 4, mx: 2 }}
-                color="text.secondary"
-                align="center"
-              >
-                Your documents are verified
-              </Typography>
-            </Stack>
-          </Box>
-        </Paper>
+        // <Paper
+        //   sx={{
+        //     maxWidth: 936,
+        //     margin: "auto",
+        //     overflow: "hidden",
+        //     padding: "20px",
+        //   }}
+        // >
+        //   <AppBar
+        //     position="static"
+        //     color="default"
+        //     elevation={0}
+        //     sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0.12)" }}
+        //   >
+        //     <Toolbar sx={{ justifyContent: "center" }}>
+        //       <Box alignItems="center" justifyContent={"center"}>
+        //         WELCOME TO DASHBOARD
+        //       </Box>
+        //     </Toolbar>
+        //   </AppBar>
+        //   <Box
+        //     display={"flex"}
+        //     flexDirection={"column"}
+        //     alignItems="center"
+        //     justifyContent={"center"}
+        //   >
+        //     <Stack spacing={4}>
+        //       <Typography
+        //         sx={{ mt: 4, mx: 2 }}
+        //         color="text.secondary"
+        //         align="center"
+        //       >
+        //         Your documents are verified
+        //       </Typography>
+        //     </Stack>
+        //   </Box>
+        // </Paper>
+        <Dashboard />
       )}
     </>
     // </PartnerLayout>
