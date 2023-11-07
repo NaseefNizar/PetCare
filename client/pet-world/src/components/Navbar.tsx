@@ -74,7 +74,7 @@ export const Navbar = () => {
           {localStorage.getItem("user") ? (
             <>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={user.name} src={`${baseUrl}/userData?.picture`} />
+                <Avatar alt={user.name} src={`${baseUrl}/${userData?.picture}`} />
               </IconButton>
               <Menu
                 sx={{ mt: "45px" }}
