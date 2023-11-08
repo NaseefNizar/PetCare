@@ -3,7 +3,9 @@ import env from "dotenv";
 import Partner from "../model/PartnerModel.js";
 import Appointment from "../model/appointmentModel.js";
 env.config();
-const endpointSecret = "whsec_d2783696d74f07822eb654923e6995c80f4489bcb2bb1d49cb21c65f955aefdb";
+// const endpointSecret =
+//   "whsec_d2783696d74f07822eb654923e6995c80f4489bcb2bb1d49cb21c65f955aefdb"; // local
+const endpointSecret = "whsec_96ZPAQcfuD2UB5OkyDIiCglBLpOYAjMu";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
     apiVersion: "2023-08-16",
     typescript: true,
@@ -20,8 +22,7 @@ export const createPaymentIntent = async (req, res) => {
     const customerID = customer.id;
     async function calculateOrderAmount(id) {
         console.log("p", id);
-        const data = await Partner.findById({ _id: id })
-            .select("onlineconsultationfee");
+        const data = await Partner.findById({ _id: id }).select("onlineconsultationfee");
         // .populate("kycDataId", "onlineconsultationfee");
         const fees = data?.onlineconsultationfee;
         console.log(data);

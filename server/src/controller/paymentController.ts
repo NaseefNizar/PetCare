@@ -6,8 +6,10 @@ import Partner from "../model/PartnerModel.js";
 import Appointment from "../model/appointmentModel.js";
 env.config();
 
+// const endpointSecret =
+//   "whsec_d2783696d74f07822eb654923e6995c80f4489bcb2bb1d49cb21c65f955aefdb"; // local
 const endpointSecret =
-  "whsec_d2783696d74f07822eb654923e6995c80f4489bcb2bb1d49cb21c65f955aefdb";
+  "whsec_96ZPAQcfuD2UB5OkyDIiCglBLpOYAjMu"
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: "2023-08-16",
@@ -16,10 +18,13 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
 
 interface MyCustomRequest extends Request {
   id?: string;
-  rawBody?: Buffer
+  rawBody?: Buffer;
 }
 
-export const createPaymentIntent: (req: MyCustomRequest, res: Response) => Promise<void> = async (req: MyCustomRequest, res: Response) => {
+export const createPaymentIntent: (
+  req: MyCustomRequest,
+  res: Response
+) => Promise<void> = async (req: MyCustomRequest, res: Response) => {
   console.log(req.body);
 
   const data = req.body;
@@ -33,9 +38,10 @@ export const createPaymentIntent: (req: MyCustomRequest, res: Response) => Promi
 
   async function calculateOrderAmount(id: string) {
     console.log("p", id);
-    const data = await Partner.findById({ _id: id })
-      .select("onlineconsultationfee")
-      // .populate("kycDataId", "onlineconsultationfee");
+    const data = await Partner.findById({ _id: id }).select(
+      "onlineconsultationfee"
+    );
+    // .populate("kycDataId", "onlineconsultationfee");
     const fees = data?.onlineconsultationfee;
     console.log(data);
 
@@ -68,10 +74,10 @@ export const webhook = async (req: MyCustomRequest, res: Response) => {
   // let event = req.rawBody; //as abhijith told
   let data;
   let eventType;
-  let rawBody = req.rawBody
-  
+  let rawBody = req.rawBody;
+
   if (endpointSecret && rawBody) {
-    let event: Stripe.Event
+    let event: Stripe.Event;
     const signature = req.headers["stripe-signature"];
     // console.log("signature", req.body.data.object);
     try {
@@ -81,95 +87,97 @@ export const webhook = async (req: MyCustomRequest, res: Response) => {
         endpointSecret
       );
       console.log("webhook verified");
-    } catch (err:any) {
+    } catch (err: any) {
       console.log(`⚠️  Webhook signature verification failed.`, err.message);
       return res.sendStatus(400);
     }
 
     data = event.data.object;
     eventType = event.type;
-  
 
-  // console.log('id',event.data.object.metadata.userId);
+    // console.log('id',event.data.object.metadata.userId);
 
-  // Handle the event
-  
-  switch (event.type) {
-    case "payment_intent.succeeded":
-      const paymentIntent = event.data.object as Stripe.PaymentIntent;
-      const customer = await stripe.customers.retrieve(paymentIntent.customer as string);
-      // console.log(customer.metadata.userId);
-      // const orderDetails = JSON.parse(paymentIntent.metadata.orderDetails);
-      // console.log(orderDetails);
+    // Handle the event
 
-      // console.log(`PaymentIntent for ${paymentIntent.amount} was successful!`);
-      // Then define and call a method to handle the successful payment intent.
-      // handlePaymentIntentSucceeded(paymentIntent);
-      
-      // const appointment = new Appointment({
-      //   userId: customer.metadata.userId as string,
-      //   ...orderDetails,
-      // });
-      // await appointment.save();
-      // const updateSlot = await Partner.updateOne(
-      //   {
-      //     "availableSlots.slots.time": appointment.slot,
-      //   },
-      //   {
-      //     $set: { "availableSlots.$[outer].slots.$[inner].status": true },
-      //   },
-      //   {
-      //     arrayFilters: [
-      //       { "outer.date": { $exists: true } },
-      //       { "inner.time": appointment.slot },
-      //     ],
-      //   }
-      // );
-      if (customer.object === "customer") {
-        const customerData = customer as Stripe.Customer;
-        console.log(customerData.metadata.userId);
-        const orderDetails = JSON.parse(paymentIntent.metadata.orderDetails);
-        console.log(orderDetails);
-
-        console.log(`PaymentIntent for ${paymentIntent.amount} was successful!`);
-
-        const appointment = new Appointment({
-          userId: customerData.metadata.userId,
-          ...orderDetails,
-        });
-        await appointment.save();
-
-        const updateSlot = await Partner.updateOne(
-          {
-            "availableSlots.slots.time": appointment.slot,
-          },
-          {
-            $set: { "availableSlots.$[outer].slots.$[inner].status": true },
-          },
-          {
-            arrayFilters: [
-              { "outer.date": { $exists: true } },
-              { "inner.time": appointment.slot },
-            ],
-          }
+    switch (event.type) {
+      case "payment_intent.succeeded":
+        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+        const customer = await stripe.customers.retrieve(
+          paymentIntent.customer as string
         );
-      } else {
-        console.log("Not a customer object");
-        // Handle the case where it's not a customer object
-      }
+        // console.log(customer.metadata.userId);
+        // const orderDetails = JSON.parse(paymentIntent.metadata.orderDetails);
+        // console.log(orderDetails);
 
+        // console.log(`PaymentIntent for ${paymentIntent.amount} was successful!`);
+        // Then define and call a method to handle the successful payment intent.
+        // handlePaymentIntentSucceeded(paymentIntent);
 
-      break;
-    case "payment_method.attached":
-      // const paymentMethod = event.data.object;
-      // Then define and call a method to handle the successful attachment of a PaymentMethod.
-      // handlePaymentMethodAttached(paymentMethod);
-      break;
-    default:
-      // Unexpected event type
-      console.log(`Unhandled event type ${event.type}.`);
+        // const appointment = new Appointment({
+        //   userId: customer.metadata.userId as string,
+        //   ...orderDetails,
+        // });
+        // await appointment.save();
+        // const updateSlot = await Partner.updateOne(
+        //   {
+        //     "availableSlots.slots.time": appointment.slot,
+        //   },
+        //   {
+        //     $set: { "availableSlots.$[outer].slots.$[inner].status": true },
+        //   },
+        //   {
+        //     arrayFilters: [
+        //       { "outer.date": { $exists: true } },
+        //       { "inner.time": appointment.slot },
+        //     ],
+        //   }
+        // );
+        if (customer.object === "customer") {
+          const customerData = customer as Stripe.Customer;
+          console.log(customerData.metadata.userId);
+          const orderDetails = JSON.parse(paymentIntent.metadata.orderDetails);
+          console.log(orderDetails);
+
+          console.log(
+            `PaymentIntent for ${paymentIntent.amount} was successful!`
+          );
+
+          const appointment = new Appointment({
+            userId: customerData.metadata.userId,
+            ...orderDetails,
+          });
+          await appointment.save();
+
+          const updateSlot = await Partner.updateOne(
+            {
+              "availableSlots.slots.time": appointment.slot,
+            },
+            {
+              $set: { "availableSlots.$[outer].slots.$[inner].status": true },
+            },
+            {
+              arrayFilters: [
+                { "outer.date": { $exists: true } },
+                { "inner.time": appointment.slot },
+              ],
+            }
+          );
+        } else {
+          console.log("Not a customer object");
+          // Handle the case where it's not a customer object
+        }
+
+        break;
+      case "payment_method.attached":
+        // const paymentMethod = event.data.object;
+        // Then define and call a method to handle the successful attachment of a PaymentMethod.
+        // handlePaymentMethodAttached(paymentMethod);
+        break;
+      default:
+        // Unexpected event type
+        console.log(`Unhandled event type ${event.type}.`);
+    }
+    // Return a 200 res to acknowledge receipt of the event
+    res.send().end();
   }
-  // Return a 200 res to acknowledge receipt of the event
-  res.send().end();
-}
 };
