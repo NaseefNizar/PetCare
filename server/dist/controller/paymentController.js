@@ -5,7 +5,7 @@ import Appointment from "../model/appointmentModel.js";
 env.config();
 // const endpointSecret =
 //   "whsec_d2783696d74f07822eb654923e6995c80f4489bcb2bb1d49cb21c65f955aefdb"; // local
-const endpointSecret = "whsec_96ZPAQcfuD2UB5OkyDIiCglBLpOYAjMu";
+const endpointSecret = "whsec_96ZPAQcfuD2UB5OkyDIiCglBLpOYAjMu"; // hosted
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
     apiVersion: "2023-08-16",
     typescript: true,
