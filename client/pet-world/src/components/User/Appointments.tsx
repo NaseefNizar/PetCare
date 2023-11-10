@@ -6,7 +6,7 @@ import PhoneIcon from "@mui/icons-material/Phone";
 // import { useDispatch } from "react-redux";
 // import { updateProfilePic, updateUser } from "../../redux/features/userSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { usersAppointments } from "../../redux/features/appointmentSlice";
 import moment from "moment";
 
