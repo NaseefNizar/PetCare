@@ -21,6 +21,7 @@ interface MyCustomRequest extends Request {
   rawBody?: Buffer;
 }
 
+
 export const createPaymentIntent: (
   req: MyCustomRequest,
   res: Response

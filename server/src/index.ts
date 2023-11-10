@@ -33,16 +33,17 @@ try{
 
 const app = express();
 // app.use(express.json());
-// app.use(cors({credentials: true, origin:['https://www.pet-nest.shop/','http://localhost:5173']}));
-app.use(cors({
-    origin: 'https://www.pet-nest.shop',
-    credentials: true, 
-  }));
+app.use(cors({credentials: true, origin:['https://www.pet-nest.shop/','http://localhost:5173']}));
+// app.use(cors({
+//     origin: 'https://www.pet-nest.shop',
+//     credentials: true, 
+//   }));
 app.use(express.json({
     verify: (req:MyCustomRequest, res, buf) => {
       req.rawBody = buf
     }
   }))
+  
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 

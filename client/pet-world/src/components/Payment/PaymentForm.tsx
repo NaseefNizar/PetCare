@@ -10,6 +10,7 @@ import {
   StripePaymentElementOptions,
   // StripeLinkAuthenticationElementChangeEvent,
 } from "@stripe/stripe-js"; // Import the necessary types
+import { baseUrl } from "../../utils/constants";
 
 // import "./checkout.css"
 
@@ -71,7 +72,7 @@ export default function CheckoutForm() {
       confirmParams: {
         // Make sure to change this to your payment completion page
         // return_url: 'http://localhost:5173/success',
-        return_url: 'https://www.pet-nest.shop/success',
+        return_url: `${baseUrl}/success`,
       },
     });
 
