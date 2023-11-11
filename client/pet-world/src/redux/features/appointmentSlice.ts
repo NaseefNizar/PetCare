@@ -50,6 +50,41 @@ export const usersAppointments = createAsyncThunk<any, void>(
   }
 );
 
+export const cancelAppointment = createAsyncThunk<any,any>("appointment/cancelappointment",async(data,{rejectWithValue}) => {
+  try {
+    const response = await axios.post('api/appointment/cancelappointment',data)
+    return response.data
+  } catch (error:any) {
+    return rejectWithValue(error.response.data)
+  }
+})
+export const getInvoice = createAsyncThunk<void,any>("appointment/createInvoice",async(_,{rejectWithValue}) => {
+  try {
+    const response = await axios.get('api/appointment/getinvoice')
+    return response.data
+  } catch (error:any) {
+    return rejectWithValue(error.response.data)
+  }
+})
+
+export const dashboard = createAsyncThunk<any,void>("appointment/getdashboarddata",async(_,{rejectWithValue}) => {
+  try {
+    const response = await axios.get('api/appointment/getpartnerappointment')
+    return response.data
+  } catch (error:any) {
+    return rejectWithValue(error.response.data)
+  }
+})
+export const adminDashboard = createAsyncThunk<any,void>("appointment/getadmindashboarddata",async(_,{rejectWithValue}) => {
+  try {
+    const response = await axios.get('api/admin/getadmindashboard')
+    return response.data
+  } catch (error:any) {
+    return rejectWithValue(error.response.data)
+  }
+})
+
+
 const appointmentSlice = createSlice({
   initialState,
   name: "appointment",
@@ -69,7 +104,22 @@ const appointmentSlice = createSlice({
       .addCase(usersAppointments.fulfilled, (state, action) => {
         state.loading = false;
         state.appointments = action.payload.appointments;
-      });
+      })
+      .addCase(cancelAppointment.fulfilled, (state, action) => {
+        state.loading = false;
+        state.appointments = action.payload.appointments
+      })
+      .addCase(getInvoice.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(dashboard.fulfilled, (state,action) => {
+        state.loading = false;
+        state.appointments = action.payload.appointments
+      })
+      .addCase(adminDashboard.fulfilled, (state,action) => {
+        state.loading = false;
+        state.appointments = action.payload.appointments
+      })
   },
 });
 

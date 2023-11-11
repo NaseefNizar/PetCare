@@ -18,7 +18,9 @@ export const sendOTP = async (
 ) => {
   try {
     const { contactNumber } = req.body;
-console.log(req.body);
+    console.log(req.body);
+    console.log(contactNumber);
+    
 
     const otpResponse = await client.verify.v2
       .services(TWILIO_SERVICE_SID)

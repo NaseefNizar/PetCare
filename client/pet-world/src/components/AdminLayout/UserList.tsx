@@ -48,7 +48,7 @@ export default function UserList() {
 
   const columns: GridColDef[] = [
     { field: "slno", headerName: "Sl.No", width: 50 },
-    { field: "name", headerName: "Name", width: 150 },
+    { field: "firstName", headerName: "Name", width: 150 },
     {
       field: "email",
       headerName: "Email",

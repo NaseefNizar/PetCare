@@ -28,6 +28,7 @@
     "date-carousel": "^5.2.1",
     "dayjs": "^1.11.10",
     "dotenv": "^16.3.1",
+    "easyinvoice": "^3.0.25",
     "heroicons": "^2.0.18",
     "moment": "^2.29.4",
     "react": "^18.2.0",

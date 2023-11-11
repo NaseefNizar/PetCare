@@ -20,6 +20,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { logOut } from "../../redux/features/partnerSlice";
+import { baseUrl } from "../../utils/constants";
 // import { logout } from '../../redux/features/adminSlice';
 
 type OpenSetter = {
@@ -216,7 +217,7 @@ export default function PrimarySearchAppBar(props: OpenSetter) {
           </Search> */}
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton
+            {/* <IconButton
               size="large"
               aria-label="show 4 new mails"
               color="inherit"
@@ -224,15 +225,15 @@ export default function PrimarySearchAppBar(props: OpenSetter) {
               <Badge badgeContent={4} color="error">
                 <MailIcon />
               </Badge>
-            </IconButton>
+            </IconButton> */}
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
               color="inherit"
             >
-              <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
-              </Badge>
+              {/* <Badge badgeContent={17} color="error"> */}
+                {/* <NotificationsIcon /> */}
+              {/* </Badge> */}
             </IconButton>
             <IconButton
               size="large"
@@ -245,7 +246,7 @@ export default function PrimarySearchAppBar(props: OpenSetter) {
             >
               {/* <AccountCircle /> */}
               {/* <IconButton  sx={{ p: 0 }}> */}
-                <Avatar  src={pic} />
+                <Avatar  src={`${baseUrl}/users/${pic}`} />
               {/* </IconButton> */}
             </IconButton>
           </Box>

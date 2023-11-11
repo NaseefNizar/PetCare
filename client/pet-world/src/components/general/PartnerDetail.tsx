@@ -19,6 +19,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { setSelectedSlot } from "../../redux/features/slotSlice";
+import { baseUrl } from "../../utils/constants";
 // import { StripeContainer } from "../Payment/StripeContainer";
 
 export const PartnerDetail = () => {
@@ -396,7 +397,7 @@ export const PartnerDetail = () => {
                 borderRadius: "20px",
               }}
             >
-              <img src={data?.photo} width={"200px"} height={"200px"} />
+              <img src={`${baseUrl}/users/${data?.photo}`} width={"200px"} height={"200px"} />
 
               <Typography sx={{ fontSize: "25px" }}>
                 Dr. {data?.firstName} {data?.lastName}{" "}

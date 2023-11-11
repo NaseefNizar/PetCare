@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  getDashboardData,
   getPartnerData,
   getUnverifiedPartner,
   getUserData,
@@ -24,5 +25,6 @@ adminRoute.post("/getindividualpartner", verifyToken, individualPartnerData);
 adminRoute.put("/blockpartner", verifyToken, partnerAccess);
 adminRoute.patch("/approvepartner", verifyToken, partnerApproval);
 adminRoute.get("/logout", verifyToken, logout);
+adminRoute.get('/getadmindashboard',verifyToken,getDashboardData)
 
 export default adminRoute;

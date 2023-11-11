@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import User from "../model/UserModel.js";
 import jwt from "jsonwebtoken";
 import Partner from "../model/PartnerModel.js";
+import Appointment from "../model/appointmentModel.js";
 const jwtSecretKey = process.env.JWT_SECRET_KEY;
 export const login = async (req, res) => {
     try {
@@ -158,6 +159,16 @@ export const partnerAccess = async (req, res) => {
     catch (error) {
         console.error('Error blocking partner:', error);
         res.status(500).json({ message: 'Error blocking partner' });
+    }
+};
+export const getDashboardData = async (req, res) => {
+    try {
+        const appointments = await Appointment.find({});
+        console.log(appointments);
+        res.status(200).json({ appointments });
+    }
+    catch (error) {
+        res.status(500).json({ message: "Error getting data" });
     }
 };
 //# sourceMappingURL=adminController.js.map

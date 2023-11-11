@@ -22,21 +22,9 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { ProfileEdit } from "../User/ProfileEdit";
 import { getPartnerData, updatePartner, updatePartnerProfilePic } from "../../redux/features/partnerSlice";
 import { useNavigate } from "react-router-dom";
+import { baseUrl } from "../../utils/constants";
 
 
-
-
-// type UserData = {
-//   firstName: string;
-//   lastName?: string;
-//   email: string;
-//   password: string;
-//   contactNumber: string;
-//   picture?: string;
-//   role: string;
-//   _id: string;
-//   __v: number;
-// };
 
 export const PartnerProfile = () => {
   // let user;
@@ -49,6 +37,7 @@ export const PartnerProfile = () => {
   const dispatch = useAppDispatch()
   const partnerState = useAppSelector((state) => state.vet);
   const partnerData = partnerState?.userData;
+  // const pic   = partnerData?.pic 
   const navigate = useNavigate()
 
 
@@ -117,8 +106,9 @@ export const PartnerProfile = () => {
                       }}
                     >
                       <Stack direction={"row"} sx={{display:"flex",alignItems:'self-end'}}>
-                      <Avatar
-                        src={partnerData?.picture}
+                       <Avatar
+                        // src={`${baseUrl}/users/${partnerData?.photo}`} 
+                        src={`${baseUrl}/users/${partnerData}`} 
                         sx={{
                           height: 80,
                           mb: 2,

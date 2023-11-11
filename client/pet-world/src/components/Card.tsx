@@ -8,6 +8,7 @@ import { getVetList } from "../redux/features/partnerListSlice";
 import { Link } from "react-router-dom";
 import ButtonBase from "@mui/material/ButtonBase";
 import { styled } from "@mui/material/styles";
+import { baseUrl } from "../utils/constants";
 
 export default function PartnerCard() {
   // const [dataList, setDataList] = useState<any>(
@@ -57,7 +58,7 @@ export default function PartnerCard() {
               <Grid container spacing={2}>
                 <Grid item>
                   <ButtonBase sx={{ width: 200, height: 200 }}>
-                    <Img alt="complex" src={element.photo} />
+                    <Img alt="complex" src={`${baseUrl}/users/${element.photo}`} />
                   </ButtonBase>
                 </Grid>
                 <Grid item xs={12} sm container>

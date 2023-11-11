@@ -4,6 +4,7 @@ import User from "../model/UserModel.js";
 import jwt from "jsonwebtoken";
 import Partner from "../model/PartnerModel.js";
 import Kyc from '../model/kycModel.js'
+import Appointment from "../model/appointmentModel.js";
 
 const jwtSecretKey: string = process.env.JWT_SECRET_KEY
 
@@ -190,5 +191,16 @@ export const partnerAccess = async( req: Request, res: Response) => {
    } catch (error) {
     console.error('Error blocking partner:', error);
     res.status(500).json({ message: 'Error blocking partner' });
+  }
+}
+
+export const getDashboardData = async(req:MyRequest, res:Response) => {
+  try {
+      
+      const appointments = await Appointment.find({})
+      console.log(appointments);
+      res.status(200).json({appointments})
+  } catch (error) {
+      res.status(500).json({message:"Error getting data"})
   }
 }

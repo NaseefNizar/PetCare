@@ -67,7 +67,7 @@ const initialState: InitialState = {
 
 export const sendOtpPartner = createAsyncThunk(
   "vet/sendOtp",
-  async (userData: FormValues) => {
+  async (userData:any) => {
     try {
       //   console.log("role", role);
 

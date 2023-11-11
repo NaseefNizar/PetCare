@@ -36,9 +36,10 @@ const appointmentSchema = new mongoose.Schema({
   paymentIntentId: {
     type: String,
   },
-  callLink: {
-    type: String,
-  },
+  status: {
+    type:String,
+    default:'Booked'
+  }
 });
 
 const Appointment = mongoose.model("Appointment", appointmentSchema);

@@ -11,6 +11,8 @@ env.config();
 const endpointSecret =
   "whsec_96ZPAQcfuD2UB5OkyDIiCglBLpOYAjMu" // hosted
 
+
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: "2023-08-16",
   typescript: true,
@@ -70,6 +72,7 @@ export const createPaymentIntent: (
   });
 };
 
+
 //Stripe webhook
 export const webhook = async (req: MyCustomRequest, res: Response) => {
   // let event = req.rawBody; //as abhijith told
@@ -93,6 +96,7 @@ export const webhook = async (req: MyCustomRequest, res: Response) => {
       return res.sendStatus(400);
     }
 
+  
     data = event.data.object;
     eventType = event.type;
 
