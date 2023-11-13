@@ -104,6 +104,7 @@ export const PartnerAppointment = () => {
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
                   {/* View Details */}
+                  Status
                 </TableCell>
               </TableRow>
             </TableHead>
