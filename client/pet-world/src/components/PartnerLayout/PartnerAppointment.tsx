@@ -123,7 +123,8 @@ export const PartnerAppointment = () => {
                       {moment(element?.date).format("MMMM DD, YYYY")}
                     </TableCell>
                     <TableCell align="left">{element?.slot}</TableCell>
-                    <TableCell align="left" size="small" ><Button variant="contained" component={Link} to={'/'}>View details</Button> </TableCell>
+                    <TableCell align="left">{element?.status}</TableCell>
+                    {/* <TableCell align="left" size="small" ><Button variant="contained" component={Link} to={'/'}>View details</Button> </TableCell> */}
                     {/* <VideoCallIcon color="success" fontSize="large" sx={{marginTop:"6px"}}/> */}
                     {/* <TableCell align="left"></TableCell> */}
                     {/* <TableCell align="left"></TableCell> */}
