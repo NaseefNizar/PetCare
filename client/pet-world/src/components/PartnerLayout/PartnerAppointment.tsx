@@ -12,7 +12,7 @@ import TableRow from "@mui/material/TableRow";
 // import DialogActions from "@mui/material/DialogActions";
 // import DialogContent from "@mui/material/DialogContent";
 // import DialogTitle from "@mui/material/DialogTitle";
-import { Button, Divider, Typography } from "@mui/material";
+import {  Divider, Typography } from "@mui/material";
 // import VisibilityIcon from '@mui/icons-material/Visibility';
 // import VideoCallIcon from "@mui/icons-material/VideoCall";
 import Box from "@mui/material/Box";
@@ -20,7 +20,7 @@ import {  useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getAppointmentData } from "../../redux/features/appointmentSlice";
 import moment from "moment";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 export const PartnerAppointment = () => {
   const dispatch = useAppDispatch();
