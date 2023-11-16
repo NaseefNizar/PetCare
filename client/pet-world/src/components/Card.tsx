@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import Typography from "@mui/material/Typography";
 import { Button, Grid, Paper, Stack } from "@mui/material";
-import Rating from "@mui/material/Rating";
+// import Rating from "@mui/material/Rating";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { getVetList } from "../redux/features/partnerListSlice";
 import { Link } from "react-router-dom";
