@@ -1,38 +1,39 @@
 import pkg from "twilio";
 const { Twilio } = pkg;
+// import twilio, {Twilio} from 'twilio'
 import { NextFunction, Request, Response } from "express";
 
 const { TWILIO_SERVICE_SID, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } =
   process.env;
 
-// if (!TWILIO_SERVICE_SID || !TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN) {
-//   throw new Error("Twilio environment variables are not defined.");
-// }
+if (!TWILIO_SERVICE_SID || !TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN) {
+  throw new Error("Twilio environment variables are not defined.");
+}
 
-const client = new Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
+const client =  new Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 
 export const sendOTP = async (
   req: Request,
   res: Response
-  //   next: NextFunction
 ) => {
   try {
     const { contactNumber } = req.body;
     console.log(req.body);
     console.log(contactNumber);
+    console.log(TWILIO_SERVICE_SID)
+    console.log(TWILIO_AUTH_TOKEN)
+    console.log(TWILIO_ACCOUNT_SID)
     
-
     const otpResponse = await client.verify.v2
       .services(TWILIO_SERVICE_SID)
       .verifications.create({
-        to: `+91${contactNumber}`,
-        channel: "sms",
+        to: `+91${contactNumber.toString()}`,
+        channel: 'sms',
       });
-
-    console.log(otpResponse);
-
+    // console.log(otpResponse);
     res.status(200).json({ message: "otp send successfully" });
   } catch (error) {
+    // console.log(error);
     res.status(400).json({ message: "Something went wrong" });
   }
 };

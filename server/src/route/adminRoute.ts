@@ -4,6 +4,7 @@ import {
   getPartnerData,
   getUnverifiedPartner,
   getUserData,
+  getallappointments,
   individualPartnerData,
   login,
   logout,
@@ -26,5 +27,6 @@ adminRoute.put("/blockpartner", verifyToken, partnerAccess);
 adminRoute.patch("/approvepartner", verifyToken, partnerApproval);
 adminRoute.get("/logout", verifyToken, logout);
 adminRoute.get('/getadmindashboard',verifyToken,getDashboardData)
+adminRoute.get('/appointments',verifyToken,getallappointments)
 
 export default adminRoute;

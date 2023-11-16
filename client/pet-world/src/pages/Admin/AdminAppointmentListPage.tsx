@@ -1,3 +1,4 @@
+import AdminLayout from '../../components/AdminLayout/AdminLayout'
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -9,43 +10,21 @@ import {  Divider, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import {  useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { getAppointmentData } from "../../redux/features/appointmentSlice";
+import {  getAppointments } from "../../redux/features/appointmentSlice";
 import moment from "moment";
 
+export const AdminAppointmentListPage = () => {
 
 
-export const PartnerAppointment = () => {
-  const dispatch = useAppDispatch();
-  const data:any = useAppSelector((state) => state.appointment.appointments);
-  // console.log(data);
-
-  // const [open, setOpen] = React.useState(false);
-
-  // const handleClickOpen = () => {
-  //   setOpen(true);
-  // };
-
-  // const handleClose = () => {
-  //   setOpen(false);
-  // };
-  // const [page, setPage] = useState(0);
-  // const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  // const handleChangePage = (event, newPage) => {
-  //   setPage(newPage);
-  // };
-
-  // const handleChangeRowsPerPage = (event) => {
-  //   setRowsPerPage(+event.target.value);
-  //   setPage(0);
-  // };
-
-  useEffect(() => {
-    dispatch(getAppointmentData());
-  }, []);
-
+const dispatch = useAppDispatch()
+const data = useAppSelector(state => state.appointment.appointments)
+    useEffect(() => {
+        dispatch(getAppointments())
+    })
   return (
-    <Box
+    <div>
+        <AdminLayout>
+        <Box
       sx={{
         maxWidth: "80%",
         margin: "auto",
@@ -77,6 +56,9 @@ export const PartnerAppointment = () => {
             <TableHead>
               <TableRow>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
+                  Doctor Name
+                </TableCell>
+                <TableCell align="left" style={{ minWidth: "100px" }}>
                   Patient Name
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
@@ -105,6 +87,9 @@ export const PartnerAppointment = () => {
                 data.map((element:any) => (
                   <TableRow hover role="checkbox" tabIndex={-1}>
                     <TableCell align="left">
+                      {element.partnerId?.firstName} {element.partnerId?.lastName}
+                    </TableCell>
+                    <TableCell align="left">
                       {element.userId?.firstName} {element.userId?.lastName}
                     </TableCell>
                     <TableCell align="left">
@@ -114,54 +99,20 @@ export const PartnerAppointment = () => {
                     <TableCell align="left">
                       {moment(element?.date).format("MMMM DD, YYYY")}
                     </TableCell>
-                    <TableCell align="left">{element?.slot}</TableCell>
+                    <TableCell align="left">{element?.slot} </TableCell>
                     <TableCell align="left">{element?.status}</TableCell>
-                    {/* <TableCell align="left" size="small" ><Button variant="contained" component={Link} to={'/'}>View details</Button> </TableCell> */}
-                    {/* <VideoCallIcon color="success" fontSize="large" sx={{marginTop:"6px"}}/> */}
-                    {/* <TableCell align="left"></TableCell> */}
-                    {/* <TableCell align="left"></TableCell> */}
+                    
                   </TableRow>
                 ))}
 
-              {/* <TableRow>
-                <TableCell colSpan={1}>Loading...</TableCell>
-              </TableRow> */}
+              
             </TableBody>
           </Table>
         </TableContainer>
-        {/* <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        rowsPerPage={rowsPerPage}
-        count={fetchedDetails?.length}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      /> */}
-        {/* <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>BOOKED SCAN</DialogTitle>
-        <DialogContent>
-          {
-          {fetchedDetails && fetchedDetails.length > 0
-            ? fetchedDetails[0]?.testDetails?.item.map((data, index) => (
-                <TextField
-                  key={index}
-                  autoFocus
-                  margin="dense"
-                  id={data.TestId}
-                  value={data.description}
-                  type="email"
-                  fullWidth
-                  variant="standard"
-                />
-              ))
-            : null}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-        </DialogActions>
-      </Dialog> */}
+        
       </Paper>
     </Box>
-  );
-};
+        </AdminLayout>
+    </div>
+  )
+}

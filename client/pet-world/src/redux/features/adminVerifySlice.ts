@@ -23,7 +23,7 @@ type PartnerData = {
       ifsc: string,
       poi: string,
       poq: string,
-      is_verifie:boolean,
+      is_verified:boolean,
       is_kycSubmitted:boolean,
 }
 type InitialState = {
@@ -40,8 +40,10 @@ const initialState: InitialState = {
     stat: false
 }
 
-export const getPartnerData = createAsyncThunk<void,string>('adminVerifySlice/getpartnerdata',async (id,{rejectWithValue}) =>{
+export const getPartnerData = createAsyncThunk<void,any>('adminVerifySlice/getpartnerdata',async (id,{rejectWithValue}) =>{
     try {
+        console.log(id);
+        
         const response = await axios.post("/api/admin/getindividualpartner",{id});
         console.log(response.data);
         

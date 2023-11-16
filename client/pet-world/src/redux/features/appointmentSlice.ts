@@ -85,6 +85,15 @@ export const adminDashboard = createAsyncThunk<any,void>("appointment/getadminda
 })
 
 
+export const getAppointments = createAsyncThunk("appointment/getAll", async () => {
+  try {
+    const response = await axios.get("/api/admin/appointments");
+    return response.data;
+  } catch (error: any) {
+    console.log(error.response.data);
+  }
+});
+
 const appointmentSlice = createSlice({
   initialState,
   name: "appointment",
@@ -117,6 +126,10 @@ const appointmentSlice = createSlice({
         state.appointments = action.payload.appointments
       })
       .addCase(adminDashboard.fulfilled, (state,action) => {
+        state.loading = false;
+        state.appointments = action.payload.appointments
+      })
+      .addCase(getAppointments.fulfilled, (state,action) => {
         state.loading = false;
         state.appointments = action.payload.appointments
       })

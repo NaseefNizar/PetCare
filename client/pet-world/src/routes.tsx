@@ -35,6 +35,7 @@ import { UserAppointmentPage } from "./pages/User/UserAppointmentPage";
 import { ProfileLayoutPage } from "./pages/User/ProfileLayoutPage";
 import { UserInfoPage } from "./pages/User/UserInfoPage";
 import { PetDetailPage } from "./pages/User/PetDetailPage";
+import { AdminAppointmentListPage } from "./pages/Admin/AdminAppointmentListPage";
 
 export const Router = () => {
   return (
@@ -61,6 +62,7 @@ export const Router = () => {
           <Route path="/admin/home" element={<AdminHomePage />} />
           <Route path="/admin/users" element={<UserListPage />} />
           <Route path="/admin/partner" element={<PartnerListPage />} />
+          <Route path="/admin/appointments" element={<AdminAppointmentListPage />} />
           <Route
             path="/admin/verify-partners"
             element={<UnverifiedListPage />}

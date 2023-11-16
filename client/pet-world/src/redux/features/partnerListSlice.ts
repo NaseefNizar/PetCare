@@ -44,6 +44,22 @@ export const getIndividualDetails = createAsyncThunk<string,any>(
     }
 )
 
+
+export const search = createAsyncThunk<any,any>(
+    'search/vet',
+    async(search,{ rejectWithValue}) => {        
+        try {
+            const response = await axios.get(`api/general/search?search=${search}`)
+            return response.data
+        } catch (error:any) {
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
+
+
+
+
 const listSlice = createSlice({
     initialState,
     name:'partnerlist',
@@ -60,6 +76,10 @@ const listSlice = createSlice({
         .addCase(getVetList.rejected, (state, action) => {
             state.loading = false;
             state.responseMsg = action.error.message || ''
+        })
+        .addCase(search.fulfilled, (state, action) => {
+            state.loading = false;
+            state.partnerData = action.payload.searchList
         })
         .addCase(getIndividualDetails.pending, (state) => {
             state.loading = true;

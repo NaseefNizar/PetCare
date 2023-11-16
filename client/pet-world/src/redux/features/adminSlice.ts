@@ -124,6 +124,7 @@ export const logout = createAsyncThunk("adminSlice/logout", async () => {
   }
 });
 
+
 export const approval = createAsyncThunk<void,string>(
   'admin/partnerapproval',
   async(partnerId,{rejectWithValue}) => {

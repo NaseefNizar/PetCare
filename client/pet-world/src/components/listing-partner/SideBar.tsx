@@ -1,13 +1,10 @@
 import {  Paper,Typography, Box } from "@mui/material";
 import { styled, alpha } from '@mui/material/styles';
-// import AppBar from '@mui/material/AppBar';
-// import Box from '@mui/material/Box';
-// import Toolbar from '@mui/material/Toolbar';
-// import IconButton from '@mui/material/IconButton';
-// import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
-// import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
+import { useAppDispatch } from "../../redux/hooks";
+import { search } from "../../redux/features/partnerListSlice";
+import { useEffect, useState } from "react";
 
 
 export const SideBar = () => {
@@ -43,7 +40,6 @@ export const SideBar = () => {
     color: "inherit",
     "& .MuiInputBase-input": {
       padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
       paddingLeft: `calc(1em + ${theme.spacing(4)})`,
       transition: theme.transitions.create("width"),
       width: "100%",
@@ -55,6 +51,23 @@ export const SideBar = () => {
       },
     },
   }));
+
+
+
+  const [searchValue, setSearchValue] = useState('')
+  const dispatch = useAppDispatch()
+  const handleChange = (e:any) => {
+    
+    setSearchValue(e.target.value)
+  }
+
+ useEffect(() => {
+  dispatch(search(searchValue))
+ })
+
+
+
+
   return (
 
 
@@ -129,10 +142,10 @@ export const SideBar = () => {
           </SearchIconWrapper>
           <StyledInputBase
             autoFocus
-            placeholder="Search…"
-            // value={search}
+            placeholder="Search by name or place"
+            value={searchValue}
             inputProps={{ "aria-label": "search" }}
-            // onChange={handleChange}
+            onChange={(e) => handleChange(e)}
           />
         </Search>
       </Paper>

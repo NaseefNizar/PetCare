@@ -1,5 +1,5 @@
 import express from "express";
-import { getDashboardData, getPartnerData, getUnverifiedPartner, getUserData, individualPartnerData, login, logout, partnerAccess, partnerApproval, userAccess, verifyToken, } from "../controller/adminController.js";
+import { getDashboardData, getPartnerData, getUnverifiedPartner, getUserData, getallappointments, individualPartnerData, login, logout, partnerAccess, partnerApproval, userAccess, verifyToken, } from "../controller/adminController.js";
 const adminRoute = express.Router();
 adminRoute.post("/login", login);
 adminRoute.get("/getusers", verifyToken, getUserData);
@@ -11,5 +11,6 @@ adminRoute.put("/blockpartner", verifyToken, partnerAccess);
 adminRoute.patch("/approvepartner", verifyToken, partnerApproval);
 adminRoute.get("/logout", verifyToken, logout);
 adminRoute.get('/getadmindashboard', verifyToken, getDashboardData);
+adminRoute.get('/appointments', verifyToken, getallappointments);
 export default adminRoute;
 //# sourceMappingURL=adminRoute.js.map

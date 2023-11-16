@@ -94,24 +94,24 @@ export default function UserList() {
         );
       },
     },
-    {
-      field: " ",
-      headerName: " ",
-      width: 130,
-      sortable: false,
-      disableColumnMenu: true,
-      // renderCell: (params: GridRenderCellParams) => (
-      renderCell: () => (
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          // onClick={() => handleButtonClick(params.row.id)}
-        >
-          View Details
-        </Button>
-      ),
-    },
+    // {
+    //   field: " ",
+    //   headerName: " ",
+    //   width: 130,
+    //   sortable: false,
+    //   disableColumnMenu: true,
+    //   // renderCell: (params: GridRenderCellParams) => (
+    //   renderCell: () => (
+    //     <Button
+    //       variant="contained"
+    //       color="primary"
+    //       size="small"
+    //       // onClick={() => handleButtonClick(params.row.id)}
+    //     >
+    //       View Details
+    //     </Button>
+    //   ),
+    // },
   ];
   const userData: UserData[] = useAppSelector((state) => state.admin.userList);
   console.log(userData);

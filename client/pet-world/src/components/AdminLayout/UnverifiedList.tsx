@@ -81,7 +81,7 @@ import { Link } from "react-router-dom";
         disableColumnMenu: true,
         renderCell: (params: GridRenderCellParams) => {
           const rowData: UserData = params.row as UserData;
-          console.log(rowData.is_blocked);
+          // console.log(rowData.is_blocked);
           
           return rowData.is_blocked ? (
             <Button

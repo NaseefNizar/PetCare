@@ -13,6 +13,7 @@ import {
   import DialogContent from '@mui/material/DialogContent';
   // import DialogContentText from '@mui/material/DialogContentText';
   import DialogTitle from '@mui/material/DialogTitle';
+  import { Link } from "react-router-dom";
   // import { User } from "../../redux/api/types";
   
   interface UserData {
@@ -106,8 +107,10 @@ import {
         sortable: false,
         disableColumnMenu: true,
         // renderCell: (params: GridRenderCellParams) => (
-        renderCell: () => (
+        renderCell: (params: GridRenderCellParams) => (
           <Button
+          component= {Link} to={`/admin/viewdetails/${params.row._id}`}
+
             variant="contained"
             color="primary"
             size="small"

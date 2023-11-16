@@ -23,12 +23,15 @@ import { verifyBlock } from "../middleware/userMiddlewares/blockedUser.js";
 const userRoute = express.Router();
 
 userRoute.post("/sendotp", existingUser, sendOTP);
+
 userRoute.post("/otp", sendOTP);
-// userRoute.post("/sendotp", sendOTP);
 
 userRoute.post("/signup", verifyOTP, signup);
+
 userRoute.post("/updatecontact", verifyOTP, updateContact);
+
 userRoute.post("/addpetdetail", verifyToken, addPetDetail);
+
 userRoute.get("/getpetdetail", verifyToken, getPetDetail);
 
 userRoute.post("/googleVerify", googleVerify);

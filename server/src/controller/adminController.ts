@@ -149,8 +149,7 @@ export const getUnverifiedPartner = async( req:Request, res:Response ) => {
 export const individualPartnerData = async (req:Request, res:Response) => {
   try {
     console.log(req.body);
-    
-    const partnerData = await Partner.findOne({_id:req.body.id}).populate('kycDataId')
+    const partnerData = await Partner.findOne({_id:req.body.id})
     console.log(partnerData);
 
     res.status(200).json({partnerData})
@@ -203,4 +202,15 @@ export const getDashboardData = async(req:MyRequest, res:Response) => {
   } catch (error) {
       res.status(500).json({message:"Error getting data"})
   }
+}
+
+export const getallappointments = async(req:MyRequest, res:Response) => {
+  try {
+      
+    const appointments = await Appointment.find({}).populate('partnerId').populate('userId')
+    console.log(appointments);
+    res.status(200).json({appointments})
+} catch (error) {
+    res.status(500).json({message:"Error getting data"})
+}
 }

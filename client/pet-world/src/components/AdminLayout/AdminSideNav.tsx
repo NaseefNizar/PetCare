@@ -85,6 +85,10 @@ export default function MiniDrawer({open,children}:AppBarProps) {
       navigate('/admin/partner')
     } else if (index === 3) {
       navigate('/admin/verify-partners')
+    } else if (index === 0) {
+      navigate('/admin/home')
+    } else if (index === 4) {
+      navigate('/admin/appointments')
     }
   }
 
@@ -97,7 +101,7 @@ export default function MiniDrawer({open,children}:AppBarProps) {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Home', 'Pet Owners', 'Partners', 'Verify'].map((text, index) => (
+          {['Home', 'Pet Owners', 'Partners', 'Verify','Appointments'].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{

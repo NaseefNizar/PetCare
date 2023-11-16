@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 import Typography from "@mui/material/Typography";
-import { Button, Grid, Paper } from "@mui/material";
+import { Button, Grid, Paper, Stack } from "@mui/material";
 import Rating from "@mui/material/Rating";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { getVetList } from "../redux/features/partnerListSlice";
@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import ButtonBase from "@mui/material/ButtonBase";
 import { styled } from "@mui/material/styles";
 import { baseUrl } from "../utils/constants";
+import rupee from "../assets/rupee.png";
 
 export default function PartnerCard() {
   // const [dataList, setDataList] = useState<any>(
@@ -50,7 +51,7 @@ export default function PartnerCard() {
                 margin: "auto",
                 maxWidth: "100%",
                 flexGrow: 1,
-                borderRadius:'10px',
+                borderRadius: "10px",
                 backgroundColor: (theme) =>
                   theme.palette.mode === "dark" ? "#1A2027" : "#fff",
               }}
@@ -58,64 +59,70 @@ export default function PartnerCard() {
               <Grid container spacing={2}>
                 <Grid item>
                   <ButtonBase sx={{ width: 200, height: 200 }}>
-                    <Img alt="complex" src={`${baseUrl}/users/${element.photo}`} />
+                    <Img
+                      alt="complex"
+                      src={`${baseUrl}/users/${element.photo}`}
+                    />
                   </ButtonBase>
                 </Grid>
                 <Grid item xs={12} sm container>
                   <Grid item xs container direction="column" spacing={2}>
                     <Grid item xs>
-                      <Typography
-                        gutterBottom
-                        variant="subtitle1"
-                        component="div"
-                      >
-                        {element.firstName}{" "}
-                        {element.lastName}
-                      </Typography>
-                      <Typography variant="body2" gutterBottom>
-                        BVSc & AH
-                      </Typography>
-                      {/* <Typography variant="body2" color="text.secondary">
-                        ID: 1030114
-                      </Typography> */}
-                      <Rating
+                      <Stack spacing={2}>
+                        <Typography
+                          gutterBottom
+                          variant="subtitle1"
+                          // component="div"
+                        >
+                          <strong>
+                            Dr. {element.firstName} {element.lastName}
+                          </strong>
+                        </Typography>
+                        <Typography variant="body2" gutterBottom>
+                          BVSc & AH
+                        </Typography>
+                        <Stack direction={"row"}>
+                          <img width={"20px"} height={"20px"} src={rupee} />
+                          <Typography variant="body2">
+                            <span>
+                              {" "}
+                              {element.onlineconsultationfee} consulation fee
+                            </span>
+                          </Typography>
+                        </Stack>
+
+                        {/* <Rating
                         name="half-rating-read"
                         defaultValue={2.5}
                         precision={0.5}
                         readOnly
-                      />
+                      /> */}
+                      </Stack>
                     </Grid>
                     <Grid item>
-                      {/* <Typography sx={{ cursor: "pointer" }} variant="body2">
-                        Remove
-                      </Typography> */}
+                      {/* <Rating
+                        name="half-rating-read"
+                        defaultValue={2.5}
+                        precision={0.5}
+                        readOnly
+                      /> */}
                     </Grid>
-                    {/* <Grid item>
-                      <Typography sx={{ cursor: "pointer" }} variant="body2">
-                        Remove
-                      </Typography>
-                    </Grid>
-                    <Grid item>
-                      <Typography sx={{ cursor: "pointer" }} variant="body2">
-                        Remove
-                      </Typography>
-                    </Grid> */}
                   </Grid>
                 </Grid>
                 <Grid item xs={12} lg={4} md={3}>
                   <Typography gutterBottom variant="subtitle1" component="div">
-                  {element.centreName}
+                    {element.centreName}
                   </Typography>
                   <Typography variant="body2" gutterBottom>
-                  {element.area}
+                    {element.area}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                  {element.locality}
+                    {element.locality}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                  {element.state} - {element.pincode}
+                    {element.state} - {element.pincode}
                   </Typography>
-                  
+
                   <Grid
                     container
                     spacing={2}

@@ -107,6 +107,7 @@ export const otp = createAsyncThunk<any,any>(
   async (contactNumber, { rejectWithValue }) => {
     try {
       const response = await axios.post("/api/otp", contactNumber);
+      console.log(response);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data);
@@ -308,7 +309,7 @@ const userSlice = createSlice({
       .addCase(otp.rejected, (state, action) => {
         state.loading = false;
         state.otpSendStat = false;
-        state.error = action.error.message || "";
+        state.error = action.error.message || ''
       })
       .addCase(forgotPassword.pending, (state) => {
         state.loading = true;
