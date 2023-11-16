@@ -10,7 +10,7 @@ import {
   StripePaymentElementOptions,
   // StripeLinkAuthenticationElementChangeEvent,
 } from "@stripe/stripe-js"; // Import the necessary types
-import { baseUrl } from "../../utils/constants";
+// import { baseUrl } from "../../utils/constants";
 
 // import "./checkout.css"
 
