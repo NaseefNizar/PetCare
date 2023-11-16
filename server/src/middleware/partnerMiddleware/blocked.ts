@@ -13,7 +13,7 @@ export const partnerBlocked = async (
   try {
     const user = await Partner.findOne({ _id: req.id });
     if(user?.is_blocked) {
-     return res.status(400).json({ message: "You are blocked" });
+     return res.status(400).json({ message: "You are blocked.In case you need any help mail us at petcare.help@petcare.in" });
   }
       
     next()

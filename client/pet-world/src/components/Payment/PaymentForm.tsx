@@ -72,7 +72,8 @@ export default function CheckoutForm() {
       confirmParams: {
         // Make sure to change this to your payment completion page
         // return_url: 'http://localhost:5173/success',
-        return_url: `${baseUrl}/success`,
+        // return_url: `${baseUrl}/success`,
+        return_url: 'https://www.pet-nest.shop/#/success',
       },
     });
 
