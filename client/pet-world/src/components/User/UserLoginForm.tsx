@@ -38,6 +38,7 @@ export default function UserLoginForm() {
 
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [userId, setUserId] = useState("samad@gmail.com");
   const form = useForm<Credentials>();
   const { register, handleSubmit, formState, watch } = form;
   const { errors } = formState;
@@ -49,11 +50,16 @@ export default function UserLoginForm() {
     if (isUser) {
       dispatch(loginUser(data));
     } else {
+      console.log('hjhj');
+      
       dispatch(loginPartner(data));
     }
   };
 
   // const role = isUser ? 'user' : 'partner';
+
+  console.log(userId);
+  
 
   useEffect(() => {
     userData.error && toast.error(userData.error, { theme: "colored" });
@@ -109,14 +115,18 @@ export default function UserLoginForm() {
                   </Typography>
                   <Typography
                     sx={{ cursor: "pointer" }}
-                    onClick={() => setIsUser(!isUser)}
+                    onClick={() => {
+                      setUserId("anoop@gmail.com");
+                      setIsUser(!isUser);
+                    }}
                   >
                     {isUser ? "Not a user ?" : "Not a partner ?"}
                   </Typography>
                 </Stack>
                 <TextField
                   label="Username"
-                  //   value={email}
+                    value={userId}
+                  // defaultValue={}
                   placeholder="Please enter your email"
                   sx={{ width: "320px", borderColor: "#FF0000" }}
                   {...register("email", {
@@ -128,6 +138,7 @@ export default function UserLoginForm() {
                 <TextField
                   label="Password"
                   type={showPassword ? "text" : "password"}
+                  defaultValue={"@zZ123456789"}
                   placeholder="Please enter your Password"
                   sx={{ width: "320px", borderColor: "" }}
                   {...register("password", {

@@ -110,33 +110,7 @@ export const webhook = async (req: MyCustomRequest, res: Response) => {
         const customer = await stripe.customers.retrieve(
           paymentIntent.customer as string
         );
-        // console.log(customer.metadata.userId);
-        // const orderDetails = JSON.parse(paymentIntent.metadata.orderDetails);
-        // console.log(orderDetails);
 
-        // console.log(`PaymentIntent for ${paymentIntent.amount} was successful!`);
-        // Then define and call a method to handle the successful payment intent.
-        // handlePaymentIntentSucceeded(paymentIntent);
-
-        // const appointment = new Appointment({
-        //   userId: customer.metadata.userId as string,
-        //   ...orderDetails,
-        // });
-        // await appointment.save();
-        // const updateSlot = await Partner.updateOne(
-        //   {
-        //     "availableSlots.slots.time": appointment.slot,
-        //   },
-        //   {
-        //     $set: { "availableSlots.$[outer].slots.$[inner].status": true },
-        //   },
-        //   {
-        //     arrayFilters: [
-        //       { "outer.date": { $exists: true } },
-        //       { "inner.time": appointment.slot },
-        //     ],
-        //   }
-        // );
         if (customer.object === "customer") {
           const customerData = customer as Stripe.Customer;
           console.log(customerData.metadata.userId);
@@ -167,6 +141,10 @@ export const webhook = async (req: MyCustomRequest, res: Response) => {
               ],
             }
           );
+
+          
+
+          
         } else {
           console.log("Not a customer object");
           // Handle the case where it's not a customer object
