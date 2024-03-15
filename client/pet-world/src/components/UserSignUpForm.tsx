@@ -111,6 +111,10 @@ export const UserSignUpForm = (props: Props) => {
     }
   }, [signupSuccess]);
 
+  useEffect(() => {
+    toast.error("Registration OTP using twilio expired. Please use test account provided", { theme: "colored"})
+  })
+
   return (
     <Stack
       sx={{
@@ -123,6 +127,12 @@ export const UserSignUpForm = (props: Props) => {
       }}
     >
       <ToastContainer />
+
+      <Paper sx={{"backgroundColor":"grey",padding: "32px", margin: "1rem", width:'30%'}}>
+        <Typography>Username for pet users: samad@gmail.com</Typography>
+        <Typography>Username for doctor: anoop@gmail.com</Typography>
+        <Typography>Password for both: @zZ123456789</Typography>
+      </Paper>
 
       <Paper sx={{ padding: "32px", margin: "1rem", width:'30%' }} elevation={4}>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -263,7 +273,7 @@ export const UserSignUpForm = (props: Props) => {
             {/* <Button variant="contained" size="large" startIcon={<MyIcon />}>
               Sign Up with google
             </Button> */}
-            <GoogleLogin
+            {/* <GoogleLogin
               onSuccess={(credentialResponse) => {
                 console.log(credentialResponse);
 
@@ -274,7 +284,7 @@ export const UserSignUpForm = (props: Props) => {
               onError={() => {
                 console.log("Login Failed");
               }}
-            />
+            /> */}
           </Stack>
         </form>
       </Paper>
