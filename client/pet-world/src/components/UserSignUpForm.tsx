@@ -11,8 +11,11 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 // import { googleSign, sendOtp, setSignupData } from "../redux/features/userSlice";
-import {  sendOtp, setSignupData } from "../redux/features/userSlice";
-import { sendOtpPartner,setSignupDataPartner } from "../redux/features/partnerSlice";
+import { sendOtp, setSignupData } from "../redux/features/userSlice";
+import {
+  sendOtpPartner,
+  setSignupDataPartner,
+} from "../redux/features/partnerSlice";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -48,23 +51,24 @@ export const UserSignUpForm = (props: Props) => {
   const navigate = useNavigate();
 
   const userState = useAppSelector((state) => state.user);
-  const error = userState.error
-  const otpSendStat = userState.otpSendStat
+  const error = userState.error;
+  const otpSendStat = userState.otpSendStat;
 
   const partnerState = useAppSelector((state) => state.vet);
-  const errorPartner = partnerState.error
-  const otpSendStatPartner = partnerState.otpSendStat
-
+  const errorPartner = partnerState.error;
+  const otpSendStatPartner = partnerState.otpSendStat;
 
   const data = useAppSelector((state) => state);
-  const signupSuccess:any = data.user.registerStatus || data.vet.registerStatus;
+  const signupSuccess: any =
+    data.user.registerStatus || data.vet.registerStatus;
 
   const { score } = zxcvbn(passwordCheck);
   // console.log("score", score);
   // const strengthColors = ['success', '#ff9900', '#ffff00', '#33cc33', '#00ff00'];
 
-
-  const strengthColors: { [key: number]: "primary" | "secondary" | "error" | "info" |"success" } = {
+  const strengthColors: {
+    [key: number]: "primary" | "secondary" | "error" | "info" | "success";
+  } = {
     0: "error",
     1: "error",
     2: "secondary",
@@ -74,14 +78,13 @@ export const UserSignUpForm = (props: Props) => {
   // const strengthColors:string[] = ["error", "error",'secondary',"info", "success"];
   const strengthColor = strengthColors[score];
 
-
-  const onSubmit:SubmitHandler<FormValues> = (formData) => {
+  const onSubmit: SubmitHandler<FormValues> = (formData) => {
     if (props.role === "User") {
-      dispatch(setSignupData(formData))
+      dispatch(setSignupData(formData));
       dispatch(sendOtp(formData));
     } else if (props.role === "Vet" || "Groomer") {
       console.log(111);
-      dispatch(setSignupDataPartner({...formData,role:props.role}))
+      dispatch(setSignupDataPartner({ ...formData, role: props.role }));
       dispatch(sendOtpPartner({ ...formData, role: props.role }));
     }
   };
@@ -93,18 +96,18 @@ export const UserSignUpForm = (props: Props) => {
   }, [isSubmitSuccessful]);
 
   useEffect(() => {
-    if(otpSendStat) {
-      navigate('/otp')
+    if (otpSendStat) {
+      navigate("/otp");
     }
-    error && toast.error(error, { theme: "colored"})
-  },[otpSendStat,error])
+    error && toast.error(error, { theme: "colored" });
+  }, [otpSendStat, error]);
 
   useEffect(() => {
-    if(otpSendStatPartner) {
-      navigate('/otp')
+    if (otpSendStatPartner) {
+      navigate("/otp");
     }
-    error && toast.error(error, { theme: "colored"})
-  },[otpSendStatPartner,errorPartner])
+    error && toast.error(error, { theme: "colored" });
+  }, [otpSendStatPartner, errorPartner]);
 
   useEffect(() => {
     if (signupSuccess) {
@@ -113,8 +116,11 @@ export const UserSignUpForm = (props: Props) => {
   }, [signupSuccess]);
 
   useEffect(() => {
-    toast.error("Registration OTP using twilio expired. Please use test account provided", { theme: "colored"})
-  })
+    toast.error(
+      "Registration OTP using twilio expired. Please use test account provided",
+      { theme: "colored" }
+    );
+  });
 
   return (
     <Stack
@@ -129,19 +135,31 @@ export const UserSignUpForm = (props: Props) => {
     >
       <ToastContainer />
 
-      <Paper sx={{"backgroundColor":"grey",padding: "32px", margin: "1rem", width:'30%'}}>
+      <Stack
+        sx={{
+          borderWidth: "1px",
+          borderStyle: "solid",
+          borderColor: "red",
+          padding: "32px",
+          margin: "1rem",
+          width: "30%",
+        }}
+      >
         <Typography>Username for pet users: samad@gmail.com</Typography>
         <Typography>Username for doctor: anoop@gmail.com</Typography>
         <Typography>Password for both: @zZ123456789</Typography>
-      </Paper>
+      </Stack>
 
-      <Paper sx={{ padding: "32px", margin: "1rem", width:'30%' }} elevation={4}>
+      <Paper
+        sx={{ padding: "32px", margin: "1rem", width: "30%" }}
+        elevation={4}
+      >
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <Stack spacing={2}>
             <Typography variant="h5" fontSize={30} fontWeight="bold">
               {props.role} Sign Up
             </Typography>
-            <Typography >
+            <Typography>
               Please fill in this form to create an account.
             </Typography>
             {/* <Typography color={"error"}>{error ? error : ""}</Typography> */}
@@ -197,7 +215,7 @@ export const UserSignUpForm = (props: Props) => {
                   pattern: {
                     value: /^\d{10}$/,
                     message: "Enter valid 10 digit number",
-                  }
+                  },
                 })}
                 error={!!errors.contactNumber}
                 helperText={errors.contactNumber?.message}
@@ -230,7 +248,6 @@ export const UserSignUpForm = (props: Props) => {
                 fullWidth
               ></TextField>
 
-
               {/* <LinearProgress color="success" variant="determinate" value={75} /> */}
               {score > 0 && (
                 <LinearProgress
@@ -239,7 +256,7 @@ export const UserSignUpForm = (props: Props) => {
                   value={(score + 1) * 20}
                   color={strengthColor}
                 />
-              ) }
+              )}
             </Grid>
             <Grid item xs={6}>
               <TextField

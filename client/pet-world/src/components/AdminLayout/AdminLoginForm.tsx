@@ -12,6 +12,7 @@ import {
   Button,
   Box,
   Paper,
+  Typography
 } from "@mui/material";
 
 type credentials = {
@@ -47,6 +48,19 @@ export default function AdminLoginForm() {
           // margin:"20px auto"
         }}
       >
+        <Stack
+        sx={{
+          borderWidth: "1px",
+          borderStyle: "solid",
+          borderColor: "red",
+          padding: "32px",
+          margin: "1rem",
+          width: "30%",
+        }}
+      >
+        <Typography>Username : admin666@gmail.com</Typography>
+        <Typography>Password : @zZ123456789</Typography>
+      </Stack>
         <Paper elevation={2} sx={{ width: 500, height: 500 }}>
           <Box
             sx={{

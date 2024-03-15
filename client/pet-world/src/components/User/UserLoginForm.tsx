@@ -88,18 +88,21 @@ export default function UserLoginForm() {
         }}
       >
         <ToastContainer />
-        <Paper
+        <Stack
           sx={{
-            backgroundColor: "grey",
+            // backgroundColor: "grey",
             padding: "32px",
             margin: "1rem",
             width: "30%",
+            borderWidth: "1px",
+            borderStyle: "solid",
+            borderColor: "red",
           }}
         >
           <Typography>Username for pet users: samad@gmail.com</Typography>
           <Typography>Username for doctor: anoop@gmail.com</Typography>
           <Typography>Password for both: @zZ123456789</Typography>
-        </Paper>
+        </Stack>
         <Paper elevation={2} sx={{ width: 500, height: 500 }}>
           <Box
             sx={{
@@ -203,9 +206,14 @@ export default function UserLoginForm() {
                     SignUp
                   </Typography>
                 </Stack>
-                <Typography component={Link} to="/forgotpassword">
-                  Forgot Password?
-                </Typography>
+                <Stack direction={"row"} spacing={4}>
+                  <Typography component={Link} to="/forgotpassword">
+                    Forgot Password?
+                  </Typography>
+                  <Typography component={Link} to="/admin/login">
+                    Admin Login
+                  </Typography>
+                </Stack>
               </Stack>
             </form>
           </Box>
