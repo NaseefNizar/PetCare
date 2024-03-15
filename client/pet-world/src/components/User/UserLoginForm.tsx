@@ -56,9 +56,6 @@ export default function UserLoginForm() {
 
   // const role = isUser ? 'user' : 'partner';
 
-
-  
-
   useEffect(() => {
     userData.error && toast.error(userData.error, { theme: "colored" });
     userData.loginSuccess && navigate("/");
@@ -75,7 +72,7 @@ export default function UserLoginForm() {
   }, [userState.successMessage]);
   useEffect(() => {
     partnerState.registerStatus &&
-      toast.success('Sign up successfull', { theme: "colored" });
+      toast.success("Sign up successfull", { theme: "colored" });
   }, [partnerState.registerStatus]);
 
   return (
@@ -91,6 +88,18 @@ export default function UserLoginForm() {
         }}
       >
         <ToastContainer />
+        <Paper
+          sx={{
+            backgroundColor: "grey",
+            padding: "32px",
+            margin: "1rem",
+            width: "30%",
+          }}
+        >
+          <Typography>Username for pet users: samad@gmail.com</Typography>
+          <Typography>Username for doctor: anoop@gmail.com</Typography>
+          <Typography>Password for both: @zZ123456789</Typography>
+        </Paper>
         <Paper elevation={2} sx={{ width: 500, height: 500 }}>
           <Box
             sx={{
@@ -120,16 +129,21 @@ export default function UserLoginForm() {
                   >
                     {isUser ? "Not a user ?" : "Not a partner ?"}
                   </Typography> */}
-                  <Typography sx={{ cursor: "pointer" }} component={Link} to="" onClick={() => {
+                  <Typography
+                    sx={{ cursor: "pointer" }}
+                    component={Link}
+                    to=""
+                    onClick={() => {
                       // setUserId("anoop@gmail.com");
                       setIsUser(!isUser);
-                    }}>
-                  {isUser ? "Not a user ?" : "Not a partner ?"}
+                    }}
+                  >
+                    {isUser ? "Not a user ?" : "Not a partner ?"}
                   </Typography>
                 </Stack>
                 <TextField
                   label="Username"
-                    // value={userId}
+                  // value={userId}
                   // defaultValue={}
                   placeholder="Please enter your email"
                   sx={{ width: "320px", borderColor: "#FF0000" }}
@@ -189,7 +203,7 @@ export default function UserLoginForm() {
                     SignUp
                   </Typography>
                 </Stack>
-                <Typography component={Link} to='/forgotpassword'>
+                <Typography component={Link} to="/forgotpassword">
                   Forgot Password?
                 </Typography>
               </Stack>
