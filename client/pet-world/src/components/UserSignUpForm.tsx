@@ -7,10 +7,11 @@ import {
   Button,
 } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
-import { GoogleLogin } from "@react-oauth/google";
+// import { GoogleLogin } from "@react-oauth/google";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { googleSign, sendOtp, setSignupData } from "../redux/features/userSlice";
+// import { googleSign, sendOtp, setSignupData } from "../redux/features/userSlice";
+import {  sendOtp, setSignupData } from "../redux/features/userSlice";
 import { sendOtpPartner,setSignupDataPartner } from "../redux/features/partnerSlice";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
